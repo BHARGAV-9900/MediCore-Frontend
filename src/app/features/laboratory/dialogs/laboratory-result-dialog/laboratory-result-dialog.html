@@ -1,0 +1,237 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="save()">
+
+  <!-- Dialog Header -->
+
+  <h2 mat-dialog-title>
+    {{ dialogTitle }}
+  </h2>
+
+  <p class="dialog-subtitle">
+    {{ dialogSubtitle }}
+  </p>
+
+
+  <!-- Dialog Content -->
+
+  <mat-dialog-content>
+
+
+    <!-- Laboratory Order -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Laboratory Order
+      </mat-label>
+
+      <mat-select
+        formControlName="laboratoryOrderId"
+        [disabled]="isEditMode || loadingOrders">
+
+        @if (loadingOrders) {
+
+          <mat-option disabled>
+            Loading laboratory orders...
+          </mat-option>
+
+        }
+
+        @for (
+          order of laboratoryOrders;
+          track order.id
+        ) {
+
+          <mat-option
+            [value]="order.id">
+
+            Order #{{ order.id }}
+            —
+            Appointment #{{ order.appointmentId }}
+            —
+            Test #{{ order.laboratoryTestId }}
+
+          </mat-option>
+
+        }
+
+        @if (
+          !loadingOrders &&
+          laboratoryOrders.length === 0
+        ) {
+
+          <mat-option disabled>
+            No available laboratory orders
+          </mat-option>
+
+        }
+
+      </mat-select>
+
+
+      @if (
+        laboratoryOrderIdControl.hasError('required') &&
+        laboratoryOrderIdControl.touched
+      ) {
+
+        <mat-error>
+          Laboratory order is required.
+        </mat-error>
+
+      }
+
+
+      @if (
+        laboratoryOrderIdControl.hasError('min') &&
+        laboratoryOrderIdControl.touched
+      ) {
+
+        <mat-error>
+          Please select a laboratory order.
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+
+    <!-- Result -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Result
+      </mat-label>
+
+      <textarea
+        matInput
+        formControlName="result"
+        placeholder="Enter laboratory test result"
+        rows="4"
+        maxlength="4000">
+      </textarea>
+
+      <mat-hint align="end">
+        {{ resultControl.value.length }}/4000
+      </mat-hint>
+
+
+      @if (
+        resultControl.hasError('required') &&
+        resultControl.touched
+      ) {
+
+        <mat-error>
+          Laboratory result is required.
+        </mat-error>
+
+      }
+
+
+      @if (
+        resultControl.hasError('maxlength') &&
+        resultControl.touched
+      ) {
+
+        <mat-error>
+          Result cannot exceed 4000 characters.
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+
+    <!-- Remarks -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Remarks
+      </mat-label>
+
+      <textarea
+        matInput
+        formControlName="remarks"
+        placeholder="Enter remarks"
+        rows="3"
+        maxlength="2000">
+      </textarea>
+
+      <mat-hint align="end">
+        {{ remarksControl.value.length }}/2000
+      </mat-hint>
+
+
+      @if (
+        remarksControl.hasError('maxlength') &&
+        remarksControl.touched
+      ) {
+
+        <mat-error>
+          Remarks cannot exceed 2000 characters.
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+  </mat-dialog-content>
+
+
+
+  <!-- Dialog Actions -->
+
+  <mat-dialog-actions
+    align="end">
+
+    <button
+      mat-button
+      type="button"
+      (click)="cancel()"
+      [disabled]="loading">
+
+      Cancel
+
+    </button>
+
+
+    <button
+      mat-flat-button
+      type="submit"
+      [disabled]="loading || loadingOrders">
+
+      @if (loading) {
+
+        <mat-spinner
+          diameter="20">
+        </mat-spinner>
+
+      }
+      @else {
+
+        <mat-icon>
+          {{ isEditMode ? 'save' : 'add' }}
+        </mat-icon>
+
+      }
+
+      <span>
+        {{ submitButtonText }}
+      </span>
+
+    </button>
+
+  </mat-dialog-actions>
+
+</form>

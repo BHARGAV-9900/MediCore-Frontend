@@ -1,0 +1,237 @@
+<form
+  class="prescription-dialog-form"
+  [formGroup]="form"
+  (ngSubmit)="save()">
+
+
+  <div class="dialog-header">
+
+    <h2>
+      {{ dialogTitle }}
+    </h2>
+
+    <p>
+      {{ dialogSubtitle }}
+    </p>
+
+  </div>
+
+
+  <mat-form-field
+    appearance="outline"
+    class="full-width">
+
+    <mat-label>
+      Appointment
+    </mat-label>
+
+    <mat-select
+      formControlName="appointmentId"
+      [disabled]="loadingAppointments">
+
+      <mat-option [value]="0">
+
+        Select appointment
+
+      </mat-option>
+
+
+      @for (
+        appointment of getAvailableAppointments();
+        track appointment.id
+      ) {
+
+        <mat-option
+          [value]="appointment.id">
+
+          Appointment #{{ appointment.id }}
+
+          —
+          {{ appointment.patientName }}
+
+          —
+          {{ appointment.doctorName }}
+
+          —
+          {{ appointment.appointmentDate | date:'dd MMM yyyy, hh:mm a' }}
+
+        </mat-option>
+
+      }
+
+    </mat-select>
+
+
+    @if (
+      appointmentIdControl.hasError('required') &&
+      appointmentIdControl.touched
+    ) {
+
+      <mat-error>
+        Appointment is required.
+      </mat-error>
+
+    }
+
+
+    @if (
+      appointmentIdControl.hasError('min') &&
+      appointmentIdControl.touched
+    ) {
+
+      <mat-error>
+        Please select an appointment.
+      </mat-error>
+
+    }
+
+  </mat-form-field>
+
+
+  <mat-form-field
+    appearance="outline"
+    class="full-width">
+
+    <mat-label>
+      Instructions
+    </mat-label>
+
+    <textarea
+      matInput
+      formControlName="instructions"
+      placeholder="Enter prescription instructions"
+      rows="5"
+      maxlength="4000">
+    </textarea>
+
+
+    <mat-hint align="end">
+
+      {{ instructionsControl.value.length }}/4000
+
+    </mat-hint>
+
+
+    @if (
+      instructionsControl.hasError('required') &&
+      instructionsControl.touched
+    ) {
+
+      <mat-error>
+        Instructions are required.
+      </mat-error>
+
+    }
+
+
+    @if (
+      instructionsControl.hasError('minlength') &&
+      instructionsControl.touched
+    ) {
+
+      <mat-error>
+        Instructions must contain at least 2 characters.
+      </mat-error>
+
+    }
+
+
+    @if (
+      instructionsControl.hasError('maxlength') &&
+      instructionsControl.touched
+    ) {
+
+      <mat-error>
+        Instructions cannot exceed 4000 characters.
+      </mat-error>
+
+    }
+
+  </mat-form-field>
+
+
+  <mat-form-field
+    appearance="outline"
+    class="full-width">
+
+    <mat-label>
+      Notes
+    </mat-label>
+
+    <textarea
+      matInput
+      formControlName="notes"
+      placeholder="Enter additional notes"
+      rows="4"
+      maxlength="2000">
+    </textarea>
+
+
+    <mat-hint align="end">
+
+      {{ notesControl.value.length }}/2000
+
+    </mat-hint>
+
+
+    @if (
+      notesControl.hasError('maxlength') &&
+      notesControl.touched
+    ) {
+
+      <mat-error>
+        Notes cannot exceed 2000 characters.
+      </mat-error>
+
+    }
+
+  </mat-form-field>
+
+
+  <div class="dialog-actions">
+
+    <button
+      mat-button
+      type="button"
+      (click)="cancel()"
+      [disabled]="loading">
+
+      Cancel
+
+    </button>
+
+
+    <button
+      mat-flat-button
+      type="submit"
+      [disabled]="loading || loadingAppointments">
+
+      @if (loading) {
+
+        <mat-spinner
+          diameter="20">
+        </mat-spinner>
+
+      }
+      @else {
+
+        <mat-icon>
+
+          {{ isEditMode ? 'save' : 'add' }}
+
+        </mat-icon>
+
+      }
+
+
+      <span>
+
+        {{ submitButtonText }}
+
+      </span>
+
+    </button>
+
+  </div>
+
+</form>

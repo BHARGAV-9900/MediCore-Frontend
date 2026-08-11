@@ -1,0 +1,265 @@
+<div class="page-header">
+
+  <div class="page-title">
+
+    <h2>Doctors</h2>
+
+    <p>Manage doctors, specializations and availability</p>
+
+  </div>
+
+
+  <button
+    mat-stroked-button
+    type="button"
+    (click)="openDialog()">
+
+    <mat-icon>add</mat-icon>
+
+    Add Doctor
+
+  </button>
+
+</div>
+
+
+<div class="table-container">
+
+  <table
+    mat-table
+    [dataSource]="doctors"
+    class="doctor-table">
+
+
+    <!-- ID -->
+
+    <ng-container matColumnDef="id">
+
+      <th mat-header-cell *matHeaderCellDef>
+        ID
+      </th>
+
+      <td mat-cell *matCellDef="let d">
+        {{ d.id }}
+      </td>
+
+    </ng-container>
+
+
+    <!-- First Name -->
+
+    <ng-container matColumnDef="firstName">
+
+      <th mat-header-cell *matHeaderCellDef>
+        First Name
+      </th>
+
+      <td mat-cell *matCellDef="let d">
+        {{ d.firstName }}
+      </td>
+
+    </ng-container>
+
+
+    <!-- Last Name -->
+
+    <ng-container matColumnDef="lastName">
+
+      <th mat-header-cell *matHeaderCellDef>
+        Last Name
+      </th>
+
+      <td mat-cell *matCellDef="let d">
+        {{ d.lastName }}
+      </td>
+
+    </ng-container>
+
+
+    <!-- Email -->
+
+    <ng-container matColumnDef="email">
+
+      <th mat-header-cell *matHeaderCellDef>
+        Email
+      </th>
+
+      <td mat-cell *matCellDef="let d">
+        {{ d.email }}
+      </td>
+
+    </ng-container>
+
+
+    <!-- Phone -->
+
+    <ng-container matColumnDef="phoneNumber">
+
+      <th mat-header-cell *matHeaderCellDef>
+        Phone
+      </th>
+
+      <td mat-cell *matCellDef="let d">
+        {{ d.phoneNumber }}
+      </td>
+
+    </ng-container>
+
+
+    <!-- Specialization -->
+
+    <ng-container matColumnDef="specialization">
+
+      <th mat-header-cell *matHeaderCellDef>
+        Specialization
+      </th>
+
+      <td mat-cell *matCellDef="let d">
+        {{ d.specialization }}
+      </td>
+
+    </ng-container>
+
+
+    <!-- Experience -->
+
+    <ng-container matColumnDef="experienceYears">
+
+      <th mat-header-cell *matHeaderCellDef>
+        Experience
+      </th>
+
+      <td mat-cell *matCellDef="let d">
+
+        {{ d.experienceYears }}
+
+        <span class="unit">
+          yrs
+        </span>
+
+      </td>
+
+    </ng-container>
+
+
+    <!-- Fee -->
+
+    <ng-container matColumnDef="consultationFee">
+
+      <th mat-header-cell *matHeaderCellDef>
+        Fee
+      </th>
+
+      <td mat-cell *matCellDef="let d">
+
+        ₹ {{ d.consultationFee }}
+
+      </td>
+
+    </ng-container>
+
+
+    <!-- Department -->
+
+    <ng-container matColumnDef="departmentName">
+
+      <th mat-header-cell *matHeaderCellDef>
+        Department
+      </th>
+
+      <td mat-cell *matCellDef="let d">
+
+        <span class="department-badge">
+          {{ d.departmentName }}
+        </span>
+
+      </td>
+
+    </ng-container>
+
+
+    <!-- Available -->
+
+    <ng-container matColumnDef="isAvailable">
+
+      <th mat-header-cell *matHeaderCellDef>
+        Available
+      </th>
+
+      <td mat-cell *matCellDef="let d">
+
+        <span
+          class="availability-badge"
+          [class.unavailable]="!d.isAvailable">
+
+          <span class="status-dot"></span>
+
+          {{ d.isAvailable ? 'Yes' : 'No' }}
+
+        </span>
+
+      </td>
+
+    </ng-container>
+
+
+    <!-- Actions -->
+
+    <ng-container matColumnDef="actions">
+
+      <th mat-header-cell *matHeaderCellDef>
+        Actions
+      </th>
+
+      <td mat-cell *matCellDef="let d">
+
+        <div class="action-buttons">
+
+          <button
+            mat-icon-button
+            type="button"
+            class="edit-button"
+            aria-label="Edit doctor"
+            (click)="openDialog(d)">
+
+            <mat-icon>edit</mat-icon>
+
+          </button>
+
+
+          <button
+            mat-icon-button
+            type="button"
+            class="delete-button"
+            aria-label="Delete doctor"
+            (click)="deleteDoctor(d.id)">
+
+            <mat-icon>delete</mat-icon>
+
+          </button>
+
+        </div>
+
+      </td>
+
+    </ng-container>
+
+
+    <!-- Header -->
+
+    <tr
+      mat-header-row
+      *matHeaderRowDef="displayedColumns">
+    </tr>
+
+
+    <!-- Rows -->
+
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns;">
+    </tr>
+
+  </table>
+
+</div>

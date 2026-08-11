@@ -1,0 +1,85 @@
+:host {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.prescription-dialog-form {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 30px 30px 0;
+}
+
+/* ---------------------------------
+   Dialog Header
+--------------------------------- */
+
+.dialog-header {
+  margin-bottom: 24px;
+}
+
+.dialog-header h2 {
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 600;
+
+  line-height: 1.25;
+}
+
+.dialog-header p {
+  margin: 6px 0 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+/* ---------------------------------
+   Form Fields
+--------------------------------- */
+
+.full-width {
+  display: block;
+
+  width: 100%;
+
+  margin-bottom: 18px;
+}
+
+/* ---------------------------------
+   Dialog Actions
+--------------------------------- */
+
+.dialog-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 4px;
+
+  padding: 18px 0 20px;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+.dialog-actions button[type='submit'] {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  min-width: 150px;
+}
+
+.dialog-actions mat-spinner {
+  display: inline-block;
+}

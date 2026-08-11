@@ -1,0 +1,216 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="save()">
+
+  <!-- Dialog Header -->
+
+  <h2 mat-dialog-title>
+    {{ dialogTitle }}
+  </h2>
+
+  <p class="dialog-subtitle">
+    {{
+      isEditMode
+        ? 'Update laboratory test details'
+        : 'Add a new laboratory test'
+    }}
+  </p>
+
+
+  <!-- Dialog Content -->
+
+  <mat-dialog-content>
+
+
+    <!-- Test Name -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Test Name
+      </mat-label>
+
+      <input
+        matInput
+        type="text"
+        formControlName="name"
+        placeholder="Enter laboratory test name"
+        maxlength="150"
+        autocomplete="off">
+
+
+      @if (
+        nameControl.hasError('required') &&
+        nameControl.touched
+      ) {
+
+        <mat-error>
+          Test name is required.
+        </mat-error>
+
+      }
+
+
+      @if (
+        nameControl.hasError('minlength') &&
+        nameControl.touched
+      ) {
+
+        <mat-error>
+          Test name must contain at least 2 characters.
+        </mat-error>
+
+      }
+
+
+      @if (
+        nameControl.hasError('maxlength') &&
+        nameControl.touched
+      ) {
+
+        <mat-error>
+          Test name cannot exceed 150 characters.
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+    <!-- Price -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Price
+      </mat-label>
+
+      <span matTextPrefix>
+        ₹&nbsp;
+      </span>
+
+      <input
+        matInput
+        type="number"
+        formControlName="price"
+        placeholder="Enter price"
+        min="0.01"
+        step="0.01">
+
+
+      @if (
+        priceControl.hasError('required') &&
+        priceControl.touched
+      ) {
+
+        <mat-error>
+          Price is required.
+        </mat-error>
+
+      }
+
+
+      @if (
+        priceControl.hasError('min') &&
+        priceControl.touched
+      ) {
+
+        <mat-error>
+          Price must be greater than 0.
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+    <!-- Description -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Description
+      </mat-label>
+
+      <textarea
+        matInput
+        formControlName="description"
+        placeholder="Enter test description"
+        rows="4"
+        maxlength="1000">
+      </textarea>
+
+
+      <mat-hint align="end">
+        {{ descriptionControl.value.length }}/1000
+      </mat-hint>
+
+
+      @if (
+        descriptionControl.hasError('maxlength') &&
+        descriptionControl.touched
+      ) {
+
+        <mat-error>
+          Description cannot exceed 1000 characters.
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+  </mat-dialog-content>
+
+
+  <!-- Dialog Actions -->
+
+  <mat-dialog-actions
+    align="end">
+
+    <button
+      mat-button
+      type="button"
+      (click)="cancel()"
+      [disabled]="loading">
+
+      Cancel
+
+    </button>
+
+
+    <button
+      mat-flat-button
+      type="submit"
+      [disabled]="loading">
+
+      @if (loading) {
+
+        <mat-spinner
+          diameter="20">
+        </mat-spinner>
+
+      }
+      @else {
+
+        <mat-icon>
+          {{ isEditMode ? 'save' : 'add' }}
+        </mat-icon>
+
+      }
+
+      <span>
+        {{ submitButtonText }}
+      </span>
+
+    </button>
+
+  </mat-dialog-actions>
+
+</form>

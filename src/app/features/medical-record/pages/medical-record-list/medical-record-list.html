@@ -1,0 +1,271 @@
+<div class="page-container">
+
+  <!-- Page Header -->
+
+  <div class="page-header">
+
+    <div>
+
+      <h1>
+        Medical Records
+      </h1>
+
+      <p>
+        Manage patient medical records and clinical information
+      </p>
+
+    </div>
+
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="addMedicalRecord()">
+
+      <mat-icon>
+        add
+      </mat-icon>
+
+      Add Medical Record
+
+    </button>
+
+  </div>
+
+
+  <!-- Loading -->
+
+  @if (loading) {
+
+    <div class="loading-container">
+
+      <mat-spinner
+        diameter="40">
+      </mat-spinner>
+
+      <p>
+        Loading medical records...
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- Medical Records Table -->
+
+  @if (!loading) {
+
+    <div class="table-container">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              ID
+            </th>
+
+            <th>
+              Appointment ID
+            </th>
+
+            <th>
+              Diagnosis
+            </th>
+
+            <th>
+              Symptoms
+            </th>
+
+            <th>
+              Clinical Notes
+            </th>
+
+            <th>
+              Treatment Plan
+            </th>
+
+            <th>
+              Follow-Up
+            </th>
+
+            <th>
+              Actions
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          @for (
+            record of records;
+            track record.id
+          ) {
+
+            <tr>
+
+              <!-- ID -->
+
+              <td>
+                {{ record.id }}
+              </td>
+
+
+              <!-- Appointment -->
+
+              <td>
+                {{ record.appointmentId }}
+              </td>
+
+
+              <!-- Diagnosis -->
+
+              <td>
+
+                <span class="primary-text">
+
+                  {{ truncate(
+                    record.diagnosis,
+                    35
+                  ) }}
+
+                </span>
+
+              </td>
+
+
+              <!-- Symptoms -->
+
+              <td>
+
+                {{ truncate(
+                  record.symptoms,
+                  40
+                ) }}
+
+              </td>
+
+
+              <!-- Clinical Notes -->
+
+              <td>
+
+                {{ truncate(
+                  record.clinicalNotes,
+                  40
+                ) }}
+
+              </td>
+
+
+              <!-- Treatment Plan -->
+
+              <td>
+
+                {{ truncate(
+                  record.treatmentPlan,
+                  40
+                ) }}
+
+              </td>
+
+
+              <!-- Follow Up -->
+
+              <td>
+
+                {{ truncate(
+                  record.followUpInstructions,
+                  35
+                ) }}
+
+              </td>
+
+
+              <!-- Actions -->
+
+              <td>
+
+                <div class="actions">
+
+                  <button
+                    mat-icon-button
+                    type="button"
+                    aria-label="Edit medical record"
+                    (click)="editMedicalRecord(record)">
+
+                    <mat-icon>
+                      edit
+                    </mat-icon>
+
+                  </button>
+
+
+                  <button
+                    mat-icon-button
+                    type="button"
+                    aria-label="Delete medical record"
+                    (click)="deleteMedicalRecord(record)">
+
+                    <mat-icon>
+                      delete
+                    </mat-icon>
+
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          }
+
+
+          <!-- Empty State -->
+
+          @if (records.length === 0) {
+
+            <tr>
+
+              <td
+                colspan="8"
+                class="empty-state">
+
+                <mat-icon>
+                  medical_information
+                </mat-icon>
+
+                <div>
+
+                  <strong>
+                    No medical records found
+                  </strong>
+
+                  <p>
+                    Add a medical record to get started.
+                  </p>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+</div>

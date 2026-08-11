@@ -1,0 +1,230 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="save()"
+  class="medicine-dialog-form">
+
+  <!-- ==============================
+       HEADER
+       ============================== -->
+
+  <div class="dialog-header">
+
+    <h2>
+      {{ dialogTitle }}
+    </h2>
+
+    <p>
+      {{ dialogSubtitle }}
+    </p>
+
+  </div>
+
+
+  <!-- ==============================
+       MEDICINE NAME
+       ============================== -->
+
+  <mat-form-field
+    appearance="outline"
+    class="full-width">
+
+    <mat-label>
+      Medicine Name
+    </mat-label>
+
+    <input
+      matInput
+      type="text"
+      formControlName="name"
+      placeholder="Enter medicine name"
+      maxlength="150"
+      autocomplete="off">
+
+    @if (
+      nameControl.hasError('required') &&
+      nameControl.touched
+    ) {
+
+      <mat-error>
+        Medicine name is required.
+      </mat-error>
+
+    }
+
+    @if (
+      nameControl.hasError('minlength') &&
+      nameControl.touched
+    ) {
+
+      <mat-error>
+        Medicine name must contain at least 2 characters.
+      </mat-error>
+
+    }
+
+    @if (
+      nameControl.hasError('maxlength') &&
+      nameControl.touched
+    ) {
+
+      <mat-error>
+        Medicine name cannot exceed 150 characters.
+      </mat-error>
+
+    }
+
+  </mat-form-field>
+
+
+  <!-- ==============================
+       MANUFACTURER
+       ============================== -->
+
+  <mat-form-field
+    appearance="outline"
+    class="full-width">
+
+    <mat-label>
+      Manufacturer
+    </mat-label>
+
+    <input
+      matInput
+      type="text"
+      formControlName="manufacturer"
+      placeholder="Enter manufacturer name"
+      maxlength="150"
+      autocomplete="off">
+
+    @if (
+      manufacturerControl.hasError('required') &&
+      manufacturerControl.touched
+    ) {
+
+      <mat-error>
+        Manufacturer is required.
+      </mat-error>
+
+    }
+
+    @if (
+      manufacturerControl.hasError('minlength') &&
+      manufacturerControl.touched
+    ) {
+
+      <mat-error>
+        Manufacturer must contain at least 2 characters.
+      </mat-error>
+
+    }
+
+    @if (
+      manufacturerControl.hasError('maxlength') &&
+      manufacturerControl.touched
+    ) {
+
+      <mat-error>
+        Manufacturer cannot exceed 150 characters.
+      </mat-error>
+
+    }
+
+  </mat-form-field>
+
+
+  <!-- ==============================
+       UNIT PRICE
+       ============================== -->
+
+  <mat-form-field
+    appearance="outline"
+    class="full-width">
+
+    <mat-label>
+      Unit Price
+    </mat-label>
+
+    <span matTextPrefix>
+      ₹&nbsp;
+    </span>
+
+    <input
+      matInput
+      type="number"
+      formControlName="unitPrice"
+      placeholder="Enter unit price"
+      min="0.01"
+      step="0.01">
+
+    @if (
+      unitPriceControl.hasError('required') &&
+      unitPriceControl.touched
+    ) {
+
+      <mat-error>
+        Unit price is required.
+      </mat-error>
+
+    }
+
+    @if (
+      unitPriceControl.hasError('min') &&
+      unitPriceControl.touched
+    ) {
+
+      <mat-error>
+        Unit price must be greater than 0.
+      </mat-error>
+
+    }
+
+  </mat-form-field>
+
+
+  <!-- ==============================
+       ACTIONS
+       ============================== -->
+
+  <div class="dialog-actions">
+
+    <button
+      mat-button
+      type="button"
+      (click)="cancel()"
+      [disabled]="loading">
+
+      Cancel
+
+    </button>
+
+
+    <button
+      mat-flat-button
+      type="submit"
+      [disabled]="loading">
+
+      @if (loading) {
+
+        <mat-spinner
+          diameter="20">
+        </mat-spinner>
+
+      }
+
+      @else {
+
+        <mat-icon>
+          {{ isEditMode ? 'save' : 'add' }}
+        </mat-icon>
+
+      }
+
+      <span>
+        {{ submitButtonText }}
+      </span>
+
+    </button>
+
+  </div>
+
+</form>

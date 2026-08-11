@@ -1,0 +1,183 @@
+<div class="page-header">
+
+  <div>
+
+    <h1>
+      Prescriptions
+    </h1>
+
+    <p>
+      Manage patient prescriptions
+    </p>
+
+  </div>
+
+
+  <button
+    mat-stroked-button
+    type="button"
+    (click)="addPrescription()">
+
+    <mat-icon>
+      add
+    </mat-icon>
+
+    Add Prescription
+
+  </button>
+
+</div>
+
+
+<div class="table-container">
+
+  @if (loading) {
+
+    <div class="loading-container">
+
+      <mat-spinner
+        diameter="40">
+      </mat-spinner>
+
+    </div>
+
+  }
+  @else {
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>
+            ID
+          </th>
+
+          <th>
+            Appointment ID
+          </th>
+
+          <th>
+            Appointment Public ID
+          </th>
+
+          <th>
+            Instructions
+          </th>
+
+          <th>
+            Notes
+          </th>
+
+          <th>
+            Actions
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        @for (
+          prescription of prescriptions;
+          track prescription.id
+        ) {
+
+          <tr>
+
+            <td>
+              {{ prescription.id }}
+            </td>
+
+            <td>
+              {{ prescription.appointmentId }}
+            </td>
+
+            <td class="public-id">
+
+              {{ prescription.appointmentPublicId }}
+
+            </td>
+
+            <td>
+
+              <div class="text-cell">
+
+                {{ prescription.instructions }}
+
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="text-cell">
+
+                {{ prescription.notes || '—' }}
+
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="actions">
+
+                <button
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Edit"
+                  (click)="editPrescription(prescription)">
+
+                  <mat-icon>
+                    edit
+                  </mat-icon>
+
+                </button>
+
+
+                <button
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Delete"
+                  (click)="deletePrescription(prescription)">
+
+                  <mat-icon>
+                    delete
+                  </mat-icon>
+
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        }
+        @empty {
+
+          <tr>
+
+            <td
+              colspan="6"
+              class="empty-state">
+
+              No prescriptions found.
+
+            </td>
+
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  }
+
+</div>

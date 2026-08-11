@@ -1,0 +1,194 @@
+<div class="page-header">
+
+  <div>
+
+    <h1>
+      Medicines
+    </h1>
+
+    <p>
+      Manage medicines and pricing
+    </p>
+
+  </div>
+
+
+  <button
+    mat-stroked-button
+    type="button"
+    (click)="addMedicine()">
+
+    <mat-icon>
+      add
+    </mat-icon>
+
+    Add Medicine
+
+  </button>
+
+</div>
+
+
+<div class="table-container">
+
+  <table>
+
+    <thead>
+
+      <tr>
+
+        <th>
+          ID
+        </th>
+
+        <th>
+          Medicine Name
+        </th>
+
+        <th>
+          Manufacturer
+        </th>
+
+        <th>
+          Unit Price
+        </th>
+
+        <th>
+          Status
+        </th>
+
+        <th>
+          Actions
+        </th>
+
+      </tr>
+
+    </thead>
+
+
+    <tbody>
+
+      @if (loading) {
+
+        <tr>
+
+          <td
+            colspan="6"
+            class="message">
+
+            Loading medicines...
+
+          </td>
+
+        </tr>
+
+      }
+
+      @else if (medicines.length === 0) {
+
+        <tr>
+
+          <td
+            colspan="6"
+            class="message">
+
+            No medicines found.
+
+          </td>
+
+        </tr>
+
+      }
+
+      @else {
+
+        @for (
+          medicine of medicines;
+          track medicine.id
+        ) {
+
+          <tr>
+
+            <td>
+              {{ medicine.id }}
+            </td>
+
+
+            <td class="medicine-name">
+
+              {{ medicine.name }}
+
+            </td>
+
+
+            <td>
+
+              {{ medicine.manufacturer }}
+
+            </td>
+
+
+            <td class="price">
+
+              ₹{{ medicine.unitPrice | number:'1.2-2' }}
+
+            </td>
+
+
+            <td>
+
+              <span
+                class="status"
+                [class.inactive]="!medicine.isActive">
+
+                {{
+                  medicine.isActive
+                    ? 'Active'
+                    : 'Inactive'
+                }}
+
+              </span>
+
+            </td>
+
+
+            <td class="actions">
+
+              <button
+                mat-icon-button
+                type="button"
+                aria-label="Edit medicine"
+                (click)="editMedicine(medicine)">
+
+                <mat-icon>
+                  edit
+                </mat-icon>
+
+              </button>
+
+
+              <button
+                mat-icon-button
+                type="button"
+                aria-label="Delete medicine"
+                (click)="deleteMedicine(medicine)">
+
+                <mat-icon>
+                  delete
+                </mat-icon>
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        }
+
+      }
+
+    </tbody>
+
+  </table>
+
+</div>

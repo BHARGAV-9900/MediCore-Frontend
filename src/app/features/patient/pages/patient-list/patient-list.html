@@ -1,0 +1,148 @@
+<div class="page-header">
+
+  <div class="page-title">
+    <h2>Patients</h2>
+    <p>Manage patient information and records</p>
+  </div>
+
+  <button
+    mat-stroked-button
+    type="button"
+    (click)="openDialog()">
+
+    <mat-icon>add</mat-icon>
+    Add Patient
+
+  </button>
+
+</div>
+
+
+<div class="table-container">
+
+  <table
+    mat-table
+    [dataSource]="patients"
+    class="patient-table">
+
+
+    <!-- ID -->
+
+    <ng-container matColumnDef="id">
+
+      <th mat-header-cell *matHeaderCellDef>
+        ID
+      </th>
+
+      <td mat-cell *matCellDef="let p">
+        {{ p.id }}
+      </td>
+
+    </ng-container>
+
+
+    <!-- First Name -->
+
+    <ng-container matColumnDef="firstName">
+
+      <th mat-header-cell *matHeaderCellDef>
+        First Name
+      </th>
+
+      <td mat-cell *matCellDef="let p">
+        {{ p.firstName }}
+      </td>
+
+    </ng-container>
+
+
+    <!-- Last Name -->
+
+    <ng-container matColumnDef="lastName">
+
+      <th mat-header-cell *matHeaderCellDef>
+        Last Name
+      </th>
+
+      <td mat-cell *matCellDef="let p">
+        {{ p.lastName }}
+      </td>
+
+    </ng-container>
+
+
+    <!-- Phone -->
+
+    <ng-container matColumnDef="phone">
+
+      <th mat-header-cell *matHeaderCellDef>
+        Phone
+      </th>
+
+      <td mat-cell *matCellDef="let p">
+        {{ p.phoneNumber }}
+      </td>
+
+    </ng-container>
+
+
+    <!-- Actions -->
+
+    <ng-container matColumnDef="actions">
+
+      <th mat-header-cell *matHeaderCellDef>
+        Actions
+      </th>
+
+      <td mat-cell *matCellDef="let p">
+
+        <div class="action-buttons">
+
+          <button
+            mat-icon-button
+            type="button"
+            class="edit-button"
+            aria-label="Edit patient"
+            (click)="openDialog(p)">
+
+            <mat-icon>edit</mat-icon>
+
+          </button>
+
+
+          <button
+            mat-icon-button
+            type="button"
+            class="delete-button"
+            aria-label="Delete patient"
+            (click)="deletePatient(p.id)">
+
+            <mat-icon>delete</mat-icon>
+
+          </button>
+
+        </div>
+
+      </td>
+
+    </ng-container>
+
+
+    <!-- Header -->
+
+    <tr
+      mat-header-row
+      *matHeaderRowDef="displayedColumns">
+    </tr>
+
+
+    <!-- Rows -->
+
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns;">
+    </tr>
+
+  </table>
+
+</div>

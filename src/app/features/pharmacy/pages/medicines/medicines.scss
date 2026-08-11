@@ -1,0 +1,136 @@
+:host {
+  display: block;
+}
+
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 18px;
+}
+
+
+.page-header h1 {
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 600;
+}
+
+
+.page-header p {
+  margin: 4px 0 0;
+
+  font-size: 14px;
+  color: #64748b;
+}
+
+
+.page-header button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+
+  background: #ffffff;
+}
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+
+thead {
+  background: #fafafa;
+}
+
+
+th {
+  padding: 12px 14px;
+
+  text-align: left;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+
+td {
+  padding: 14px;
+
+  font-size: 13px;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+
+tbody tr:hover {
+  background: #fafafa;
+}
+
+
+.medicine-name {
+  font-weight: 600;
+}
+
+
+.price {
+  font-weight: 600;
+}
+
+
+.status {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 70px;
+
+  padding: 6px 12px;
+
+  border-radius: 16px;
+
+  background: #e8f5e9;
+
+  color: #15803d;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+.status.inactive {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+
+.actions {
+  white-space: nowrap;
+}
+
+
+.actions button {
+  margin-right: 4px;
+}
+
+
+.message {
+  padding: 40px 20px;
+
+  text-align: center;
+
+  color: #64748b;
+}

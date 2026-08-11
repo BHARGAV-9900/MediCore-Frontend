@@ -1,0 +1,188 @@
+<div class="notification-dialog">
+
+  <div class="dialog-header">
+
+    <div>
+      <h2>Add Notification</h2>
+
+      <p>
+        Create a new system notification
+      </p>
+    </div>
+
+    <button
+      type="button"
+      mat-icon-button
+      aria-label="Close"
+      (click)="cancel()">
+
+      <mat-icon>
+        close
+      </mat-icon>
+
+    </button>
+
+  </div>
+
+
+  <form
+    [formGroup]="notificationForm"
+    (ngSubmit)="save()">
+
+
+    <!-- Title -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Title
+      </mat-label>
+
+      <input
+        matInput
+        formControlName="title"
+        placeholder="Enter notification title">
+
+      @if (
+        notificationForm.get('title')?.hasError('required')
+        &&
+        notificationForm.get('title')?.touched
+      ) {
+
+        <mat-error>
+          Title is required
+        </mat-error>
+
+      }
+
+      @if (
+        notificationForm.get('title')?.hasError('maxlength')
+      ) {
+
+        <mat-error>
+          Title cannot exceed 150 characters
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+    <!-- Message -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Message
+      </mat-label>
+
+      <textarea
+        matInput
+        rows="4"
+        formControlName="message"
+        placeholder="Enter notification message">
+      </textarea>
+
+      @if (
+        notificationForm.get('message')?.hasError('required')
+        &&
+        notificationForm.get('message')?.touched
+      ) {
+
+        <mat-error>
+          Message is required
+        </mat-error>
+
+      }
+
+      @if (
+        notificationForm.get('message')?.hasError('maxlength')
+      ) {
+
+        <mat-error>
+          Message cannot exceed 500 characters
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+    <!-- Type -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Notification Type
+      </mat-label>
+
+      <mat-select
+        formControlName="type">
+
+        <mat-option value="Appointment">
+          Appointment
+        </mat-option>
+
+        <mat-option value="Billing">
+          Billing
+        </mat-option>
+
+        <mat-option value="Laboratory">
+          Laboratory
+        </mat-option>
+
+        <mat-option value="Pharmacy">
+          Pharmacy
+        </mat-option>
+
+        <mat-option value="Inventory">
+          Inventory
+        </mat-option>
+
+        <mat-option value="System">
+          System
+        </mat-option>
+
+      </mat-select>
+
+    </mat-form-field>
+
+
+    <!-- Actions -->
+
+    <div class="dialog-actions">
+
+      <button
+        type="button"
+        mat-button
+        (click)="cancel()">
+
+        Cancel
+
+      </button>
+
+      <button
+        type="submit"
+        mat-flat-button
+        class="save-button"
+        [disabled]="notificationForm.invalid">
+
+        <mat-icon>
+          add
+        </mat-icon>
+
+        Save Notification
+
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

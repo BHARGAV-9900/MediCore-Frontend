@@ -1,0 +1,33 @@
+<div class="sidebar">
+
+    <div class="logo">
+
+        <i class="bi bi-hospital"></i>
+
+        <span>MediCore Nexus</span>
+
+    </div>
+
+    <ul>
+
+        @for(item of menuItems; track item.route){
+
+        <li>
+
+            <a
+                [routerLink]="item.route"
+                routerLinkActive="active">
+
+                <i [class]="item.icon"></i>
+
+                <span>{{item.title}}</span>
+
+            </a>
+
+        </li>
+
+        }
+
+    </ul>
+
+</div>

@@ -1,0 +1,324 @@
+<div class="appointment-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div>
+
+      <h2>
+        Appointments
+      </h2>
+
+      <p class="page-subtitle">
+        Manage patient appointments and consultation status
+      </p>
+
+    </div>
+
+
+    <!-- Add Appointment -->
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="openDialog()">
+
+      <mat-icon>
+        add
+      </mat-icon>
+
+      Add Appointment
+
+    </button>
+
+  </div>
+
+
+  <!-- Loading -->
+  @if (loading) {
+
+    <div class="loading-container">
+
+      <mat-spinner
+        diameter="36">
+      </mat-spinner>
+
+      <span>
+        Loading appointments...
+      </span>
+
+    </div>
+
+  }
+
+
+  <!-- Appointment Table -->
+  @if (!loading) {
+
+    <div class="table-container">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>ID</th>
+
+            <th>Patient</th>
+
+            <th>Doctor</th>
+
+            <th>Date</th>
+
+            <th>Status</th>
+
+            <th>Reason</th>
+
+            <th>Actions</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          @for (
+            appointment of appointments;
+            track appointment.id
+          ) {
+
+            <tr>
+
+              <!-- ID -->
+              <td>
+                {{ appointment.id }}
+              </td>
+
+
+              <!-- Patient -->
+              <td>
+                {{ appointment.patientName }}
+              </td>
+
+
+              <!-- Doctor -->
+              <td>
+                {{ appointment.doctorName }}
+              </td>
+
+
+              <!-- Date -->
+              <td class="date-cell">
+
+                {{
+                  appointment.appointmentDate
+                    | date:'dd-MM-yyyy HH:mm'
+                }}
+
+              </td>
+
+
+              <!-- Status -->
+              <td>
+
+                <span
+                  class="status-badge"
+                  [ngClass]="{
+                    'status-scheduled':
+                      appointment.status === 1,
+
+                    'status-checked-in':
+                      appointment.status === 2,
+
+                    'status-in-progress':
+                      appointment.status === 3,
+
+                    'status-completed':
+                      appointment.status === 4,
+
+                    'status-cancelled':
+                      appointment.status === 5,
+
+                    'status-no-show':
+                      appointment.status === 6
+                  }">
+
+                  {{
+                    getStatusLabel(
+                      appointment.status
+                    )
+                  }}
+
+                </span>
+
+              </td>
+
+
+              <!-- Reason -->
+              <td>
+                {{ appointment.reason }}
+              </td>
+
+
+              <!-- Actions -->
+              <td>
+
+                <div class="action-buttons">
+
+
+                  <!-- Edit -->
+                  <button
+                    mat-icon-button
+                    type="button"
+                    matTooltip="Edit appointment"
+                    (click)="editAppointment(appointment)"
+                    [disabled]="
+                      appointment.status === 4 ||
+                      appointment.status === 5 ||
+                      appointment.status === 6
+                    ">
+
+                    <mat-icon>
+                      edit
+                    </mat-icon>
+
+                  </button>
+
+
+                  <!-- Scheduled Actions -->
+                  @if (appointment.status === 1) {
+
+                    <!-- Check In -->
+                    <button
+                      mat-icon-button
+                      type="button"
+                      class="status-action"
+                      matTooltip="Check in patient"
+                      (click)="checkIn(appointment)">
+
+                      <mat-icon>
+                        how_to_reg
+                      </mat-icon>
+
+                    </button>
+
+
+                    <!-- Cancel -->
+                    <button
+                      mat-icon-button
+                      type="button"
+                      class="status-action"
+                      matTooltip="Cancel appointment"
+                      (click)="cancelAppointment(appointment)">
+
+                      <mat-icon>
+                        event_busy
+                      </mat-icon>
+
+                    </button>
+
+
+                    <!-- No Show -->
+                    <button
+                      mat-icon-button
+                      type="button"
+                      class="status-action"
+                      matTooltip="Mark as no show"
+                      (click)="markNoShow(appointment)">
+
+                      <mat-icon>
+                        person_off
+                      </mat-icon>
+
+                    </button>
+
+                  }
+
+
+                  <!-- Checked In -->
+                  @if (appointment.status === 2) {
+
+                    <button
+                      mat-icon-button
+                      type="button"
+                      class="status-action"
+                      matTooltip="Start consultation"
+                      (click)="startConsultation(appointment)">
+
+                      <mat-icon>
+                        play_circle
+                      </mat-icon>
+
+                    </button>
+
+                  }
+
+
+                  <!-- In Progress -->
+                  @if (appointment.status === 3) {
+
+                    <button
+                      mat-icon-button
+                      type="button"
+                      class="status-action"
+                      matTooltip="Complete appointment"
+                      (click)="completeAppointment(appointment)">
+
+                      <mat-icon>
+                        check_circle
+                      </mat-icon>
+
+                    </button>
+
+                  }
+
+
+                  <!-- Delete -->
+                  <button
+                    mat-icon-button
+                    type="button"
+                    matTooltip="Delete appointment"
+                    (click)="deleteAppointment(appointment.id)">
+
+                    <mat-icon>
+                      delete
+                    </mat-icon>
+
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          }
+
+
+          <!-- Empty State -->
+          @if (appointments.length === 0) {
+
+            <tr>
+
+              <td
+                colspan="7"
+                class="empty-state">
+
+                No appointments found.
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+</div>

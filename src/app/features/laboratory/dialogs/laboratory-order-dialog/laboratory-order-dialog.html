@@ -1,0 +1,201 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="save()">
+
+  <!-- Dialog Header -->
+
+  <h2 mat-dialog-title>
+    {{ dialogTitle }}
+  </h2>
+
+  <p class="dialog-subtitle">
+    {{
+      isEditMode
+        ? 'Update laboratory order details'
+        : 'Create a laboratory test order'
+    }}
+  </p>
+
+
+  <!-- Dialog Content -->
+
+  <mat-dialog-content>
+
+
+    @if (loadingData) {
+
+      <div class="loading-container">
+
+        <mat-spinner
+          diameter="32">
+        </mat-spinner>
+
+        <span>
+          Loading appointments and laboratory tests...
+        </span>
+
+      </div>
+
+    }
+
+
+    @if (!loadingData) {
+
+
+      <!-- Appointment -->
+
+      <mat-form-field
+        appearance="outline"
+        class="full-width">
+
+        <mat-label>
+          Appointment
+        </mat-label>
+
+        <mat-select
+          formControlName="appointmentId">
+
+          <mat-option [value]="0">
+            Select appointment
+          </mat-option>
+
+
+          @for (
+            appointment of appointments;
+            track appointment.id
+          ) {
+
+            <mat-option
+              [value]="appointment.id">
+
+              Appointment #{{ appointment.id }}
+
+              —
+              {{ appointment.patientName }}
+
+              —
+              {{ appointment.doctorName }}
+
+            </mat-option>
+
+          }
+
+        </mat-select>
+
+
+        @if (
+          appointmentIdControl.hasError('min') &&
+          appointmentIdControl.touched
+        ) {
+
+          <mat-error>
+            Please select an appointment.
+          </mat-error>
+
+        }
+
+      </mat-form-field>
+
+
+      <!-- Laboratory Test -->
+
+      <mat-form-field
+        appearance="outline"
+        class="full-width">
+
+        <mat-label>
+          Laboratory Test
+        </mat-label>
+
+        <mat-select
+          formControlName="laboratoryTestId">
+
+          <mat-option [value]="0">
+            Select laboratory test
+          </mat-option>
+
+
+          @for (
+            test of laboratoryTests;
+            track test.id
+          ) {
+
+            <mat-option
+              [value]="test.id">
+
+              {{ test.name }}
+
+              —
+              ₹{{ test.price | number:'1.2-2' }}
+
+            </mat-option>
+
+          }
+
+        </mat-select>
+
+
+        @if (
+          laboratoryTestIdControl.hasError('min') &&
+          laboratoryTestIdControl.touched
+        ) {
+
+          <mat-error>
+            Please select a laboratory test.
+          </mat-error>
+
+        }
+
+      </mat-form-field>
+
+    }
+
+
+  </mat-dialog-content>
+
+
+  <!-- Dialog Actions -->
+
+  <mat-dialog-actions
+    align="end">
+
+    <button
+      mat-button
+      type="button"
+      (click)="cancel()"
+      [disabled]="loading">
+
+      Cancel
+
+    </button>
+
+
+    <button
+      mat-flat-button
+      type="submit"
+      [disabled]="loading || loadingData">
+
+      @if (loading) {
+
+        <mat-spinner
+          diameter="20">
+        </mat-spinner>
+
+      }
+      @else {
+
+        <mat-icon>
+          {{ isEditMode ? 'save' : 'add' }}
+        </mat-icon>
+
+      }
+
+      <span>
+        {{ submitButtonText }}
+      </span>
+
+    </button>
+
+  </mat-dialog-actions>
+
+</form>

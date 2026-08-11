@@ -1,0 +1,225 @@
+<div class="laboratory-page">
+
+  <!-- Page Header -->
+
+  <div class="page-header">
+
+    <div>
+
+      <h2>
+        Laboratory Tests
+      </h2>
+
+      <p class="page-subtitle">
+        Manage laboratory tests and pricing
+      </p>
+
+    </div>
+
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="openDialog()">
+
+      <mat-icon>
+        add
+      </mat-icon>
+
+      Add Laboratory Test
+
+    </button>
+
+  </div>
+
+
+  <!-- Loading -->
+
+  @if (loading) {
+
+    <div class="loading-container">
+
+      <mat-spinner
+        diameter="36">
+      </mat-spinner>
+
+      <span>
+        Loading laboratory tests...
+      </span>
+
+    </div>
+
+  }
+
+
+  <!-- Laboratory Test Table -->
+
+  @if (!loading) {
+
+    <div class="table-container">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>ID</th>
+
+            <th>Test Name</th>
+
+            <th>Description</th>
+
+            <th>Price</th>
+
+            <th>Status</th>
+
+            <th>Actions</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          @for (
+            laboratoryTest of laboratoryTests;
+            track laboratoryTest.id
+          ) {
+
+            <tr>
+
+              <!-- ID -->
+
+              <td>
+                {{ laboratoryTest.id }}
+              </td>
+
+
+              <!-- Test Name -->
+
+              <td class="test-name">
+
+                {{ laboratoryTest.name }}
+
+              </td>
+
+
+              <!-- Description -->
+
+              <td class="description-cell">
+
+                {{ laboratoryTest.description || '-' }}
+
+              </td>
+
+
+              <!-- Price -->
+
+              <td class="price-cell">
+
+                ₹{{ laboratoryTest.price | number:'1.2-2' }}
+
+              </td>
+
+
+              <!-- Status -->
+
+              <td>
+
+                @if (laboratoryTest.isActive) {
+
+                  <span
+                    class="status-badge status-active">
+
+                    Active
+
+                  </span>
+
+                }
+                @else {
+
+                  <span
+                    class="status-badge status-inactive">
+
+                    Inactive
+
+                  </span>
+
+                }
+
+              </td>
+
+
+              <!-- Actions -->
+
+              <td>
+
+                <div class="action-buttons">
+
+                  <!-- Edit -->
+
+                  <button
+                    mat-icon-button
+                    type="button"
+                    matTooltip="Edit laboratory test"
+                    (click)="editLaboratoryTest(laboratoryTest)">
+
+                    <mat-icon>
+                      edit
+                    </mat-icon>
+
+                  </button>
+
+
+                  <!-- Delete -->
+
+                  <button
+                    mat-icon-button
+                    type="button"
+                    matTooltip="Delete laboratory test"
+                    (click)="deleteLaboratoryTest(laboratoryTest.id)">
+
+                    <mat-icon>
+                      delete
+                    </mat-icon>
+
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          }
+
+
+          <!-- Empty State -->
+
+          @if (laboratoryTests.length === 0) {
+
+            <tr>
+
+              <td
+                colspan="6"
+                class="empty-state">
+
+                No laboratory tests found.
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+</div>

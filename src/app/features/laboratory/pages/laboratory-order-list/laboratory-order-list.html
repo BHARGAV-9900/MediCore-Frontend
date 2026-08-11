@@ -1,0 +1,186 @@
+<div class="page-header">
+
+  <div>
+
+    <h2>
+      Laboratory Orders
+    </h2>
+
+    <p class="page-subtitle">
+      Manage laboratory test orders for appointments
+    </p>
+
+  </div>
+
+
+  <button
+    mat-stroked-button
+    type="button"
+    (click)="openDialog()">
+
+    <mat-icon>
+      add
+    </mat-icon>
+
+    Add Laboratory Order
+
+  </button>
+
+</div>
+
+
+@if (loading) {
+
+  <div class="loading-container">
+
+    <mat-spinner
+      diameter="36">
+    </mat-spinner>
+
+    <span>
+      Loading laboratory orders...
+    </span>
+
+  </div>
+
+}
+
+
+@if (!loading) {
+
+  <div class="table-container">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>
+            ID
+          </th>
+
+          <th>
+            Appointment ID
+          </th>
+
+          <th>
+            Appointment Public ID
+          </th>
+
+          <th>
+            Laboratory Test ID
+          </th>
+
+          <th>
+            Laboratory Test Public ID
+          </th>
+
+          <th>
+            Actions
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        @for (
+          order of laboratoryOrders;
+          track order.id
+        ) {
+
+          <tr>
+
+            <td>
+              {{ order.id }}
+            </td>
+
+
+            <td>
+              {{ order.appointmentId }}
+            </td>
+
+
+            <td class="public-id">
+
+              {{ order.appointmentPublicId }}
+
+            </td>
+
+
+            <td>
+              {{ order.laboratoryTestId }}
+            </td>
+
+
+            <td class="public-id">
+
+              {{ order.laboratoryTestPublicId }}
+
+            </td>
+
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Edit laboratory order"
+                  (click)="editLaboratoryOrder(order)">
+
+                  <mat-icon>
+                    edit
+                  </mat-icon>
+
+                </button>
+
+
+                <button
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Delete laboratory order"
+                  (click)="deleteLaboratoryOrder(order.id)">
+
+                  <mat-icon>
+                    delete
+                  </mat-icon>
+
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        }
+
+
+        @if (laboratoryOrders.length === 0) {
+
+          <tr>
+
+            <td
+              colspan="6"
+              class="empty-state">
+
+              No laboratory orders found.
+
+            </td>
+
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+}

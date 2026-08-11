@@ -1,0 +1,94 @@
+:host {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.medicine-dialog-form {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ==============================
+   DIALOG HEADER
+   ============================== */
+
+.dialog-header {
+  margin-bottom: 24px;
+}
+
+.dialog-header h2 {
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 600;
+
+  line-height: 1.25;
+}
+
+.dialog-header p {
+  margin: 6px 0 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+/* ==============================
+   FORM FIELDS
+   ============================== */
+
+.full-width {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+
+  margin-bottom: 20px;
+}
+
+/*
+ * Make the Material fields comfortable in height.
+ */
+.full-width.mat-mdc-form-field {
+  --mat-form-field-container-height: 64px;
+  --mat-form-field-container-vertical-padding: 18px;
+}
+
+/* Make input text vertically comfortable */
+.full-width input {
+  font-size: 16px;
+}
+
+/* ==============================
+   DIALOG ACTIONS
+   ============================== */
+
+.dialog-actions {
+  display: flex;
+
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 4px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+.dialog-actions button[type='submit'] {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  min-width: 145px;
+}
+
+.dialog-actions mat-spinner {
+  display: inline-block;
+}

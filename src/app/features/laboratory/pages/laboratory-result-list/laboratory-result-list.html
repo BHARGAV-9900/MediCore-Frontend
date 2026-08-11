@@ -1,0 +1,188 @@
+<div class="page-header">
+
+  <div>
+
+    <h2>
+      Laboratory Results
+    </h2>
+
+    <p class="page-subtitle">
+      Manage laboratory test results
+    </p>
+
+  </div>
+
+
+  <button
+    mat-stroked-button
+    type="button"
+    (click)="openDialog()">
+
+    <mat-icon>
+      add
+    </mat-icon>
+
+    Add Laboratory Result
+
+  </button>
+
+</div>
+
+
+@if (loading) {
+
+  <div class="loading-container">
+
+    <mat-spinner
+      diameter="36">
+    </mat-spinner>
+
+    <span>
+      Loading laboratory results...
+    </span>
+
+  </div>
+
+}
+
+
+@if (!loading) {
+
+  <div class="table-container">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>
+            ID
+          </th>
+
+          <th>
+            Laboratory Order ID
+          </th>
+
+          <th>
+            Laboratory Order Public ID
+          </th>
+
+          <th>
+            Result
+          </th>
+
+          <th>
+            Remarks
+          </th>
+
+          <th>
+            Actions
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        @for (
+          laboratoryResult of laboratoryResults;
+          track laboratoryResult.id
+        ) {
+
+          <tr>
+
+            <td>
+              {{ laboratoryResult.id }}
+            </td>
+
+
+            <td>
+              {{ laboratoryResult.laboratoryOrderId }}
+            </td>
+
+
+            <td class="public-id-cell">
+
+              {{ laboratoryResult.laboratoryOrderPublicId }}
+
+            </td>
+
+
+            <td class="result-cell">
+
+              {{ laboratoryResult.result }}
+
+            </td>
+
+
+            <td class="remarks-cell">
+
+              {{ laboratoryResult.remarks || '-' }}
+
+            </td>
+
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Edit laboratory result"
+                  (click)="editLaboratoryResult(laboratoryResult)">
+
+                  <mat-icon>
+                    edit
+                  </mat-icon>
+
+                </button>
+
+
+                <button
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Delete laboratory result"
+                  (click)="deleteLaboratoryResult(laboratoryResult.id)">
+
+                  <mat-icon>
+                    delete
+                  </mat-icon>
+
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        }
+
+
+        @if (laboratoryResults.length === 0) {
+
+          <tr>
+
+            <td
+              colspan="6"
+              class="empty-state">
+
+              No laboratory results found.
+
+            </td>
+
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+}

@@ -1,0 +1,211 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+
+.page-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 22px;
+}
+
+
+.page-title h2 {
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 600;
+
+  color: #172033;
+}
+
+
+.page-title p {
+  margin: 4px 0 0;
+
+  font-size: 14px;
+
+  color: #64748b;
+}
+
+
+.page-header button {
+  min-width: 120px;
+
+  border-radius: 22px;
+
+  color: #1976d2;
+
+  border-color: #94a3b8;
+}
+
+
+.page-header mat-icon {
+  margin-right: 5px;
+
+  font-size: 19px;
+
+  vertical-align: middle;
+}
+
+
+.table-container {
+  width: 100%;
+
+  overflow-x: auto;
+
+  background: transparent;
+}
+
+
+.doctor-table {
+  width: 100%;
+
+  min-width: 1100px;
+
+  background: transparent;
+
+  border-collapse: collapse;
+}
+
+
+.doctor-table th {
+  height: 48px;
+
+  padding: 0 12px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #172033;
+
+  border-bottom: 1px solid #cbd5e1;
+
+  white-space: nowrap;
+}
+
+
+.doctor-table td {
+  height: 46px;
+
+  padding: 0 12px;
+
+  font-size: 14px;
+
+  color: #1e293b;
+
+  border-bottom: 1px solid #d7dde5;
+
+  white-space: nowrap;
+}
+
+
+.doctor-table tr:hover {
+  background: #f8fafc;
+}
+
+
+.unit {
+  margin-left: 3px;
+
+  font-size: 12px;
+
+  color: #64748b;
+}
+
+
+.department-badge {
+  display: inline-block;
+
+  padding: 5px 10px;
+
+  border-radius: 14px;
+
+  font-size: 12px;
+
+  background: #f1f5f9;
+
+  color: #334155;
+}
+
+
+.availability-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 5px 10px;
+
+  border-radius: 14px;
+
+  font-size: 12px;
+
+  font-weight: 500;
+
+  background: #e8f5e9;
+
+  color: #15803d;
+}
+
+
+.availability-badge.unavailable {
+  background: #fee2e2;
+
+  color: #dc2626;
+}
+
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #16a34a;
+}
+
+
+.unavailable .status-dot {
+  background: #dc2626;
+}
+
+
+.action-buttons {
+  display: flex;
+
+  align-items: center;
+
+  gap: 4px;
+}
+
+
+.edit-button {
+  color: #1976d2;
+}
+
+
+.delete-button {
+  color: #334155;
+}
+
+
+.action-buttons button {
+  width: 36px;
+  height: 36px;
+
+  line-height: 36px;
+}
+
+
+.action-buttons mat-icon {
+  width: 20px;
+  height: 20px;
+
+  font-size: 20px;
+}

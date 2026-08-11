@@ -1,0 +1,572 @@
+<div class="page-header">
+
+  <div>
+
+    <h1>
+      Reports
+    </h1>
+
+    <p>
+      Overview of hospital operations and performance
+    </p>
+
+  </div>
+
+
+  <button
+    mat-stroked-button
+    type="button"
+    class="refresh-button"
+    (click)="refreshReport()"
+    [disabled]="loading">
+
+    <mat-icon>
+      refresh
+    </mat-icon>
+
+    <span>
+      Refresh
+    </span>
+
+  </button>
+
+</div>
+
+
+<!-- ERROR -->
+
+@if (errorMessage) {
+
+  <div class="error-message">
+
+    <mat-icon>
+      error_outline
+    </mat-icon>
+
+    <span>
+      {{ errorMessage }}
+    </span>
+
+  </div>
+
+}
+
+
+<!-- LOADING -->
+
+@if (loading) {
+
+  <div class="loading-container">
+
+    <mat-spinner
+      diameter="40">
+    </mat-spinner>
+
+    <p>
+      Loading reports...
+    </p>
+
+  </div>
+
+}
+
+
+<!-- REPORT -->
+
+@if (!loading && report) {
+
+
+  <!-- ========================= -->
+  <!-- SUMMARY -->
+  <!-- ========================= -->
+
+  <div class="summary-grid">
+
+
+    <!-- PATIENTS -->
+
+    <div class="summary-card">
+
+      <div class="card-icon patients-icon">
+
+        <mat-icon>
+          people
+        </mat-icon>
+
+      </div>
+
+
+      <div class="card-content">
+
+        <span class="card-label">
+          Total Patients
+        </span>
+
+        <strong>
+          {{ report.totalPatients }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- DOCTORS -->
+
+    <div class="summary-card">
+
+      <div class="card-icon doctors-icon">
+
+        <mat-icon>
+          medical_services
+        </mat-icon>
+
+      </div>
+
+
+      <div class="card-content">
+
+        <span class="card-label">
+          Total Doctors
+        </span>
+
+        <strong>
+          {{ report.totalDoctors }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- APPOINTMENTS -->
+
+    <div class="summary-card">
+
+      <div class="card-icon appointments-icon">
+
+        <mat-icon>
+          event
+        </mat-icon>
+
+      </div>
+
+
+      <div class="card-content">
+
+        <span class="card-label">
+          Total Appointments
+        </span>
+
+        <strong>
+          {{ report.totalAppointments }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- REVENUE -->
+
+    <div class="summary-card">
+
+      <div class="card-icon revenue-icon">
+
+        <mat-icon>
+          currency_rupee
+        </mat-icon>
+
+      </div>
+
+
+      <div class="card-content">
+
+        <span class="card-label">
+          Total Revenue
+        </span>
+
+        <strong>
+          ₹{{ report.totalRevenue | number:'1.0-2' }}
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ============================= -->
+  <!-- APPOINTMENTS -->
+  <!-- ============================= -->
+
+  <div class="report-section">
+
+    <div class="section-header">
+
+      <div>
+
+        <h2>
+          Appointment Overview
+        </h2>
+
+        <p>
+          Current appointment status
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+
+      <!-- SCHEDULED -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon scheduled">
+
+          <mat-icon>
+            event
+          </mat-icon>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Scheduled
+          </span>
+
+          <strong>
+            {{ report.scheduledAppointments }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- COMPLETED -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon completed">
+
+          <mat-icon>
+            check_circle
+          </mat-icon>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Completed
+          </span>
+
+          <strong>
+            {{ report.completedAppointments }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- CANCELLED -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon cancelled">
+
+          <mat-icon>
+            cancel
+          </mat-icon>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Cancelled
+          </span>
+
+          <strong>
+            {{ report.cancelledAppointments }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- NO SHOW -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon no-show">
+
+          <mat-icon>
+            person_off
+          </mat-icon>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            No Show
+          </span>
+
+          <strong>
+            {{ report.noShowAppointments }}
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ============================= -->
+  <!-- BILLING -->
+  <!-- ============================= -->
+
+  <div class="report-section">
+
+    <div class="section-header">
+
+      <div>
+
+        <h2>
+          Billing Overview
+        </h2>
+
+        <p>
+          Billing and payment summary
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+
+      <!-- BILLS -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon billing">
+
+          <mat-icon>
+            receipt_long
+          </mat-icon>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Total Bills
+          </span>
+
+          <strong>
+            {{ report.totalBills }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- REVENUE -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon revenue">
+
+          <mat-icon>
+            payments
+          </mat-icon>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Total Revenue
+          </span>
+
+          <strong>
+            ₹{{ report.totalRevenue | number:'1.0-2' }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- PAYMENTS -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon payments">
+
+          <mat-icon>
+            credit_card
+          </mat-icon>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Total Payments
+          </span>
+
+          <strong>
+            {{ report.totalPayments }}
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ============================= -->
+  <!-- INVENTORY -->
+  <!-- ============================= -->
+
+  <div class="report-section">
+
+    <div class="section-header">
+
+      <div>
+
+        <h2>
+          Inventory Overview
+        </h2>
+
+        <p>
+          Medicine stock summary
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+
+      <!-- INVENTORY -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon inventory">
+
+          <mat-icon>
+            inventory_2
+          </mat-icon>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Inventory Items
+          </span>
+
+          <strong>
+            {{ report.totalInventoryItems }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- LOW STOCK -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon low-stock">
+
+          <mat-icon>
+            warning
+          </mat-icon>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Low Stock
+          </span>
+
+          <strong>
+            {{ report.lowStockItems }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- EXPIRING -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon expiring">
+
+          <mat-icon>
+            event_busy
+          </mat-icon>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Expiring Soon
+          </span>
+
+          <strong>
+            {{ report.expiringInventoryItems }}
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

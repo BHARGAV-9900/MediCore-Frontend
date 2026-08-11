@@ -1,0 +1,77 @@
+.notification-dialog {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 24px;
+}
+
+.dialog-header h2 {
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  color: #263238;
+}
+
+.dialog-header p {
+  margin: 4px 0 0;
+
+  color: #64748b;
+  font-size: 14px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.dialog-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 12px;
+  padding-top: 18px;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+.save-button {
+  background: #1565c0 !important;
+  color: white !important;
+
+  border-radius: 22px !important;
+
+  padding: 0 20px !important;
+}
+
+.save-button mat-icon {
+  margin-right: 6px;
+}
+
+@media (max-width: 600px) {
+
+  .dialog-header h2 {
+    font-size: 21px;
+  }
+
+  .dialog-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .dialog-actions button {
+    width: 100%;
+  }
+
+}

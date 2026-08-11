@@ -1,0 +1,309 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="save()"
+  class="inventory-dialog-form">
+
+
+  <div class="dialog-header">
+
+    <h2>
+      {{ dialogTitle }}
+    </h2>
+
+    <p>
+      {{ dialogSubtitle }}
+    </p>
+
+  </div>
+
+
+  <!-- Medicine ID -->
+
+  <mat-form-field
+    appearance="outline"
+    class="full-width">
+
+    <mat-label>
+      Medicine ID
+    </mat-label>
+
+    <input
+      matInput
+      type="number"
+      formControlName="medicineId"
+      min="1"
+      placeholder="Enter medicine ID">
+
+
+    @if (
+      medicineIdControl.hasError('required') &&
+      medicineIdControl.touched
+    ) {
+
+      <mat-error>
+        Medicine ID is required.
+      </mat-error>
+
+    }
+
+
+    @if (
+      medicineIdControl.hasError('min') &&
+      medicineIdControl.touched
+    ) {
+
+      <mat-error>
+        Medicine ID must be greater than 0.
+      </mat-error>
+
+    }
+
+  </mat-form-field>
+
+
+  <!-- Quantity + Minimum Stock -->
+
+  <div class="form-row">
+
+
+    <mat-form-field
+      appearance="outline">
+
+      <mat-label>
+        Quantity in Stock
+      </mat-label>
+
+      <input
+        matInput
+        type="number"
+        formControlName="quantityInStock"
+        min="0">
+
+
+      @if (
+        quantityControl.hasError('required') &&
+        quantityControl.touched
+      ) {
+
+        <mat-error>
+          Quantity is required.
+        </mat-error>
+
+      }
+
+
+      @if (
+        quantityControl.hasError('min') &&
+        quantityControl.touched
+      ) {
+
+        <mat-error>
+          Quantity cannot be negative.
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+    <mat-form-field
+      appearance="outline">
+
+      <mat-label>
+        Minimum Stock Level
+      </mat-label>
+
+      <input
+        matInput
+        type="number"
+        formControlName="minimumStockLevel"
+        min="0">
+
+
+      @if (
+        minimumStockControl.hasError('required') &&
+        minimumStockControl.touched
+      ) {
+
+        <mat-error>
+          Minimum stock is required.
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+  </div>
+
+
+  <!-- Batch -->
+
+  <mat-form-field
+    appearance="outline"
+    class="full-width">
+
+    <mat-label>
+      Batch Number
+    </mat-label>
+
+    <input
+      matInput
+      formControlName="batchNumber"
+      maxlength="100"
+      placeholder="Example: PCM-003">
+
+
+    @if (
+      batchNumberControl.hasError('required') &&
+      batchNumberControl.touched
+    ) {
+
+      <mat-error>
+        Batch number is required.
+      </mat-error>
+
+    }
+
+  </mat-form-field>
+
+
+  <!-- Expiry -->
+
+  <mat-form-field
+    appearance="outline"
+    class="full-width">
+
+    <mat-label>
+      Expiry Date
+    </mat-label>
+
+    <input
+      matInput
+      type="date"
+      formControlName="expiryDate">
+
+
+    @if (
+      expiryDateControl.hasError('required') &&
+      expiryDateControl.touched
+    ) {
+
+      <mat-error>
+        Expiry date is required.
+      </mat-error>
+
+    }
+
+  </mat-form-field>
+
+
+  <!-- Supplier -->
+
+  <mat-form-field
+    appearance="outline"
+    class="full-width">
+
+    <mat-label>
+      Supplier
+    </mat-label>
+
+    <input
+      matInput
+      formControlName="supplier"
+      maxlength="200"
+      placeholder="Enter supplier name">
+
+
+    @if (
+      supplierControl.hasError('required') &&
+      supplierControl.touched
+    ) {
+
+      <mat-error>
+        Supplier is required.
+      </mat-error>
+
+    }
+
+  </mat-form-field>
+
+
+  <!-- Storage -->
+
+  <mat-form-field
+    appearance="outline"
+    class="full-width">
+
+    <mat-label>
+      Storage Location
+    </mat-label>
+
+    <input
+      matInput
+      formControlName="storageLocation"
+      maxlength="200"
+      placeholder="Example: Rack A-03">
+
+
+    @if (
+      storageLocationControl.hasError('required') &&
+      storageLocationControl.touched
+    ) {
+
+      <mat-error>
+        Storage location is required.
+      </mat-error>
+
+    }
+
+  </mat-form-field>
+
+
+  <!-- Actions -->
+
+  <div class="dialog-actions">
+
+
+    <button
+      mat-button
+      type="button"
+      (click)="cancel()"
+      [disabled]="loading">
+
+      Cancel
+
+    </button>
+
+
+    <button
+      mat-flat-button
+      type="submit"
+      [disabled]="loading">
+
+
+      @if (loading) {
+
+        <mat-spinner
+          diameter="20">
+        </mat-spinner>
+
+      }
+      @else {
+
+        <mat-icon>
+          {{ isEditMode ? 'save' : 'add' }}
+        </mat-icon>
+
+      }
+
+
+      <span>
+        {{ submitButtonText }}
+      </span>
+
+    </button>
+
+
+  </div>
+
+</form>

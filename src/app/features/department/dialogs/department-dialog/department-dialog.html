@@ -1,0 +1,70 @@
+<h2 mat-dialog-title>
+  {{ isEdit ? 'Update Department' : 'Create Department' }}
+</h2>
+
+<mat-dialog-content>
+
+  <h3>Department Information</h3>
+
+  <form [formGroup]="form">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Department Name</mat-label>
+
+      <input
+        matInput
+        formControlName="name"
+        placeholder="Enter department name"
+      />
+
+      @if (
+        form.controls.name.invalid &&
+        form.controls.name.touched
+      ) {
+        <mat-error>
+          Department name is required
+        </mat-error>
+      }
+
+    </mat-form-field>
+
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+
+      <textarea
+        matInput
+        rows="4"
+        formControlName="description"
+        placeholder="Enter department description">
+      </textarea>
+
+    </mat-form-field>
+
+  </form>
+
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+
+  <button
+    mat-button
+    type="button"
+    (click)="cancel()">
+
+    Cancel
+
+  </button>
+
+
+  <button
+    mat-flat-button
+    type="button"
+    (click)="save()">
+
+    {{ isEdit ? 'Update' : 'Save' }}
+
+  </button>
+
+</mat-dialog-actions>

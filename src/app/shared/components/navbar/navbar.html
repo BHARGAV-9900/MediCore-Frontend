@@ -1,0 +1,137 @@
+<header>
+
+  <div class="page-title">
+    <h3>Dashboard</h3>
+  </div>
+
+
+  <div class="navbar-actions">
+
+    <!-- Notifications -->
+
+    <button
+      type="button"
+      class="icon-button"
+      aria-label="Notifications">
+
+      <span class="notification-icon">
+        🔔
+      </span>
+
+    </button>
+
+
+    <!-- User Menu -->
+
+    <div class="user-menu-container">
+
+      <button
+        type="button"
+        class="user-button"
+        (click)="toggleUserMenu()"
+        [attr.aria-expanded]="userMenuOpen">
+
+        <span class="user-avatar">
+          A
+        </span>
+
+        <span class="user-name">
+          Admin
+        </span>
+
+        <span
+          class="dropdown-arrow"
+          [class.open]="userMenuOpen">
+          ▾
+        </span>
+
+      </button>
+
+
+      @if (userMenuOpen) {
+
+        <div class="user-menu">
+
+          <div class="user-menu-header">
+
+            <div class="menu-avatar">
+              A
+            </div>
+
+            <div>
+
+              <strong>
+                Admin
+              </strong>
+
+              <span>
+                Hospital Administrator
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="menu-divider"></div>
+
+
+          <button
+            type="button"
+            class="menu-item">
+
+            <a
+                routerLink="/dashboard/profile"
+                class="menu-item">
+
+                👤
+                <span>My Profile</span>
+
+              </a>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="menu-item">
+
+           <a
+              routerLink="/dashboard/change-password"
+              class="menu-item">
+
+              🔒
+              <span>Change Password</span>
+
+            </a>
+
+          </button>
+
+
+          <div class="menu-divider"></div>
+
+
+          <button
+            type="button"
+            class="menu-item logout-item"
+            (click)="logout()">
+
+            <span class="menu-icon">
+              🚪
+            </span>
+
+            <span>
+              Logout
+            </span>
+
+          </button>
+
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+
+</header>

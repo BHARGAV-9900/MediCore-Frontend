@@ -1,0 +1,180 @@
+<h2 mat-dialog-title>
+
+    {{ data ? 'Update Patient' : 'Create Patient' }}
+
+</h2>
+
+<mat-dialog-content>
+
+<form [formGroup]="form">
+
+<h3>Personal Information</h3>
+
+<div class="row">
+
+<mat-form-field appearance="outline">
+
+<mat-label>First Name</mat-label>
+
+<input
+matInput
+formControlName="firstName">
+
+</mat-form-field>
+
+<mat-form-field appearance="outline">
+
+<mat-label>Last Name</mat-label>
+
+<input
+matInput
+formControlName="lastName">
+
+</mat-form-field>
+
+</div>
+
+
+<div class="row">
+
+<mat-form-field appearance="outline">
+
+<mat-label>Date of Birth</mat-label>
+
+<input
+matInput
+type="date"
+formControlName="dateOfBirth">
+
+</mat-form-field>
+
+
+<mat-form-field appearance="outline">
+
+<mat-label>Gender</mat-label>
+
+<mat-select formControlName="gender">
+
+@for (g of genders; track g.id){
+
+<mat-option [value]="g.id">
+
+{{ g.name }}
+
+</mat-option>
+
+}
+
+</mat-select>
+
+</mat-form-field>
+
+</div>
+
+
+<mat-form-field appearance="outline" class="full-width">
+
+<mat-label>Blood Group</mat-label>
+
+<mat-select formControlName="bloodGroup">
+
+@for (b of bloodGroups; track b.id){
+
+<mat-option [value]="b.id">
+
+{{ b.name }}
+
+</mat-option>
+
+}
+
+</mat-select>
+
+</mat-form-field>
+
+
+<mat-form-field appearance="outline">
+
+    <mat-label>Phone Number</mat-label>
+
+    <input
+        matInput
+        formControlName="phoneNumber">
+
+</mat-form-field>
+
+<mat-form-field appearance="outline">
+
+    <mat-label>Email</mat-label>
+
+    <input
+        matInput
+        formControlName="email">
+
+</mat-form-field>
+
+
+<mat-form-field appearance="outline">
+
+    <mat-label>Address</mat-label>
+
+    <textarea
+        matInput
+        rows="3"
+        formControlName="address">
+
+    </textarea>
+
+</mat-form-field>
+
+<mat-form-field appearance="outline">
+
+    <mat-label>Emergency Contact Name</mat-label>
+
+    <input
+        matInput
+        formControlName="emergencyContactName">
+
+</mat-form-field>
+
+<mat-form-field appearance="outline">
+
+    <mat-label>Emergency Contact Phone</mat-label>
+
+    <input
+        matInput
+        formControlName="emergencyContactPhone">
+
+</mat-form-field>
+
+<mat-form-field appearance="outline">
+
+    <mat-label>Insurance Number</mat-label>
+
+    <input
+        matInput
+        formControlName="insuranceNumber">
+
+</mat-form-field>
+
+
+<div class="actions">
+
+    <button
+        mat-button
+        (click)="close()">
+
+        Cancel
+
+    </button>
+
+    <button
+        mat-raised-button
+        color="primary"
+        (click)="save()">
+
+        {{ data ? 'Update' : 'Save' }}
+
+    </button>
+
+</div>

@@ -1,0 +1,478 @@
+<!-- ========================================= -->
+<!-- PAGE HEADER -->
+<!-- ========================================= -->
+
+<div class="page-header">
+
+  <div>
+
+    <h1>
+      Dashboard
+    </h1>
+
+    <p>
+      Overview of hospital operations and activities
+    </p>
+
+  </div>
+
+  <button
+    type="button"
+    class="refresh-button"
+    (click)="refreshDashboard()"
+    [disabled]="loading">
+
+    <mat-icon
+      class="dashboard-refresh-icon"
+      [class.spinning]="loading"
+      aria-hidden="true">
+      refresh
+    </mat-icon>
+
+    <span>
+      {{ loading ? 'Loading...' : 'Refresh' }}
+    </span>
+
+  </button>
+
+</div>
+
+
+<!-- ========================================= -->
+<!-- ERROR MESSAGE -->
+<!-- ========================================= -->
+
+@if (errorMessage) {
+
+  <div class="error-message">
+
+    <mat-icon aria-hidden="true">
+      error_outline
+    </mat-icon>
+
+    <span>
+      {{ errorMessage }}
+    </span>
+
+  </div>
+
+}
+
+
+<!-- ========================================= -->
+<!-- LOADING -->
+<!-- ========================================= -->
+
+@if (loading) {
+
+  <div class="loading-container">
+
+    <div class="loading-spinner"></div>
+
+    <p>
+      Loading dashboard...
+    </p>
+
+  </div>
+
+}
+
+
+<!-- ========================================= -->
+<!-- DASHBOARD CONTENT -->
+<!-- ========================================= -->
+
+@if (!loading && dashboard) {
+
+
+  <!-- ========================================= -->
+  <!-- SUMMARY -->
+  <!-- ========================================= -->
+
+  <div class="summary-grid">
+
+
+    <!-- ===================================== -->
+    <!-- TOTAL PATIENTS -->
+    <!-- ===================================== -->
+
+    <div class="summary-card">
+
+      <div class="card-icon patients">
+
+        <mat-icon aria-hidden="true">
+          groups
+        </mat-icon>
+
+      </div>
+
+      <div class="card-content">
+
+        <span>
+          Total Patients
+        </span>
+
+        <strong>
+          {{ dashboard.totalPatients }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================== -->
+    <!-- TOTAL DOCTORS -->
+    <!-- ===================================== -->
+
+    <div class="summary-card">
+
+      <div class="card-icon doctors">
+
+        <mat-icon aria-hidden="true">
+          medical_services
+        </mat-icon>
+
+      </div>
+
+      <div class="card-content">
+
+        <span>
+          Total Doctors
+        </span>
+
+        <strong>
+          {{ dashboard.totalDoctors }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================== -->
+    <!-- TOTAL DEPARTMENTS -->
+    <!-- ===================================== -->
+
+    <div class="summary-card">
+
+      <div class="card-icon departments">
+
+        <mat-icon aria-hidden="true">
+          business
+        </mat-icon>
+
+      </div>
+
+      <div class="card-content">
+
+        <span>
+          Total Departments
+        </span>
+
+        <strong>
+          {{ dashboard.totalDepartments }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================== -->
+    <!-- TOTAL APPOINTMENTS -->
+    <!-- ===================================== -->
+
+    <div class="summary-card">
+
+      <div class="card-icon appointments">
+
+        <mat-icon aria-hidden="true">
+          calendar_month
+        </mat-icon>
+
+      </div>
+
+      <div class="card-content">
+
+        <span>
+          Total Appointments
+        </span>
+
+        <strong>
+          {{ dashboard.totalAppointments }}
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================================= -->
+  <!-- HOSPITAL OPERATIONS -->
+  <!-- ========================================= -->
+
+  <div class="dashboard-section">
+
+    <div class="section-header">
+
+      <div>
+
+        <h2>
+          Hospital Operations
+        </h2>
+
+        <p>
+          Current hospital activity
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+
+      <!-- ===================================== -->
+      <!-- TODAY'S APPOINTMENTS -->
+      <!-- ===================================== -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon today">
+
+          <mat-icon aria-hidden="true">
+            calendar_today
+          </mat-icon>
+
+        </div>
+
+        <div class="stat-content">
+
+          <span>
+            Today's Appointments
+          </span>
+
+          <strong>
+            {{ dashboard.todayAppointments }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================== -->
+      <!-- TOTAL MEDICINES -->
+      <!-- ===================================== -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon medicines">
+
+          <mat-icon aria-hidden="true">
+            medication
+          </mat-icon>
+
+        </div>
+
+        <div class="stat-content">
+
+          <span>
+            Total Medicines
+          </span>
+
+          <strong>
+            {{ dashboard.totalMedicines }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================== -->
+      <!-- LABORATORY ORDERS -->
+      <!-- ===================================== -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon laboratory">
+
+          <mat-icon aria-hidden="true">
+            science
+          </mat-icon>
+
+        </div>
+
+        <div class="stat-content">
+
+          <span>
+            Laboratory Orders
+          </span>
+
+          <strong>
+            {{ dashboard.totalLaboratoryOrders }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================== -->
+      <!-- TOTAL PRESCRIPTIONS -->
+      <!-- ===================================== -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon prescriptions">
+
+          <mat-icon aria-hidden="true">
+            prescription
+          </mat-icon>
+
+        </div>
+
+        <div class="stat-content">
+
+          <span>
+            Total Prescriptions
+          </span>
+
+          <strong>
+            {{ dashboard.totalPrescriptions }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================================= -->
+  <!-- BILLING OVERVIEW -->
+  <!-- ========================================= -->
+
+  <div class="dashboard-section">
+
+    <div class="section-header">
+
+      <div>
+
+        <h2>
+          Billing Overview
+        </h2>
+
+        <p>
+          Current billing and payment status
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+
+      <!-- ===================================== -->
+      <!-- PENDING BILLS -->
+      <!-- ===================================== -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon pending">
+
+          <mat-icon aria-hidden="true">
+            hourglass_empty
+          </mat-icon>
+
+        </div>
+
+        <div class="stat-content">
+
+          <span>
+            Pending Bills
+          </span>
+
+          <strong>
+            {{ dashboard.pendingBills }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================== -->
+      <!-- PAID BILLS -->
+      <!-- ===================================== -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon paid">
+
+          <mat-icon aria-hidden="true">
+            check_circle
+          </mat-icon>
+
+        </div>
+
+        <div class="stat-content">
+
+          <span>
+            Paid Bills
+          </span>
+
+          <strong>
+            {{ dashboard.paidBills }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================== -->
+      <!-- TOTAL REVENUE -->
+      <!-- ===================================== -->
+
+      <div class="stat-card revenue-card">
+
+        <div class="stat-icon revenue">
+
+          <mat-icon aria-hidden="true">
+            currency_rupee
+          </mat-icon>
+
+        </div>
+
+        <div class="stat-content">
+
+          <span>
+            Total Revenue
+          </span>
+
+          <strong>
+            ₹{{ dashboard.totalRevenue | number:'1.0-2' }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+}

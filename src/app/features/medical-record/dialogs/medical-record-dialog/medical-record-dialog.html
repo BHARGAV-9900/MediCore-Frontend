@@ -1,0 +1,341 @@
+<div class="medical-record-dialog">
+
+  <!-- Header -->
+
+  <div class="dialog-header">
+
+    <h2>
+      {{ dialogTitle }}
+    </h2>
+
+    <p>
+      {{ dialogSubtitle }}
+    </p>
+
+  </div>
+
+
+  <!-- Form -->
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="save()">
+
+
+    <!-- Appointment -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Appointment ID
+      </mat-label>
+
+      <input
+        matInput
+        type="number"
+        formControlName="appointmentId"
+        placeholder="Enter appointment ID"
+        min="1">
+
+
+      @if (
+        appointmentIdControl.hasError('required') &&
+        appointmentIdControl.touched
+      ) {
+
+        <mat-error>
+          Appointment is required.
+        </mat-error>
+
+      }
+
+
+      @if (
+        appointmentIdControl.hasError('min') &&
+        appointmentIdControl.touched
+      ) {
+
+        <mat-error>
+          Appointment ID must be greater than 0.
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+    <!-- Diagnosis -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Diagnosis
+      </mat-label>
+
+      <input
+        matInput
+        type="text"
+        formControlName="diagnosis"
+        placeholder="Enter diagnosis"
+        maxlength="500"
+        autocomplete="off">
+
+
+      <mat-hint align="end">
+        {{ diagnosisControl.value.length }}/500
+      </mat-hint>
+
+
+      @if (
+        diagnosisControl.hasError('required') &&
+        diagnosisControl.touched
+      ) {
+
+        <mat-error>
+          Diagnosis is required.
+        </mat-error>
+
+      }
+
+
+      @if (
+        diagnosisControl.hasError('maxlength') &&
+        diagnosisControl.touched
+      ) {
+
+        <mat-error>
+          Diagnosis cannot exceed 500 characters.
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+    <!-- Symptoms -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Symptoms
+      </mat-label>
+
+      <textarea
+        matInput
+        formControlName="symptoms"
+        placeholder="Enter patient symptoms"
+        rows="4"
+        maxlength="2000">
+      </textarea>
+
+
+      <mat-hint align="end">
+        {{ symptomsControl.value.length }}/2000
+      </mat-hint>
+
+
+      @if (
+        symptomsControl.hasError('required') &&
+        symptomsControl.touched
+      ) {
+
+        <mat-error>
+          Symptoms are required.
+        </mat-error>
+
+      }
+
+
+      @if (
+        symptomsControl.hasError('maxlength') &&
+        symptomsControl.touched
+      ) {
+
+        <mat-error>
+          Symptoms cannot exceed 2000 characters.
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+    <!-- Clinical Notes -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Clinical Notes
+      </mat-label>
+
+      <textarea
+        matInput
+        formControlName="clinicalNotes"
+        placeholder="Enter clinical notes"
+        rows="4"
+        maxlength="4000">
+      </textarea>
+
+
+      <mat-hint align="end">
+        {{ clinicalNotesControl.value.length }}/4000
+      </mat-hint>
+
+
+      @if (
+        clinicalNotesControl.hasError('maxlength') &&
+        clinicalNotesControl.touched
+      ) {
+
+        <mat-error>
+          Clinical notes cannot exceed 4000 characters.
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+    <!-- Treatment Plan -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Treatment Plan
+      </mat-label>
+
+      <textarea
+        matInput
+        formControlName="treatmentPlan"
+        placeholder="Enter treatment plan"
+        rows="4"
+        maxlength="4000">
+      </textarea>
+
+
+      <mat-hint align="end">
+        {{ treatmentPlanControl.value.length }}/4000
+      </mat-hint>
+
+
+      @if (
+        treatmentPlanControl.hasError('required') &&
+        treatmentPlanControl.touched
+      ) {
+
+        <mat-error>
+          Treatment plan is required.
+        </mat-error>
+
+      }
+
+
+      @if (
+        treatmentPlanControl.hasError('maxlength') &&
+        treatmentPlanControl.touched
+      ) {
+
+        <mat-error>
+          Treatment plan cannot exceed 4000 characters.
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+    <!-- Follow-Up Instructions -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Follow-Up Instructions
+      </mat-label>
+
+      <textarea
+        matInput
+        formControlName="followUpInstructions"
+        placeholder="Enter follow-up instructions"
+        rows="3"
+        maxlength="2000">
+      </textarea>
+
+
+      <mat-hint align="end">
+        {{ followUpInstructionsControl.value.length }}/2000
+      </mat-hint>
+
+
+      @if (
+        followUpInstructionsControl.hasError('maxlength') &&
+        followUpInstructionsControl.touched
+      ) {
+
+        <mat-error>
+          Follow-up instructions cannot exceed 2000 characters.
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+    <!-- Actions -->
+
+    <div class="dialog-actions">
+
+      <button
+        mat-button
+        type="button"
+        (click)="cancel()"
+        [disabled]="loading">
+
+        Cancel
+
+      </button>
+
+
+      <button
+        mat-flat-button
+        type="submit"
+        [disabled]="loading">
+
+        @if (loading) {
+
+          <mat-spinner
+            diameter="20">
+          </mat-spinner>
+
+        }
+        @else {
+
+          <mat-icon>
+            {{ isEditMode ? 'save' : 'add' }}
+          </mat-icon>
+
+        }
+
+
+        <span>
+          {{ submitButtonText }}
+        </span>
+
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

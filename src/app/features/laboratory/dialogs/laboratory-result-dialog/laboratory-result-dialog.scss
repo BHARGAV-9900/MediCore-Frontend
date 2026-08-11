@@ -1,0 +1,132 @@
+:host {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Dialog subtitle */
+
+.dialog-subtitle {
+  margin: -4px 24px 16px;
+
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+
+/* Dialog content */
+
+mat-dialog-content {
+  padding: 8px 24px 12px !important;
+
+  max-height: 68vh;
+
+  overflow-y: auto;
+}
+
+
+/* All form fields */
+
+.full-width {
+  width: 100%;
+
+  margin-bottom: 14px;
+}
+
+
+/* Laboratory Order dropdown */
+
+mat-form-field {
+  width: 100%;
+}
+
+
+/*
+  Make the select/dropdown field
+  comfortable to use.
+*/
+
+mat-select {
+  min-height: 24px;
+}
+
+
+/*
+  Result and Remarks textareas
+*/
+
+textarea {
+  resize: vertical;
+
+  min-height: 110px;
+
+  box-sizing: border-box;
+}
+
+
+/*
+  Result textarea slightly larger
+*/
+
+textarea[formControlName="result"] {
+  min-height: 130px;
+}
+
+
+/*
+  Remarks textarea
+*/
+
+textarea[formControlName="remarks"] {
+  min-height: 100px;
+}
+
+
+/* Character counters */
+
+mat-hint {
+  font-size: 12px;
+}
+
+
+/* Dialog footer */
+
+mat-dialog-actions {
+  padding: 16px 24px !important;
+
+  margin: 0 !important;
+
+  border-top: 1px solid #e5e7eb;
+
+  min-height: 68px;
+
+  box-sizing: border-box;
+}
+
+
+/* Cancel button */
+
+mat-dialog-actions button[mat-button] {
+  min-width: 70px;
+}
+
+
+/* Save button */
+
+mat-dialog-actions button[mat-flat-button] {
+  min-height: 44px;
+
+  padding: 0 20px;
+
+  border-radius: 24px;
+}
+
+
+/* Spinner */
+
+mat-dialog-actions mat-spinner {
+  display: inline-block;
+
+  margin-right: 8px;
+}

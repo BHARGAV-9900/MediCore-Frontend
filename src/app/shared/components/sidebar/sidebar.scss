@@ -1,0 +1,124 @@
+.sidebar {
+    width: 270px;
+    height: 100vh;
+
+    background: #1565C0;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+
+    flex-shrink: 0;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+}
+
+
+.logo {
+    height: 80px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 0 25px;
+
+    font-size: 24px;
+    font-weight: 700;
+
+    flex-shrink: 0;
+
+    box-sizing: border-box;
+}
+
+
+.logo i {
+    font-size: 30px;
+}
+
+
+/* Sidebar navigation */
+ul {
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+
+    flex: 1;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    box-sizing: border-box;
+
+    scrollbar-width: thin;
+}
+
+
+/* Individual menu item */
+li {
+    margin: 6px 15px;
+}
+
+
+/* Navigation link */
+a {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 13px 18px;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 10px;
+
+    transition: 0.25s;
+
+    box-sizing: border-box;
+
+    white-space: nowrap;
+}
+
+
+a:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+
+.active {
+    background: white;
+
+    color: #1565C0;
+
+    font-weight: 600;
+}
+
+
+a i {
+    font-size: 20px;
+
+    flex-shrink: 0;
+}
+
+
+/* Optional scrollbar styling */
+ul::-webkit-scrollbar {
+    width: 6px;
+}
+
+ul::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.35);
+
+    border-radius: 10px;
+}
+
+ul::-webkit-scrollbar-track {
+    background: transparent;
+}

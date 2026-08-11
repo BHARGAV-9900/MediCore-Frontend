@@ -1,0 +1,117 @@
+:host {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+.medical-record-dialog {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+.dialog-header {
+  margin-bottom: 24px;
+}
+
+
+.dialog-header h2 {
+  margin: 0;
+
+  font-size: 24px;
+
+  font-weight: 600;
+
+  line-height: 1.25;
+}
+
+
+.dialog-header p {
+  margin: 6px 0 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+
+.full-width {
+  display: block;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  margin-bottom: 20px;
+}
+
+
+/* Material form field sizing */
+
+.full-width.mat-mdc-form-field {
+  --mat-form-field-container-height: 64px;
+
+  --mat-form-field-container-vertical-padding: 18px;
+}
+
+
+.full-width textarea {
+  resize: vertical;
+
+  min-height: 90px;
+}
+
+
+.full-width input,
+.full-width textarea {
+  font-size: 16px;
+}
+
+
+/* Actions */
+
+.dialog-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 4px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+
+.dialog-actions button[type='submit'] {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  min-width: 145px;
+}
+
+
+.dialog-actions mat-spinner {
+  display: inline-block;
+}
+
+
+/* Responsive */
+
+@media (max-width: 600px) {
+
+  .dialog-header h2 {
+    font-size: 21px;
+  }
+
+}
