@@ -97,15 +97,45 @@ export class Login {
 
                 next: () => {
 
+                    this.authService
+                        .loadCurrentUser()
+                        .subscribe({
+
+                        next: response => {
+
+                            this.loading = false;
+
+                            console.log(
+                            'Logged-in user:',
+                            response.data
+                            );
+
+                            this.router.navigate([
+                            '/dashboard/dashboard'
+                            ]);
+
+                        },
+
+                error: error => {
+
                     this.loading = false;
 
-                    alert('Login Successful');
+                    console.error(
+                    'Failed to load current user:',
+                    error
+                    );
 
-                    this.router.navigate([
-                        '/dashboard'
-                    ]);
+                    this.authService.clearAuthentication();
 
-                },
+                    alert(
+                    'Unable to load your user profile.'
+                    );
+
+                }
+
+                });
+
+            },
 
 
                 error: (error) => {

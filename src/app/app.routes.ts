@@ -162,6 +162,14 @@ export const routes: Routes = [
       },
 
       {
+        path: 'users',
+
+        loadComponent: () =>
+          import('./features/user/pages/user-list/user-list')
+            .then(m => m.UserList)
+      },
+
+      {
         path: 'profile',
         loadComponent: () =>
           import('./features/authentication/pages/profile/profile')

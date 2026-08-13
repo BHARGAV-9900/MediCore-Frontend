@@ -1,9 +1,11 @@
 export interface SidebarItem {
 
-    title: string;
+  title: string;
 
-    icon: string;
+  icon: string;
 
-    route: string;
+  route: string;
+
+  roles?: string[];
 
 }

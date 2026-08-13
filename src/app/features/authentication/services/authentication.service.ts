@@ -1,6 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 
-import { Observable, tap } from 'rxjs';
+import {
+  Observable,
+  BehaviorSubject,
+  tap
+} from 'rxjs';
 
 import { ApiService } from '../../../core/http/api.service';
 
@@ -33,6 +37,21 @@ export class AuthenticationService {
   private readonly api =
     inject(ApiService);
 
+
+  // =========================================================
+  // CURRENT USER
+  // =========================================================
+
+  private readonly currentUserSubject =
+    new BehaviorSubject<UserProfile | null>(null);
+
+  readonly currentUser$ =
+    this.currentUserSubject.asObservable();
+
+
+  // =========================================================
+  // LOGIN
+  // =========================================================
 
   login(
     request: LoginRequest
@@ -69,18 +88,69 @@ export class AuthenticationService {
   }
 
 
-  logout(): Observable<ApiResponse<boolean>> {
+  // =========================================================
+  // LOAD CURRENT USER
+  // =========================================================
+
+  loadCurrentUser():
+    Observable<ApiResponse<UserProfile>> {
+
+    return this.api
+      .get<ApiResponse<UserProfile>>(
+        ApiEndpoints.AUTH.ME
+      )
+      .pipe(
+
+        tap(response => {
+
+          this.currentUserSubject.next(
+            response.data
+          );
+
+        })
+
+      );
+
+  }
+
+
+
+  // =========================================================
+  // GET CURRENT USER
+  // =========================================================  
+  getCurrentUser():
+  Observable<ApiResponse<UserProfile>> {
+
+  return this.api.get<ApiResponse<UserProfile>>(
+    ApiEndpoints.AUTH.ME
+  );
+
+}
+
+  // =========================================================
+  // CURRENT USER SNAPSHOT
+  // =========================================================
+
+  getCurrentUserSnapshot():
+    UserProfile | null {
+
+    return this.currentUserSubject.value;
+
+  }
+
+
+  // =========================================================
+  // LOGOUT
+  // =========================================================
+
+  logout():
+    Observable<ApiResponse<boolean>> {
 
     const refreshToken =
       localStorage.getItem(
         StorageConstants.REFRESH_TOKEN
       );
 
-
-    /*
-     * If there is no refresh token,
-     * there is nothing to send to the backend.
-     */
 
     if (!refreshToken) {
 
@@ -89,10 +159,16 @@ export class AuthenticationService {
       return new Observable(observer => {
 
         observer.next({
+
           success: true,
-          message: 'Logged out successfully.',
+
+          message:
+            'Logged out successfully.',
+
           data: true,
+
           errors: null
+
         });
 
         observer.complete();
@@ -102,9 +178,6 @@ export class AuthenticationService {
     }
 
 
-
-
-  
     return this.api
       .post<ApiResponse<boolean>>(
         ApiEndpoints.AUTH.LOGOUT,
@@ -125,6 +198,10 @@ export class AuthenticationService {
   }
 
 
+  // =========================================================
+  // CLEAR AUTHENTICATION
+  // =========================================================
+
   clearAuthentication(): void {
 
     localStorage.removeItem(
@@ -139,29 +216,24 @@ export class AuthenticationService {
       StorageConstants.EXPIRES_AT
     );
 
+    this.currentUserSubject.next(null);
+
   }
 
-      getCurrentUser(): Observable<ApiResponse<UserProfile>> {
 
-      return this.api.get<ApiResponse<UserProfile>>(
-        ApiEndpoints.AUTH.ME
-      );
+  // =========================================================
+  // CHANGE PASSWORD
+  // =========================================================
 
-    }
+  changePassword(
+    request: ChangePasswordRequest
+  ): Observable<ApiResponse<boolean>> {
 
+    return this.api.post<ApiResponse<boolean>>(
+      ApiEndpoints.AUTH.CHANGE_PASSWORD,
+      request
+    );
 
-    changePassword(
-        request: ChangePasswordRequest
-      ): Observable<ApiResponse<boolean>> {
-
-        return this.api.post<ApiResponse<boolean>>(
-          ApiEndpoints.AUTH.CHANGE_PASSWORD,
-          request
-        );
-
-      }
+  }
 
 }
-
-
-

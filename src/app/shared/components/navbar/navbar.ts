@@ -23,6 +23,9 @@ import { NotificationService }
 import { Notification }
   from '../../../features/notification/models/notification';
 
+import { UserProfile }
+  from '../../../features/authentication/models/user-profile';
+
 
 @Component({
   selector: 'app-navbar',
@@ -38,7 +41,9 @@ import { Notification }
 
   templateUrl: './navbar.html',
 
-  styleUrl: './navbar.scss'
+  styleUrl: './navbar.scss',
+
+
 })
 export class Navbar
   implements OnInit, OnDestroy {
@@ -74,12 +79,20 @@ export class Navbar
 
   notificationLoading = false;
 
-
+    currentUser: UserProfile | null = null;
   // =========================================================
   // INITIALIZATION
   // =========================================================
 
   ngOnInit(): void {
+
+
+    this.authService.currentUser$
+      .subscribe(user => {
+
+        this.currentUser = user;
+
+      });
 
     this.loadNotifications();
 

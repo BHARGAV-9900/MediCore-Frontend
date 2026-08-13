@@ -255,11 +255,15 @@
         [attr.aria-expanded]="userMenuOpen">
 
         <span class="user-avatar">
-          A
+
+          {{ currentUser?.firstName?.charAt(0) ?? '?' }}
+
         </span>
 
         <span class="user-name">
-          Admin
+
+          {{ currentUser?.firstName ?? 'User' }}
+
         </span>
 
         <span
@@ -280,21 +284,30 @@
           <div class="user-menu-header">
 
             <div class="menu-avatar">
-              A
+
+              {{ currentUser?.firstName?.charAt(0) ?? '?' }}
+
             </div>
 
             <div>
 
               <strong>
-                Admin
+
+                {{
+                  currentUser
+                    ? currentUser.firstName + ' ' + currentUser.lastName
+                    : 'User'
+                }}
+
               </strong>
 
               <span>
-                Hospital Administrator
+
+                {{ currentUser?.role ?? 'User' }}
+
               </span>
 
             </div>
-
           </div>
 
 

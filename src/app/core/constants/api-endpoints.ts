@@ -131,6 +131,16 @@ export const ApiEndpoints = {
     CREATE: 'Notification',
     DELETE: 'Notification'
 
+  },
+
+    USER: {
+    GET_ALL: 'User',
+    GET_BY_ID: 'User',
+    CREATE: 'User',
+    UPDATE: 'User',
+    ACTIVATE: 'User',
+    DEACTIVATE: 'User',
+    DELETE: 'User'
   }
 
 };

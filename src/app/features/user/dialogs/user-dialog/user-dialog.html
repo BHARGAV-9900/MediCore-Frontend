@@ -1,0 +1,238 @@
+<h2 mat-dialog-title>
+
+  {{ isEdit ? 'Update User' : 'Create User' }}
+
+</h2>
+
+
+<mat-dialog-content>
+
+  <h3>User Information</h3>
+
+
+  <form [formGroup]="form">
+
+
+    <!-- FIRST NAME -->
+
+    <mat-form-field
+      appearance="outline">
+
+      <mat-label>
+        First Name
+      </mat-label>
+
+      <input
+        matInput
+        type="text"
+        formControlName="firstName"
+        placeholder="Enter first name" />
+
+      @if (
+        form.controls.firstName.invalid &&
+        form.controls.firstName.touched
+      ) {
+
+        <mat-error>
+          First name is required
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+    <!-- LAST NAME -->
+
+    <mat-form-field
+      appearance="outline">
+
+      <mat-label>
+        Last Name
+      </mat-label>
+
+      <input
+        matInput
+        type="text"
+        formControlName="lastName"
+        placeholder="Enter last name" />
+
+      @if (
+        form.controls.lastName.invalid &&
+        form.controls.lastName.touched
+      ) {
+
+        <mat-error>
+          Last name is required
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+    <!-- EMAIL -->
+
+    <mat-form-field
+      appearance="outline">
+
+      <mat-label>
+        Email Address
+      </mat-label>
+
+      <input
+        matInput
+        type="email"
+        formControlName="email"
+        placeholder="Enter email address" />
+
+      @if (
+        form.controls.email.invalid &&
+        form.controls.email.touched
+      ) {
+
+        <mat-error>
+
+          @if (
+            form.controls.email.errors?.['required']
+          ) {
+
+            Email is required
+
+          }
+          @else {
+
+            Enter a valid email address
+
+          }
+
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+    <!-- PASSWORD -->
+
+    @if (!isEdit) {
+
+      <mat-form-field
+        appearance="outline">
+
+        <mat-label>
+          Password
+        </mat-label>
+
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          placeholder="Enter password" />
+
+        @if (
+          form.controls.password.invalid &&
+          form.controls.password.touched
+        ) {
+
+          <mat-error>
+
+            @if (
+              form.controls.password.errors?.['required']
+            ) {
+
+              Password is required
+
+            }
+            @else {
+
+              Password must be at least 8 characters
+
+            }
+
+          </mat-error>
+
+        }
+
+      </mat-form-field>
+
+    }
+
+
+    <!-- ROLE -->
+
+    <mat-form-field
+      appearance="outline">
+
+      <mat-label>
+        Role
+      </mat-label>
+
+      <mat-select
+        formControlName="roleId">
+
+        <mat-option
+          [value]="null">
+
+          Select role
+
+        </mat-option>
+
+
+        @for (role of roles; track role.id) {
+
+          <mat-option
+            [value]="role.id">
+
+            {{ role.name }}
+
+          </mat-option>
+
+        }
+
+      </mat-select>
+
+
+      @if (
+        form.controls.roleId.invalid &&
+        form.controls.roleId.touched
+      ) {
+
+        <mat-error>
+          Role is required
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+  </form>
+
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+
+
+  <button
+    mat-button
+    type="button"
+    (click)="cancel()">
+
+    Cancel
+
+  </button>
+
+
+  <button
+    mat-flat-button
+    type="button"
+    (click)="save()">
+
+    {{ isEdit ? 'Update User' : 'Create User' }}
+
+  </button>
+
+
+</mat-dialog-actions>
