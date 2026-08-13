@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { Notification } from '../models/notification';
 import { CreateNotification } from '../models/create-notification';
 
+import { environment } from '../../../../environments/environment';
+
 interface ApiResponse<T> {
   success: boolean;
   message: string;
@@ -18,16 +20,18 @@ interface ApiResponse<T> {
 export class NotificationService {
 
   private readonly apiUrl =
-    'https://localhost:7294/api/v1/Notification';
+    `${environment.apiUrl}/Notification`;
 
   constructor(
     private readonly http: HttpClient
   ) {}
 
   getAll(): Observable<ApiResponse<Notification[]>> {
+
     return this.http.get<ApiResponse<Notification[]>>(
       this.apiUrl
     );
+
   }
 
   getById(
@@ -37,6 +41,7 @@ export class NotificationService {
     return this.http.get<ApiResponse<Notification>>(
       `${this.apiUrl}/${id}`
     );
+
   }
 
   getUnread(): Observable<ApiResponse<Notification[]>> {
@@ -44,6 +49,7 @@ export class NotificationService {
     return this.http.get<ApiResponse<Notification[]>>(
       `${this.apiUrl}/unread`
     );
+
   }
 
   create(
@@ -54,6 +60,7 @@ export class NotificationService {
       this.apiUrl,
       notification
     );
+
   }
 
   markAsRead(
@@ -64,6 +71,7 @@ export class NotificationService {
       `${this.apiUrl}/read/${id}`,
       {}
     );
+
   }
 
   delete(
@@ -73,5 +81,7 @@ export class NotificationService {
     return this.http.delete<ApiResponse<boolean>>(
       `${this.apiUrl}/${id}`
     );
+
   }
+
 }

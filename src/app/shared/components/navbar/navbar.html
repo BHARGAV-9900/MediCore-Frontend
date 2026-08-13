@@ -1,27 +1,250 @@
 <header>
 
   <div class="page-title">
+
     <h3>Dashboard</h3>
+
   </div>
 
 
   <div class="navbar-actions">
 
-    <!-- Notifications -->
 
-    <button
-      type="button"
-      class="icon-button"
-      aria-label="Notifications">
+    <!-- =====================================================
+         NOTIFICATIONS
+         ===================================================== -->
 
-      <span class="notification-icon">
-        🔔
-      </span>
+    <div class="notification-container">
 
-    </button>
+      <button
+        type="button"
+        class="icon-button notification-button"
+        aria-label="Notifications"
+        [attr.aria-expanded]="notificationMenuOpen"
+        (click)="toggleNotifications(); $event.stopPropagation()">
+
+        <mat-icon class="notification-icon">
+          notifications
+        </mat-icon>
+
+        @if (unreadCount > 0) {
+
+          <span class="notification-badge">
+
+            @if (unreadCount > 99) {
+              99+
+            } @else {
+              {{ unreadCount }}
+            }
+
+          </span>
+
+        }
+
+      </button>
 
 
-    <!-- User Menu -->
+      <!-- ===================================================
+           NOTIFICATION DROPDOWN
+           =================================================== -->
+
+      @if (notificationMenuOpen) {
+
+        <div
+          class="notification-dropdown"
+          (click)="$event.stopPropagation()">
+
+
+          <!-- Header -->
+
+          <div class="notification-header">
+
+            <div>
+
+              <h4>
+                Notifications
+              </h4>
+
+              @if (unreadCount > 0) {
+
+                <span>
+                  {{ unreadCount }} unread
+                </span>
+
+              } @else {
+
+                <span>
+                  All caught up
+                </span>
+
+              }
+
+            </div>
+
+
+            @if (unreadCount > 0) {
+
+              <button
+                type="button"
+                class="mark-all-button"
+                (click)="markAllAsRead()">
+
+                Mark all as read
+
+              </button>
+
+            }
+
+          </div>
+
+
+          <!-- Loading -->
+
+          @if (
+            notificationLoading &&
+            notifications.length === 0
+          ) {
+
+            <div class="notification-loading">
+
+              <span class="loading-spinner"></span>
+
+              <span>
+                Loading notifications...
+              </span>
+
+            </div>
+
+          }
+
+
+          <!-- Notification List -->
+
+          @if (
+            !notificationLoading ||
+            notifications.length > 0
+          ) {
+
+            <div class="notification-list">
+
+
+              @for (
+                notification of notifications.slice(0, 5);
+                track notification.id
+              ) {
+
+                <button
+                  type="button"
+                  class="notification-item"
+                  [class.unread]="!notification.isRead"
+                  (click)="openNotification(notification)">
+
+
+                 <div
+                  class="notification-type-icon"
+                  [ngClass]="
+                    getNotificationTypeClass(
+                      notification.type
+                    )
+                  ">
+
+                  <mat-icon>
+                    {{ getNotificationIcon(notification.type) }}
+                  </mat-icon>
+
+                </div>
+
+
+                  <div class="notification-content">
+
+                    <div class="notification-title-row">
+
+                      <strong>
+                        {{ notification.title }}
+                      </strong>
+
+                      <span class="notification-time">
+                        {{ getTimeAgo(notification.createdAt) }}
+                      </span>
+
+                    </div>
+
+
+                    <p>
+                      {{ notification.message }}
+                    </p>
+
+                  </div>
+
+
+                  @if (!notification.isRead) {
+
+                    <span
+                      class="unread-dot">
+                    </span>
+
+                  }
+
+                </button>
+
+              }
+
+
+              <!-- Empty -->
+
+              @if (
+                !notificationLoading &&
+                notifications.length === 0
+              ) {
+
+                <div class="notification-empty">
+
+                  <mat-icon class="empty-bell">
+                    notifications_none
+                  </mat-icon>
+
+                  <p>
+                    No notifications
+                  </p>
+
+                  <span>
+                    You're all caught up.
+                  </span>
+
+                </div>
+
+              }
+
+            </div>
+
+          }
+
+
+          <!-- Footer -->
+
+          @if (notifications.length > 0) {
+
+            <button
+              type="button"
+              class="view-all-button"
+              (click)="viewAllNotifications()">
+
+              View all notifications
+
+            </button>
+
+          }
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- =====================================================
+         USER MENU
+         ===================================================== -->
 
     <div class="user-menu-container">
 
@@ -42,7 +265,9 @@
         <span
           class="dropdown-arrow"
           [class.open]="userMenuOpen">
+
           ▾
+
         </span>
 
       </button>
@@ -76,36 +301,30 @@
           <div class="menu-divider"></div>
 
 
-          <button
-            type="button"
+          <a
+            routerLink="/dashboard/profile"
             class="menu-item">
 
-            <a
-                routerLink="/dashboard/profile"
-                class="menu-item">
+            👤
 
-                👤
-                <span>My Profile</span>
+            <span>
+              My Profile
+            </span>
 
-              </a>
-
-          </button>
+          </a>
 
 
-          <button
-            type="button"
+          <a
+            routerLink="/dashboard/change-password"
             class="menu-item">
 
-           <a
-              routerLink="/dashboard/change-password"
-              class="menu-item">
+            🔒
 
-              🔒
-              <span>Change Password</span>
+            <span>
+              Change Password
+            </span>
 
-            </a>
-
-          </button>
+          </a>
 
 
           <div class="menu-divider"></div>

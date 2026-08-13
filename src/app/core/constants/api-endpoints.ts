@@ -123,4 +123,14 @@ export const ApiEndpoints = {
 
   },
 
+    NOTIFICATION: {
+    GET_ALL: 'Notification',
+    GET_BY_ID: 'Notification',
+    GET_UNREAD: 'Notification/unread',
+    MARK_AS_READ: 'Notification/read',
+    CREATE: 'Notification',
+    DELETE: 'Notification'
+
+  }
+
 };
