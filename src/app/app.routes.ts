@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
 
@@ -44,13 +45,34 @@ export const routes: Routes = [
 
       {
         path: 'patients',
-        loadComponent: () =>
-          import('./features/patient/pages/patient-list/patient-list')
-            .then(c => c.PatientList)
-      },
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin',
+            'Doctor',
+            'Receptionist'
+          ]
+        },
+
+          loadComponent: () =>
+            import('./features/patient/pages/patient-list/patient-list')
+              .then(c => c.PatientList)
+        },
 
       {
         path: 'departments',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin',
+            'Receptionist'
+          ]
+        },
+
         loadComponent: () =>
           import('./features/department/pages/department-list/department-list')
             .then(c => c.DepartmentList)
@@ -58,6 +80,17 @@ export const routes: Routes = [
 
       {
         path: 'doctors',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin',
+            'Doctor',
+            'Receptionist'
+          ]
+        },
+
         loadComponent: () =>
           import('./features/doctor/pages/doctor-list/doctor-list')
             .then(m => m.DoctorList)
@@ -65,6 +98,17 @@ export const routes: Routes = [
 
       {
         path: 'appointments',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin',
+            'Doctor',
+            'Receptionist'
+          ]
+        },
+
         loadComponent: () =>
           import('./features/appointment/pages/appointment-list/appointment-list')
             .then(m => m.AppointmentList)
@@ -72,13 +116,34 @@ export const routes: Routes = [
 
       {
         path: 'medical-records',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin',
+            'Doctor'
+          ]
+        },
+
         loadComponent: () =>
           import('./features/medical-record/pages/medical-record-list/medical-record-list')
             .then(m => m.MedicalRecordList)
       },
 
-      {
+     {
         path: 'laboratory',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin',
+            'Lab Technician',
+            'Doctor'
+          ]
+        },
+
         loadComponent: () =>
           import('./features/laboratory/pages/laboratory-test-list/laboratory-test-list')
             .then(m => m.LaboratoryTestList)
@@ -86,6 +151,17 @@ export const routes: Routes = [
 
       {
         path: 'laboratory-orders',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin',
+            'Lab Technician',
+            'Doctor'
+          ]
+        },
+
         loadComponent: () =>
           import('./features/laboratory/pages/laboratory-order-list/laboratory-order-list')
             .then(m => m.LaboratoryOrderList)
@@ -93,13 +169,34 @@ export const routes: Routes = [
 
       {
         path: 'laboratory-results',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin',
+            'Lab Technician',
+            'Doctor'
+          ]
+        },
+
         loadComponent: () =>
           import('./features/laboratory/pages/laboratory-result-list/laboratory-result-list')
             .then(m => m.LaboratoryResultList)
       },
 
-      {
+     {
         path: 'pharmacy',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin',
+            'Pharmacist'
+          ]
+        },
+
         loadComponent: () =>
           import('./features/pharmacy/pages/medicines/medicines')
             .then(m => m.Medicines)
@@ -107,6 +204,17 @@ export const routes: Routes = [
 
       {
         path: 'prescriptions',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin',
+            'Doctor',
+            'Pharmacist'
+          ]
+        },
+
         loadComponent: () =>
           import('./features/pharmacy/pages/prescriptions/prescriptions')
             .then(m => m.Prescriptions)
@@ -114,20 +222,53 @@ export const routes: Routes = [
 
       {
         path: 'prescription-items',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin',
+            'Doctor',
+            'Pharmacist'
+          ]
+        },
+
         loadComponent: () =>
           import('./features/pharmacy/pages/prescription-items/prescription-items')
             .then(m => m.PrescriptionItems)
       },
 
-      {
+     {
         path: 'billing',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin',
+            'Accountant',
+            'Receptionist'
+          ]
+        },
+
         loadComponent: () =>
           import('./features/billing/pages/billing/billing')
             .then(m => m.Billing)
       },
 
-      {
+     {
         path: 'billing/payments',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin',
+            'Accountant',
+            'Receptionist'
+          ]
+        },
+
         loadComponent: () =>
           import('./features/billing/pages/payments/payments')
             .then(m => m.Payments)
@@ -135,13 +276,37 @@ export const routes: Routes = [
 
       {
         path: 'notifications',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin',
+            'Doctor',
+            'Receptionist',
+            'Lab Technician',
+            'Pharmacist',
+            'Accountant'
+          ]
+        },
+
         loadComponent: () =>
           import('./features/notification/pages/notification-list/notification-list')
             .then(m => m.NotificationListComponent)
       },
 
-      {
+     {
         path: 'inventory',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin',
+            'Pharmacist'
+          ]
+        },
+
         loadComponent: () =>
           import('./features/inventory/pages/inventory/inventory')
             .then(m => m.Inventory)
@@ -149,6 +314,16 @@ export const routes: Routes = [
 
       {
         path: 'reports',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin',
+            'Accountant'
+          ]
+        },
+
         loadComponent: () =>
           import('./features/reports/pages/reports/reports')
             .then(m => m.Reports)
@@ -156,6 +331,15 @@ export const routes: Routes = [
 
       {
         path: 'settings',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin'
+          ]
+        },
+
         loadComponent: () =>
           import('./features/settings/pages/settings/settings')
             .then(m => m.SettingsComponent)
@@ -163,6 +347,14 @@ export const routes: Routes = [
 
       {
         path: 'users',
+
+        canActivate: [roleGuard],
+
+        data: {
+          roles: [
+            'Admin'
+          ]
+        },
 
         loadComponent: () =>
           import('./features/user/pages/user-list/user-list')

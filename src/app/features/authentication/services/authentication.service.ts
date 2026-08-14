@@ -3,7 +3,10 @@ import { Injectable, inject } from '@angular/core';
 import {
   Observable,
   BehaviorSubject,
-  tap
+  tap,
+  map,
+  catchError,
+  of
 } from 'rxjs';
 
 import { ApiService } from '../../../core/http/api.service';
@@ -114,6 +117,57 @@ export class AuthenticationService {
   }
 
 
+  // =========================================================
+// INITIALIZE AUTHENTICATION
+// =========================================================
+
+initializeAuthentication(): Observable<boolean> {
+
+  const accessToken =
+    localStorage.getItem(
+      StorageConstants.ACCESS_TOKEN
+    );
+
+  // No access token.
+  if (!accessToken) {
+
+    this.currentUserSubject.next(null);
+
+    return of(false);
+
+  }
+
+  // Access token exists.
+  // Restore the current user from backend.
+  return this.loadCurrentUser().pipe(
+
+    tap(response => {
+
+      console.log(
+        'Authentication restored:',
+        response.data
+      );
+
+    }),
+
+    map(() => true),
+
+    catchError(error => {
+
+      console.error(
+        'Failed to restore authentication:',
+        error
+      );
+
+      this.clearAuthentication();
+
+      return of(false);
+
+    })
+
+  );
+
+}
 
   // =========================================================
   // GET CURRENT USER

@@ -46,6 +46,9 @@ export class Sidebar implements OnInit {
     this.authService.currentUser$
       .subscribe(user => {
 
+        console.log('CURRENT USER:', user);
+        console.log('CURRENT ROLE:', user?.role);
+
         if (!user) {
 
           this.menuItems = [];

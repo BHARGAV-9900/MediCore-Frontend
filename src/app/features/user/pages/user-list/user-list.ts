@@ -194,38 +194,41 @@ addUser(): void {
 
 getRoleOptions(): UserRoleOption[] {
 
-  const roles =
-    new Map<number, string>();
+  return [
 
+    {
+      id: 1,
+      name: 'Admin'
+    },
 
-  this.users.forEach(user => {
+    {
+      id: 2,
+      name: 'Doctor'
+    },
 
-    if (
-      user.roleId &&
-      user.role
-    ) {
+    {
+      id: 3,
+      name: 'Receptionist'
+    },
 
-      roles.set(
-        user.roleId,
-        user.role
-      );
+    {
+      id: 4,
+      name: 'Lab Technician'
+    },
 
+    {
+      id: 5,
+      name: 'Pharmacist'
+    },
+
+    {
+      id: 1001,
+      name: 'Accountant'
     }
 
-  });
-
-
-  return Array.from(
-    roles.entries()
-  ).map(([id, name]) => ({
-
-    id,
-    name
-
-  }));
+  ];
 
 }
-
 
 
   activateUser(user: User): void {

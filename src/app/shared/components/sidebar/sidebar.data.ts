@@ -6,7 +6,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     title: 'Dashboard',
     icon: 'bi bi-speedometer2',
     route: '/dashboard/dashboard',
-    roles: ['Admin', 'Doctor', 'Receptionist', 'LabTechnician', 'Pharmacist', 'Accountant']
+    roles: ['Admin', 'Doctor', 'Receptionist', 'Lab Technician', 'Pharmacist', 'Accountant']
   },
 
   {
@@ -28,7 +28,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     title: 'Departments',
     icon: 'bi bi-diagram-3',
     route: '/dashboard/departments',
-    roles: ['Admin']
+    roles: ['Admin', 'Receptionist']
   },
 
   {
@@ -49,21 +49,21 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     title: 'Laboratory',
     icon: 'bi bi-eyedropper',
     route: '/dashboard/laboratory',
-    roles: ['Admin', 'LabTechnician', 'Doctor']
+    roles: ['Admin', 'Lab Technician', 'Doctor']
   },
 
   {
     title: 'Laboratory Orders',
     icon: 'bi bi-clipboard-pulse',
     route: '/dashboard/laboratory-orders',
-    roles: ['Admin', 'LabTechnician', 'Doctor']
+    roles: ['Admin', 'Lab Technician', 'Doctor']
   },
 
   {
     title: 'Laboratory Results',
     icon: 'bi bi-file-medical',
     route: '/dashboard/laboratory-results',
-    roles: ['Admin', 'LabTechnician', 'Doctor']
+    roles: ['Admin', 'Lab Technician', 'Doctor']
   },
 
   {
@@ -105,7 +105,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     title: 'Notifications',
     icon: 'bi bi-bell',
     route: '/dashboard/notifications',
-    roles: ['Admin', 'Doctor', 'Receptionist', 'LabTechnician', 'Pharmacist', 'Accountant']
+    roles: ['Admin', 'Doctor', 'Receptionist', 'Lab Technician', 'Pharmacist', 'Accountant']
   },
 
   {
