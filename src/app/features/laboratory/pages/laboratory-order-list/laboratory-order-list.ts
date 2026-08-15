@@ -4,26 +4,27 @@ import {
   inject
 } from '@angular/core';
 
-import { CommonModule }
-from '@angular/common';
+import { CommonModule } from '@angular/common';
 
-import { MatDialog }
-from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 import { MATERIAL_MODULES }
-from '../../../../shared/material/material';
+  from '../../../../shared/material/material';
 
 import { LaboratoryOrderService }
-from '../../services/laboratory-order.service';
+  from '../../services/laboratory-order.service';
 
 import { LaboratoryOrder }
-from '../../models/laboratory-order';
+  from '../../models/laboratory-order';
 
 import { LaboratoryOrderDialog }
-from '../../dialogs/laboratory-order-dialog/laboratory-order-dialog';
+  from '../../dialogs/laboratory-order-dialog/laboratory-order-dialog';
 
 import { NotificationService }
-from '../../../../core/services/notification.service';
+  from '../../../../core/services/notification.service';
+
+import { LaboratoryOrderDeleteConfirmation }
+  from '../../dialogs/laboratory-order-delete-confirmation/laboratory-order-delete-confirmation';
 
 
 @Component({
@@ -36,9 +37,11 @@ from '../../../../core/services/notification.service';
     ...MATERIAL_MODULES
   ],
 
-  templateUrl: './laboratory-order-list.html',
+  templateUrl:
+    './laboratory-order-list.html',
 
-  styleUrl: './laboratory-order-list.scss'
+  styleUrl:
+    './laboratory-order-list.scss'
 })
 export class LaboratoryOrderList
   implements OnInit {
@@ -66,8 +69,6 @@ export class LaboratoryOrderList
   }
 
 
-  // Load laboratory orders
-
   loadLaboratoryOrders(): void {
 
     this.loading = true;
@@ -76,13 +77,8 @@ export class LaboratoryOrderList
 
       next: response => {
 
-        console.log(
-          'Laboratory Orders:',
-          response
-        );
-
         this.laboratoryOrders =
-          response.data;
+          response.data ?? [];
 
         this.loading = false;
 
@@ -90,11 +86,15 @@ export class LaboratoryOrderList
 
       error: error => {
 
-        console.error(error);
+        console.error(
+          'Failed to load laboratory orders:',
+          error
+        );
 
         this.loading = false;
 
         this.notification.error(
+          error?.error?.message ??
           'Unable to load laboratory orders'
         );
 
@@ -105,8 +105,6 @@ export class LaboratoryOrderList
   }
 
 
-  // Open create/edit dialog
-
   openDialog(
     laboratoryOrder?: LaboratoryOrder
   ): void {
@@ -114,16 +112,16 @@ export class LaboratoryOrderList
     const dialogRef =
       this.dialog.open(
         LaboratoryOrderDialog,
-    {
-      width: '650px',
+        {
+          width: '650px',
 
-      maxWidth: '95vw',
+          maxWidth: '95vw',
 
-      maxHeight: '90vh',
+          maxHeight: '90vh',
 
-      data: laboratoryOrder
-    }
-  );
+          data: laboratoryOrder
+        }
+      );
 
 
     dialogRef.afterClosed().subscribe(
@@ -141,63 +139,76 @@ export class LaboratoryOrderList
   }
 
 
-  // Edit
-
   editLaboratoryOrder(
     laboratoryOrder: LaboratoryOrder
   ): void {
 
-    this.openDialog(laboratoryOrder);
+    this.openDialog(
+      laboratoryOrder
+    );
 
   }
 
 
-  // Delete
-
   deleteLaboratoryOrder(
-    id: number
+    laboratoryOrder: LaboratoryOrder
   ): void {
 
-    const confirmed =
-      confirm(
-        'Are you sure you want to delete this laboratory order?'
+    const dialogRef =
+      this.dialog.open(
+        LaboratoryOrderDeleteConfirmation,
+        {
+          width: '500px',
+
+          maxWidth: '95vw',
+
+          data: laboratoryOrder
+        }
       );
 
 
-    if (!confirmed) {
+    dialogRef.afterClosed().subscribe(
+      confirmed => {
 
-      return;
+        if (!confirmed) {
 
-    }
+          return;
+
+        }
 
 
-    this.service.delete(id).subscribe({
+        this.service
+          .delete(laboratoryOrder.id)
+          .subscribe({
 
-      next: () => {
+            next: () => {
 
-        this.notification.success(
-          'Laboratory order deleted successfully'
-        );
+              this.notification.success(
+                'Laboratory order deleted successfully'
+              );
 
-        this.loadLaboratoryOrders();
+              this.loadLaboratoryOrders();
 
-      },
+            },
 
-      error: error => {
-        console.error(
-          'Failed to create laboratory order:',
-          error
-        );
+            error: error => {
 
-        this.loading = false;
+              console.error(
+                'Failed to delete laboratory order:',
+                error
+              );
 
-        this.notification.error(
-          error?.error?.message ??
-          'Unable to create laboratory order'
-        );
+              this.notification.error(
+                error?.error?.message ??
+                'Unable to delete laboratory order'
+              );
+
+            }
+
+          });
+
       }
-
-    });
+    );
 
   }
 

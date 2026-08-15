@@ -1,0 +1,108 @@
+<h2 mat-dialog-title>
+  Delete Laboratory Order
+</h2>
+
+
+<mat-dialog-content>
+
+  <p class="message">
+
+    Are you sure you want to delete this laboratory order?
+
+  </p>
+
+
+  <div class="order-details">
+
+    <div class="detail-row">
+
+      <span class="label">
+        Appointment
+      </span>
+
+      <span class="value">
+        #{{ data.appointmentId }}
+      </span>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Patient
+      </span>
+
+      <span class="value">
+        {{ data.patientName }}
+      </span>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Doctor
+      </span>
+
+      <span class="value">
+        {{ data.doctorName }}
+      </span>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Laboratory Test
+      </span>
+
+      <span class="value">
+        {{ data.laboratoryTestName }}
+      </span>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Price
+      </span>
+
+      <span class="value">
+        ₹{{ data.laboratoryTestPrice | number:'1.2-2' }}
+      </span>
+
+    </div>
+
+  </div>
+
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+
+  <button
+    mat-button
+    type="button"
+    (click)="cancel()">
+
+    Cancel
+
+  </button>
+
+
+  <button
+    mat-raised-button
+    color="warn"
+    type="button"
+    (click)="delete()">
+
+    Delete
+
+  </button>
+
+</mat-dialog-actions>

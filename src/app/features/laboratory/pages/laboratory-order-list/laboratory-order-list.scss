@@ -92,6 +92,8 @@ button[mat-stroked-button] mat-icon {
 table {
   width: 100%;
 
+  min-width: 1000px;
+
   border-collapse: collapse;
 
   background: #ffffff;
@@ -147,15 +149,27 @@ tbody tr:hover {
 
 
 /* -------------------------------- */
-/* Public ID */
+/* Text */
 /* -------------------------------- */
 
-.public-id {
-  font-family: monospace;
+.primary-text {
+  font-weight: 500;
 
-  font-size: 12px;
+  color: #1f2937;
 
+  white-space: nowrap;
+}
+
+
+.date-text {
   color: #4b5563;
+
+  white-space: nowrap;
+}
+
+
+.price-text {
+  font-weight: 600;
 
   white-space: nowrap;
 }
@@ -228,11 +242,6 @@ td:last-child {
 
   button[mat-stroked-button] {
     align-self: flex-start;
-  }
-
-
-  table {
-    min-width: 1100px;
   }
 
 }

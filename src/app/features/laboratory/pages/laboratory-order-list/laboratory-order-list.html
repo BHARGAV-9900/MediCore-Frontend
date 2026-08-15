@@ -57,23 +57,27 @@
         <tr>
 
           <th>
-            ID
+            Appointment
           </th>
 
           <th>
-            Appointment ID
+            Patient
           </th>
 
           <th>
-            Appointment Public ID
+            Doctor
           </th>
 
           <th>
-            Laboratory Test ID
+            Laboratory Test
           </th>
 
           <th>
-            Laboratory Test Public ID
+            Appointment Date
+          </th>
+
+          <th>
+            Price
           </th>
 
           <th>
@@ -95,30 +99,61 @@
           <tr>
 
             <td>
-              {{ order.id }}
-            </td>
 
-
-            <td>
-              {{ order.appointmentId }}
-            </td>
-
-
-            <td class="public-id">
-
-              {{ order.appointmentPublicId }}
+              <div class="primary-text">
+                #{{ order.appointmentId }}
+              </div>
 
             </td>
 
 
             <td>
-              {{ order.laboratoryTestId }}
+
+              <div class="primary-text">
+                {{ order.patientName }}
+              </div>
+
             </td>
 
 
-            <td class="public-id">
+            <td>
 
-              {{ order.laboratoryTestPublicId }}
+              <div class="primary-text">
+                {{ order.doctorName }}
+              </div>
+
+            </td>
+
+
+            <td>
+
+              <div class="primary-text">
+                {{ order.laboratoryTestName }}
+              </div>
+
+            </td>
+
+
+            <td>
+
+              <div class="date-text">
+
+                {{ order.appointmentDate
+                  | date:'dd MMM yyyy, hh:mm a' }}
+
+              </div>
+
+            </td>
+
+
+            <td>
+
+              <div class="price-text">
+
+                ₹{{ order.laboratoryTestPrice
+                  | number:'1.2-2' }}
+
+              </div>
 
             </td>
 
@@ -144,7 +179,7 @@
                   mat-icon-button
                   type="button"
                   matTooltip="Delete laboratory order"
-                  (click)="deleteLaboratoryOrder(order.id)">
+                  (click)="deleteLaboratoryOrder(order)">
 
                   <mat-icon>
                     delete
@@ -166,7 +201,7 @@
           <tr>
 
             <td
-              colspan="6"
+              colspan="7"
               class="empty-state">
 
               No laboratory orders found.
