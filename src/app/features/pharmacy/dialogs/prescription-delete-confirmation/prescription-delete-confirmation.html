@@ -1,0 +1,115 @@
+<div class="delete-dialog">
+
+  <div class="delete-icon">
+
+    <mat-icon>
+      delete_outline
+    </mat-icon>
+
+  </div>
+
+
+  <div class="delete-content">
+
+    <h2>
+      Delete Prescription
+    </h2>
+
+
+    <p>
+      Are you sure you want to delete this prescription?
+    </p>
+
+
+    <div class="prescription-info">
+
+      <div class="prescription-row">
+
+        <span class="label">
+          Prescription ID
+        </span>
+
+        <span class="value">
+          #{{ data.id }}
+        </span>
+
+      </div>
+
+
+      <div class="prescription-row">
+
+        <span class="label">
+          Appointment ID
+        </span>
+
+        <span class="value">
+          #{{ data.appointmentId }}
+        </span>
+
+      </div>
+
+
+      <div class="prescription-row">
+
+        <span class="label">
+          Instructions
+        </span>
+
+        <span class="value">
+          {{ data.instructions }}
+        </span>
+
+      </div>
+
+
+      <div class="prescription-row">
+
+        <span class="label">
+          Notes
+        </span>
+
+        <span class="value">
+          {{ data.notes || '—' }}
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <p class="warning">
+      This action cannot be undone.
+    </p>
+
+  </div>
+
+
+  <div class="dialog-actions">
+
+    <button
+      mat-button
+      type="button"
+      (click)="cancel()">
+
+      Cancel
+
+    </button>
+
+
+    <button
+      mat-flat-button
+      type="button"
+      class="delete-button"
+      (click)="confirm()">
+
+      <mat-icon>
+        delete
+      </mat-icon>
+
+      Delete
+
+    </button>
+
+  </div>
+
+</div>

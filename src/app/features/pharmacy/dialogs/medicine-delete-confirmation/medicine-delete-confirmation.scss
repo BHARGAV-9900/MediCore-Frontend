@@ -1,0 +1,130 @@
+:host {
+  display: block;
+}
+
+
+.delete-dialog {
+  padding: 28px;
+  box-sizing: border-box;
+}
+
+
+.delete-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 18px;
+
+  border-radius: 50%;
+
+  background: #fef2f2;
+}
+
+
+.delete-icon mat-icon {
+  color: #dc2626;
+
+  font-size: 26px;
+
+  width: 26px;
+  height: 26px;
+}
+
+
+.delete-content h2 {
+  margin: 0;
+
+  font-size: 22px;
+
+  font-weight: 600;
+}
+
+
+.delete-content > p {
+  margin: 8px 0 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+
+.medicine-info {
+  margin-top: 18px;
+
+  padding: 14px 16px;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 10px;
+
+  background: #f8fafc;
+}
+
+
+.medicine-name {
+  font-size: 15px;
+
+  font-weight: 600;
+
+  color: #1f2937;
+}
+
+
+.medicine-details {
+  margin-top: 5px;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+
+.medicine-details span {
+  margin: 0 5px;
+}
+
+
+.warning {
+  margin-top: 14px !important;
+
+  color: #dc2626 !important;
+
+  font-size: 13px !important;
+}
+
+
+.dialog-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 24px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+
+.delete-button {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  background: #dc2626 !important;
+
+  color: #ffffff !important;
+}

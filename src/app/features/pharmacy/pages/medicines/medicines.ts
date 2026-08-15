@@ -24,8 +24,13 @@ import { MatDialog }
 import { MedicineDialog }
   from '../../dialogs/medicine-dialog/medicine-dialog';
 
+import { MedicineDeleteConfirmation }
+  from '../../dialogs/medicine-delete-confirmation/medicine-delete-confirmation';
+
+
 @Component({
   selector: 'app-medicines',
+
   standalone: true,
 
   imports: [
@@ -34,6 +39,7 @@ import { MedicineDialog }
   ],
 
   templateUrl: './medicines.html',
+
   styleUrl: './medicines.scss'
 })
 export class Medicines implements OnInit {
@@ -93,124 +99,129 @@ export class Medicines implements OnInit {
   }
 
 
-addMedicine(): void {
+  addMedicine(): void {
 
-  const dialogRef =
-    this.dialog.open(
-      MedicineDialog,
-      {
-        width: '620px',
-        maxWidth: '95vw',
-
-        maxHeight: '90vh',
-
-        autoFocus: false,
-
-        disableClose: true,
-
-        panelClass: 'medicine-dialog-panel'
-      }
-    );
+    const dialogRef =
+      this.dialog.open(
+        MedicineDialog,
+        {
+          width: '620px',
+          maxWidth: '95vw',
+          maxHeight: '90vh',
+          autoFocus: false,
+          disableClose: true,
+          panelClass: 'medicine-dialog-panel'
+        }
+      );
 
 
-  dialogRef.afterClosed()
-    .subscribe(result => {
+    dialogRef.afterClosed()
+      .subscribe(result => {
 
-      if (result) {
+        if (result) {
 
-        this.loadMedicines();
+          this.loadMedicines();
 
-      }
+        }
 
-    });
+      });
 
-}
-
-
-editMedicine(
-  medicine: Medicine
-): void {
-
-  const dialogRef =
-    this.dialog.open(
-      MedicineDialog,
-      {
-        width: '620px',
-        maxWidth: '95vw',
-
-        maxHeight: '90vh',
-
-        autoFocus: false,
-
-        disableClose: true,
-
-        panelClass: 'medicine-dialog-panel',
-
-        data: medicine
-      }
-    );
+  }
 
 
-  dialogRef.afterClosed()
-    .subscribe(result => {
+  editMedicine(
+    medicine: Medicine
+  ): void {
 
-      if (result) {
+    const dialogRef =
+      this.dialog.open(
+        MedicineDialog,
+        {
+          width: '620px',
+          maxWidth: '95vw',
+          maxHeight: '90vh',
+          autoFocus: false,
+          disableClose: true,
+          panelClass: 'medicine-dialog-panel',
+          data: medicine
+        }
+      );
 
-        this.loadMedicines();
 
-      }
+    dialogRef.afterClosed()
+      .subscribe(result => {
 
-    });
+        if (result) {
 
-}
+          this.loadMedicines();
+
+        }
+
+      });
+
+  }
 
 
   deleteMedicine(
     medicine: Medicine
   ): void {
 
-    const confirmed =
-      window.confirm(
-        `Are you sure you want to delete "${medicine.name}"?`
+    const dialogRef =
+      this.dialog.open(
+        MedicineDeleteConfirmation,
+        {
+          width: '500px',
+          maxWidth: '95vw',
+          autoFocus: false,
+          disableClose: true,
+          data: medicine
+        }
       );
 
-    if (!confirmed) {
 
-      return;
+    dialogRef.afterClosed()
+      .subscribe(confirmed => {
 
-    }
+        if (!confirmed) {
 
-
-    this.loading = true;
-
-    this.service
-      .delete(medicine.id)
-      .subscribe({
-
-        next: () => {
-
-          this.loading = false;
-
-          this.notification.success(
-            'Medicine deleted successfully'
-          );
-
-          this.loadMedicines();
-
-        },
-
-        error: error => {
-
-          console.error(error);
-
-          this.loading = false;
-
-          this.notification.error(
-            error?.error?.message ??
-            'Unable to delete medicine'
-          );
+          return;
 
         }
+
+
+        this.loading = true;
+
+
+        this.service
+          .delete(medicine.id)
+          .subscribe({
+
+            next: () => {
+
+              this.loading = false;
+
+              this.notification.success(
+                'Medicine deleted successfully'
+              );
+
+              this.loadMedicines();
+
+            },
+
+            error: error => {
+
+              console.error(error);
+
+              this.loading = false;
+
+              this.notification.error(
+                error?.error?.message ??
+                'Unable to delete medicine'
+              );
+
+            }
+
+          });
 
       });
 

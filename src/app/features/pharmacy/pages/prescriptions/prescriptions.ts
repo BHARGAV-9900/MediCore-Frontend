@@ -24,6 +24,9 @@ import { NotificationService }
 import { PrescriptionDialog }
   from '../../dialogs/prescription-dialog/prescription-dialog';
 
+import { PrescriptionDeleteConfirmation }
+  from '../../dialogs/prescription-delete-confirmation/prescription-delete-confirmation';
+
 
 @Component({
   selector: 'app-prescriptions',
@@ -98,105 +101,125 @@ export class Prescriptions implements OnInit {
 
   addPrescription(): void {
 
-  const dialogRef = this.dialog.open(
-    PrescriptionDialog,
-    {
-      width: '620px',
-      maxWidth: '95vw',
-      maxHeight: '90vh',
-      autoFocus: false,
-      disableClose: true,
-      panelClass: 'prescription-dialog-panel'
-    }
-  );
+    const dialogRef =
+      this.dialog.open(
+        PrescriptionDialog,
+        {
+          width: '620px',
+          maxWidth: '95vw',
+          maxHeight: '90vh',
+          autoFocus: false,
+          disableClose: true,
+          panelClass: 'prescription-dialog-panel'
+        }
+      );
 
-  dialogRef.afterClosed()
-    .subscribe(result => {
+    dialogRef.afterClosed()
+      .subscribe(result => {
 
-      if (result) {
-        this.loadPrescriptions();
-      }
+        if (result) {
 
-    });
-}
+          this.loadPrescriptions();
+
+        }
+
+      });
+
+  }
 
 
   editPrescription(
-  prescription: Prescription
-): void {
+    prescription: Prescription
+  ): void {
 
-  const dialogRef = this.dialog.open(
-    PrescriptionDialog,
-    {
-      width: '620px',
-      maxWidth: '95vw',
-      maxHeight: '90vh',
-      autoFocus: false,
-      disableClose: true,
-      panelClass: 'prescription-dialog-panel',
-      data: prescription
-    }
-  );
+    const dialogRef =
+      this.dialog.open(
+        PrescriptionDialog,
+        {
+          width: '620px',
+          maxWidth: '95vw',
+          maxHeight: '90vh',
+          autoFocus: false,
+          disableClose: true,
+          panelClass: 'prescription-dialog-panel',
+          data: prescription
+        }
+      );
 
-  dialogRef.afterClosed()
-    .subscribe(result => {
+    dialogRef.afterClosed()
+      .subscribe(result => {
 
-      if (result) {
-        this.loadPrescriptions();
-      }
+        if (result) {
 
-    });
-}
+          this.loadPrescriptions();
+
+        }
+
+      });
+
+  }
 
 
   deletePrescription(
     prescription: Prescription
   ): void {
 
-    const confirmed =
-      window.confirm(
-        `Are you sure you want to delete this prescription?`
+    const dialogRef =
+      this.dialog.open(
+        PrescriptionDeleteConfirmation,
+        {
+          width: '520px',
+          maxWidth: '95vw',
+          autoFocus: false,
+          disableClose: true,
+          data: prescription
+        }
       );
 
 
-    if (!confirmed) {
+    dialogRef.afterClosed()
+      .subscribe(confirmed => {
 
-      return;
+        if (!confirmed) {
 
-    }
-
-
-    this.loading = true;
-
-
-    this.service
-      .delete(prescription.id)
-      .subscribe({
-
-        next: () => {
-
-          this.loading = false;
-
-          this.notification.success(
-            'Prescription deleted successfully'
-          );
-
-          this.loadPrescriptions();
-
-        },
-
-        error: error => {
-
-          console.error(error);
-
-          this.loading = false;
-
-          this.notification.error(
-            error?.error?.message ??
-            'Unable to delete prescription'
-          );
+          return;
 
         }
+
+
+        this.loading = true;
+
+
+        this.service
+          .delete(prescription.id)
+          .subscribe({
+
+            next: () => {
+
+              this.loading = false;
+
+              this.notification.success(
+                'Prescription deleted successfully'
+              );
+
+              this.loadPrescriptions();
+
+            },
+
+            error: error => {
+
+              console.error(error);
+
+              this.loading = false;
+
+              this.notification.error(
+                error?.error?.message ??
+                'Unable to delete prescription'
+              );
+
+            }
+
+          });
 
       });
 

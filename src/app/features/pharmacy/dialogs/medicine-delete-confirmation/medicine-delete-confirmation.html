@@ -1,0 +1,71 @@
+<div class="delete-dialog">
+
+  <div class="delete-icon">
+
+    <mat-icon>
+      delete_outline
+    </mat-icon>
+
+  </div>
+
+
+  <div class="delete-content">
+
+    <h2>
+      Delete Medicine
+    </h2>
+
+    <p>
+      Are you sure you want to delete this medicine?
+    </p>
+
+    <div class="medicine-info">
+
+      <div class="medicine-name">
+        {{ data.name }}
+      </div>
+
+      <div class="medicine-details">
+        {{ data.manufacturer }}
+        <span>•</span>
+        ₹{{ data.unitPrice | number:'1.2-2' }}
+      </div>
+
+    </div>
+
+    <p class="warning">
+      This action cannot be undone.
+    </p>
+
+  </div>
+
+
+  <div class="dialog-actions">
+
+    <button
+      mat-button
+      type="button"
+      (click)="cancel()">
+
+      Cancel
+
+    </button>
+
+
+    <button
+      mat-flat-button
+      type="button"
+      class="delete-button"
+      (click)="confirm()">
+
+      <mat-icon>
+        delete
+      </mat-icon>
+
+      Delete
+
+    </button>
+
+  </div>
+
+</div>
