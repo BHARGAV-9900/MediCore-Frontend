@@ -22,6 +22,10 @@ import { LaboratoryResult }
 import { LaboratoryResultDialog }
   from '../../dialogs/laboratory-result-dialog/laboratory-result-dialog';
 
+import {
+  LaboratoryResultDeleteConfirmation
+} from '../../dialogs/laboratory-result-delete-confirmation/laboratory-result-delete-confirmation';
+
 import { NotificationService }
   from '../../../../core/services/notification.service';
 
@@ -53,7 +57,8 @@ export class LaboratoryResultList
     inject(NotificationService);
 
 
-  laboratoryResults: LaboratoryResult[] = [];
+  laboratoryResults:
+    LaboratoryResult[] = [];
 
   loading = false;
 
@@ -79,7 +84,7 @@ export class LaboratoryResultList
         );
 
         this.laboratoryResults =
-          response.data;
+          response.data ?? [];
 
         this.loading = false;
 
@@ -107,19 +112,19 @@ export class LaboratoryResultList
     laboratoryResult?: LaboratoryResult
   ): void {
 
- const dialogRef =
-  this.dialog.open(
-    LaboratoryResultDialog,
-    {
-      width: '650px',
+    const dialogRef =
+      this.dialog.open(
+        LaboratoryResultDialog,
+        {
+          width: '650px',
 
-      maxWidth: '95vw',
+          maxWidth: '95vw',
 
-      maxHeight: '90vh',
+          maxHeight: '90vh',
 
-      data: laboratoryResult
-    }
-  );
+          data: laboratoryResult
+        }
+      );
 
 
     dialogRef.afterClosed().subscribe(
@@ -147,20 +152,53 @@ export class LaboratoryResultList
 
 
   deleteLaboratoryResult(
-    id: number
+    laboratoryResult: LaboratoryResult
   ): void {
 
-    const confirmed =
-      confirm(
-        'Are you sure you want to delete this laboratory result?'
+    const dialogRef =
+      this.dialog.open(
+        LaboratoryResultDeleteConfirmation,
+        {
+          width: '500px',
+
+          maxWidth: '95vw',
+
+          data: {
+            laboratoryResultId:
+              laboratoryResult.id,
+
+            laboratoryOrderId:
+              laboratoryResult.laboratoryOrderId
+          }
+        }
       );
 
 
-    if (!confirmed) {
+    dialogRef.afterClosed().subscribe(
+      confirmed => {
 
-      return;
+        if (!confirmed) {
 
-    }
+          return;
+
+        }
+
+
+        this.performDelete(
+          laboratoryResult.id
+        );
+
+      }
+    );
+
+  }
+
+
+  private performDelete(
+    id: number
+  ): void {
+
+    this.loading = true;
 
 
     this.service.delete(id).subscribe({
@@ -179,6 +217,8 @@ export class LaboratoryResultList
       error: error => {
 
         console.error(error);
+
+        this.loading = false;
 
         this.notification.error(
           error?.error?.message ??

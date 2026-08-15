@@ -61,11 +61,11 @@
           </th>
 
           <th>
-            Laboratory Order ID
+            Laboratory Order
           </th>
 
           <th>
-            Laboratory Order Public ID
+            Order Public ID
           </th>
 
           <th>
@@ -94,13 +94,17 @@
 
           <tr>
 
-            <td>
-              {{ laboratoryResult.id }}
+            <td class="id-cell">
+
+              #{{ laboratoryResult.id }}
+
             </td>
 
 
-            <td>
-              {{ laboratoryResult.laboratoryOrderId }}
+            <td class="order-cell">
+
+              Order #{{ laboratoryResult.laboratoryOrderId }}
+
             </td>
 
 
@@ -113,14 +117,33 @@
 
             <td class="result-cell">
 
-              {{ laboratoryResult.result }}
+              <div class="result-preview">
+
+                {{ laboratoryResult.result }}
+
+              </div>
 
             </td>
 
 
             <td class="remarks-cell">
 
-              {{ laboratoryResult.remarks || '-' }}
+              @if (laboratoryResult.remarks) {
+
+                <div class="remarks-preview">
+
+                  {{ laboratoryResult.remarks }}
+
+                </div>
+
+              }
+              @else {
+
+                <span class="no-value">
+                  —
+                </span>
+
+              }
 
             </td>
 
@@ -146,7 +169,7 @@
                   mat-icon-button
                   type="button"
                   matTooltip="Delete laboratory result"
-                  (click)="deleteLaboratoryResult(laboratoryResult.id)">
+                  (click)="deleteLaboratoryResult(laboratoryResult)">
 
                   <mat-icon>
                     delete
@@ -171,7 +194,13 @@
               colspan="6"
               class="empty-state">
 
-              No laboratory results found.
+              <mat-icon>
+                science
+              </mat-icon>
+
+              <div>
+                No laboratory results found.
+              </div>
 
             </td>
 

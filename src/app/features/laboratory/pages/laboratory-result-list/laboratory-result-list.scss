@@ -1,5 +1,6 @@
 :host {
   display: block;
+
   width: 100%;
 }
 
@@ -136,7 +137,8 @@ td {
 
 
 tbody tr {
-  transition: background-color 0.15s ease;
+  transition:
+    background-color 0.15s ease;
 }
 
 
@@ -146,16 +148,40 @@ tbody tr:hover {
 
 
 /* -------------------------------- */
-/* Columns */
+/* ID */
 /* -------------------------------- */
 
-th:first-child,
-td:first-child {
-  width: 60px;
+.id-cell {
+  width: 65px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
 }
 
 
+/* -------------------------------- */
+/* Laboratory Order */
+/* -------------------------------- */
+
+.order-cell {
+  min-width: 130px;
+
+  font-weight: 500;
+
+  white-space: nowrap;
+}
+
+
+/* -------------------------------- */
+/* Public ID */
+/* -------------------------------- */
+
 .public-id-cell {
+  min-width: 230px;
+
+  font-family: monospace;
+
   font-size: 12px;
 
   color: #4b5563;
@@ -164,19 +190,62 @@ td:first-child {
 }
 
 
-.result-cell {
-  font-weight: 500;
+/* -------------------------------- */
+/* Result */
+/* -------------------------------- */
 
-  min-width: 180px;
+.result-cell {
+  min-width: 220px;
+
+  max-width: 360px;
+
+  font-weight: 500;
 }
 
+
+.result-preview {
+  max-width: 340px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+/* -------------------------------- */
+/* Remarks */
+/* -------------------------------- */
 
 .remarks-cell {
-  color: #4b5563;
-
   min-width: 220px;
+
+  max-width: 320px;
+
+  color: #4b5563;
 }
 
+
+.remarks-preview {
+  max-width: 300px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+.no-value {
+  color: #9ca3af;
+}
+
+
+/* -------------------------------- */
+/* Actions */
+/* -------------------------------- */
 
 th:last-child,
 td:last-child {
@@ -185,10 +254,6 @@ td:last-child {
   white-space: nowrap;
 }
 
-
-/* -------------------------------- */
-/* Actions */
-/* -------------------------------- */
 
 .action-buttons {
   display: flex;
@@ -222,13 +287,26 @@ td:last-child {
 /* -------------------------------- */
 
 .empty-state {
-  padding: 40px 20px;
+  padding: 48px 20px;
 
   text-align: center;
 
   color: #6b7280;
 
   font-size: 14px;
+}
+
+
+.empty-state mat-icon {
+  display: block;
+
+  margin: 0 auto 10px;
+
+  font-size: 32px;
+
+  width: 32px;
+
+  height: 32px;
 }
 
 
@@ -249,7 +327,7 @@ td:last-child {
 
 
   table {
-    min-width: 1000px;
+    min-width: 1050px;
   }
 
 }
