@@ -38,7 +38,7 @@ export class PatientService {
 
   create(model: CreatePatient) {
 
-    return this.api.post<ApiResponse<Patient>>(
+    return this.api.post<ApiResponse<number>>(
       ApiEndpoints.PATIENT.CREATE,
       model
     );

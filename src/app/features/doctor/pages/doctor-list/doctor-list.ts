@@ -1,6 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { MatDialog } from '@angular/material/dialog';
 
 import { MATERIAL_MODULES } from '../../../../shared/material/material';
@@ -12,8 +11,9 @@ import { DepartmentService } from '../../../department/services/department.servi
 import { Department } from '../../../department/models/department';
 
 import { DoctorDialog } from '../../dialogs/doctor-dialog/doctor-dialog';
-import { NotificationService } from '../../../../core/services/notification.service';
+import { DeleteConfirmation } from '../../../department/dialogs/delete-confirmation/delete-confirmation';
 
+import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
   selector: 'app-doctor-list',
@@ -27,18 +27,15 @@ import { NotificationService } from '../../../../core/services/notification.serv
 })
 export class DoctorList implements OnInit {
 
-  private readonly service =
-    inject(DoctorService);
+  private readonly service = inject(DoctorService);
 
-  private readonly dialog =
-    inject(MatDialog);
+  private readonly dialog = inject(MatDialog);
 
   private readonly departmentService =
     inject(DepartmentService);
 
   private readonly notification =
-  inject(NotificationService);
-
+    inject(NotificationService);
 
   doctors: Doctor[] = [];
 
@@ -46,66 +43,36 @@ export class DoctorList implements OnInit {
 
   loading = false;
 
-
   displayedColumns = [
-
     'id',
-
     'firstName',
-
     'lastName',
-
     'email',
-
     'phoneNumber',
-
     'specialization',
-
     'experienceYears',
-
     'consultationFee',
-
     'departmentName',
-
     'isAvailable',
-
     'actions'
-
   ];
-
 
   ngOnInit(): void {
 
     this.loadDoctors();
-
-    this.departmentService.getAll().subscribe({
-
-      next: response => {
-
-        this.departments = response.data;
-
-      },
-
-      error: error => {
-
-        console.error(error);
-
-      }
-
-    });
+    this.loadDepartments();
 
   }
 
-
   loadDoctors(): void {
+
+    this.loading = true;
 
     this.service.getAll().subscribe({
 
       next: response => {
 
-        console.log(response);
-
-        this.doctors = response.data;
+        this.doctors = response.data ?? [];
 
         this.loading = false;
 
@@ -113,9 +80,16 @@ export class DoctorList implements OnInit {
 
       error: error => {
 
-        console.error(error);
+        console.error(
+          'Failed to load doctors:',
+          error
+        );
 
         this.loading = false;
+
+        this.notification.error(
+          'Unable to load doctors'
+        );
 
       }
 
@@ -123,28 +97,48 @@ export class DoctorList implements OnInit {
 
   }
 
+  loadDepartments(): void {
+
+    this.departmentService.getAll().subscribe({
+
+      next: response => {
+
+        this.departments = response.data ?? [];
+
+      },
+
+      error: error => {
+
+        console.error(
+          'Failed to load departments:',
+          error
+        );
+
+        this.notification.error(
+          'Unable to load departments'
+        );
+
+      }
+
+    });
+
+  }
 
   openDialog(doctor?: Doctor): void {
-
-    console.log(
-      doctor
-        ? 'Edit Doctor clicked'
-        : 'Add Doctor clicked'
-    );
-
 
     const dialogRef = this.dialog.open(
       DoctorDialog,
       {
         width: '700px',
+        maxWidth: '95vw',
+        disableClose: true,
         data: doctor
       }
     );
 
-
     dialogRef.afterClosed().subscribe(result => {
 
-      if (result) {
+      if (result === true) {
 
         this.loadDoctors();
 
@@ -154,42 +148,58 @@ export class DoctorList implements OnInit {
 
   }
 
-  deleteDoctor(id: number): void {
+  deleteDoctor(doctor: Doctor): void {
 
-  const confirmed = confirm(
-    'Are you sure you want to delete this doctor?'
-  );
+    const dialogRef = this.dialog.open(
+      DeleteConfirmation,
+      {
+        width: '420px',
+        maxWidth: '95vw',
+        data: {
+          name: `Dr. ${doctor.firstName} ${doctor.lastName}`
+        }
+      }
+    );
 
-  if (!confirmed) {
+    dialogRef.afterClosed().subscribe(confirmed => {
 
-    return;
+      if (confirmed !== true) {
+        return;
+      }
+
+      this.loading = true;
+
+      this.service.delete(doctor.id).subscribe({
+
+        next: () => {
+
+          this.notification.success(
+            'Doctor deleted successfully'
+          );
+
+          this.loadDoctors();
+
+        },
+
+        error: error => {
+
+          console.error(
+            'Failed to delete doctor:',
+            error
+          );
+
+          this.loading = false;
+
+          this.notification.error(
+            'Unable to delete doctor'
+          );
+
+        }
+
+      });
+
+    });
 
   }
-
-  this.service.delete(id).subscribe({
-
-    next: () => {
-
-      this.notification.success(
-        'Doctor deleted successfully'
-      );
-
-      this.loadDoctors();
-
-    },
-
-    error: error => {
-
-      console.error(error);
-
-      this.notification.error(
-        'Unable to delete doctor'
-      );
-
-    }
-
-  });
-
-}
 
 }

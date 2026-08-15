@@ -1,0 +1,100 @@
+<h2 mat-dialog-title>
+  Delete Patient
+</h2>
+
+
+<mat-dialog-content>
+
+  <p class="message">
+    Are you sure you want to delete
+    <strong>
+      {{ data.firstName }} {{ data.lastName }}
+    </strong>?
+  </p>
+
+
+  <div class="patient-details">
+
+    <div class="detail-row">
+
+      <span class="label">
+        Patient ID
+      </span>
+
+      <span class="value">
+        {{ data.id }}
+      </span>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Name
+      </span>
+
+      <span class="value">
+        {{ data.firstName }} {{ data.lastName }}
+      </span>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Phone
+      </span>
+
+      <span class="value">
+        {{ data.phoneNumber }}
+      </span>
+
+    </div>
+
+
+    @if (data.email) {
+
+      <div class="detail-row">
+
+        <span class="label">
+          Email
+        </span>
+
+        <span class="value">
+          {{ data.email }}
+        </span>
+
+      </div>
+
+    }
+
+  </div>
+
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+
+  <button
+    mat-button
+    type="button"
+    (click)="cancel()">
+
+    Cancel
+
+  </button>
+
+
+  <button
+    mat-raised-button
+    color="warn"
+    type="button"
+    (click)="delete()">
+
+    Delete
+
+  </button>
+
+</mat-dialog-actions>

@@ -8,7 +8,6 @@
 
   </div>
 
-
   <button
     mat-stroked-button
     type="button"
@@ -152,7 +151,7 @@
 
       <td mat-cell *matCellDef="let d">
 
-        ₹ {{ d.consultationFee }}
+        ₹{{ d.consultationFee | number:'1.2-2' }}
 
       </td>
 
@@ -232,7 +231,7 @@
             type="button"
             class="delete-button"
             aria-label="Delete doctor"
-            (click)="deleteDoctor(d.id)">
+            (click)="deleteDoctor(d)">
 
             <mat-icon>delete</mat-icon>
 

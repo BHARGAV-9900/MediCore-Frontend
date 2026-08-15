@@ -1,10 +1,17 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { MATERIAL_MODULES } from '../../../../shared/material/material';
 
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef
+} from '@angular/material/dialog';
 
 import { Doctor } from '../../models/doctor';
 import { CreateDoctor } from '../../models/create-doctor';
@@ -41,7 +48,7 @@ export class DoctorDialog implements OnInit {
     inject(NotificationService);
 
   private readonly departmentService =
-  inject(DepartmentService);
+    inject(DepartmentService);
 
   readonly data = inject(MAT_DIALOG_DATA, {
     optional: true
@@ -49,112 +56,167 @@ export class DoctorDialog implements OnInit {
 
   departments: Department[] = [];
 
+  loadingDepartments = false;
+
+  saving = false;
 
   form = this.fb.group({
 
-    firstName: ['', Validators.required],
+    firstName: [
+      '',
+      [
+        Validators.required,
+        Validators.maxLength(100)
+      ]
+    ],
 
-    lastName: ['', Validators.required],
+    lastName: [
+      '',
+      [
+        Validators.required,
+        Validators.maxLength(100)
+      ]
+    ],
 
-    email: ['', [
-      Validators.required,
-      Validators.email
-    ]],
+    email: [
+      '',
+      [
+        Validators.required,
+        Validators.email,
+        Validators.maxLength(200)
+      ]
+    ],
 
-    phoneNumber: ['', Validators.required],
+    phoneNumber: [
+      '',
+      [
+        Validators.required,
+        Validators.maxLength(20)
+      ]
+    ],
 
-    specialization: ['', Validators.required],
+    specialization: [
+      '',
+      [
+        Validators.required,
+        Validators.maxLength(150)
+      ]
+    ],
 
-    experienceYears: [0, [
-      Validators.required,
-      Validators.min(0)
-    ]],
+    experienceYears: [
+      0,
+      [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(60)
+      ]
+    ],
 
-    consultationFee: [0, [
-      Validators.required,
-      Validators.min(0)
-    ]],
+    consultationFee: [
+      0,
+      [
+        Validators.required,
+        Validators.min(0)
+      ]
+    ],
 
-    departmentId: [null as number | null, Validators.required]
+    departmentId: [
+      null as number | null,
+      Validators.required
+    ]
 
   });
 
+  ngOnInit(): void {
 
-ngOnInit(): void {
+    this.loadDepartments();
 
-  this.loadDepartments();
+    if (this.data) {
 
-  console.log('Doctor Data:', this.data);
+      this.form.patchValue({
 
-  if (this.data) {
+        firstName: this.data.firstName,
 
-    this.form.patchValue({
+        lastName: this.data.lastName,
 
-      firstName: this.data.firstName,
+        email: this.data.email,
 
-      lastName: this.data.lastName,
+        phoneNumber: this.data.phoneNumber,
 
-      email: this.data.email,
+        specialization: this.data.specialization,
 
-      phoneNumber: this.data.phoneNumber,
+        experienceYears: this.data.experienceYears,
 
-      specialization: this.data.specialization,
+        consultationFee: this.data.consultationFee,
 
-      experienceYears: this.data.experienceYears,
+        departmentId: this.data.departmentId
 
-      consultationFee: this.data.consultationFee,
+      });
 
-      departmentId: this.data.departmentId
+    }
+
+  }
+
+  loadDepartments(): void {
+
+    this.loadingDepartments = true;
+
+    this.departmentService.getAll().subscribe({
+
+      next: response => {
+
+        this.departments = response.data ?? [];
+
+        this.loadingDepartments = false;
+
+      },
+
+      error: error => {
+
+        console.error(
+          'Unable to load departments:',
+          error
+        );
+
+        this.loadingDepartments = false;
+
+        this.notification.error(
+          'Unable to load departments'
+        );
+
+      }
 
     });
 
   }
 
-}
-
-loadDepartments(): void {
-
-  this.departmentService.getAll().subscribe({
-
-    next: response => {
-
-      this.departments = response.data;
-
-    },
-
-    error: error => {
-
-      console.error('Unable to load departments', error);
-
-    }
-
-  });
-
-}
-
-
   createDoctor(): void {
 
     const model: CreateDoctor = {
 
-      firstName: this.form.value.firstName!,
+      firstName: this.form.value.firstName!.trim(),
 
-      lastName: this.form.value.lastName!,
+      lastName: this.form.value.lastName!.trim(),
 
-      email: this.form.value.email!,
+      email: this.form.value.email!.trim(),
 
-      phoneNumber: this.form.value.phoneNumber!,
+      phoneNumber: this.form.value.phoneNumber!.trim(),
 
-      specialization: this.form.value.specialization!,
+      specialization:
+        this.form.value.specialization!.trim(),
 
-      experienceYears: this.form.value.experienceYears!,
+      experienceYears:
+        this.form.value.experienceYears!,
 
-      consultationFee: this.form.value.consultationFee!,
+      consultationFee:
+        this.form.value.consultationFee!,
 
-      departmentId: this.form.value.departmentId!
+      departmentId:
+        this.form.value.departmentId!
 
     };
 
+    this.saving = true;
 
     this.service.create(model).subscribe({
 
@@ -164,13 +226,20 @@ loadDepartments(): void {
           'Doctor created successfully'
         );
 
+        this.saving = false;
+
         this.dialogRef.close(true);
 
       },
 
       error: error => {
 
-        console.error(error);
+        console.error(
+          'Unable to create doctor:',
+          error
+        );
+
+        this.saving = false;
 
         this.notification.error(
           'Unable to create doctor'
@@ -182,31 +251,35 @@ loadDepartments(): void {
 
   }
 
-
   updateDoctor(): void {
 
     const model: UpdateDoctor = {
 
       id: this.data!.id,
 
-      firstName: this.form.value.firstName!,
+      firstName: this.form.value.firstName!.trim(),
 
-      lastName: this.form.value.lastName!,
+      lastName: this.form.value.lastName!.trim(),
 
-      email: this.form.value.email!,
+      email: this.form.value.email!.trim(),
 
-      phoneNumber: this.form.value.phoneNumber!,
+      phoneNumber: this.form.value.phoneNumber!.trim(),
 
-      specialization: this.form.value.specialization!,
+      specialization:
+        this.form.value.specialization!.trim(),
 
-      experienceYears: this.form.value.experienceYears!,
+      experienceYears:
+        this.form.value.experienceYears!,
 
-      consultationFee: this.form.value.consultationFee!,
+      consultationFee:
+        this.form.value.consultationFee!,
 
-      departmentId: this.form.value.departmentId!
+      departmentId:
+        this.form.value.departmentId!
 
     };
 
+    this.saving = true;
 
     this.service.update(model).subscribe({
 
@@ -216,13 +289,20 @@ loadDepartments(): void {
           'Doctor updated successfully'
         );
 
+        this.saving = false;
+
         this.dialogRef.close(true);
 
       },
 
       error: error => {
 
-        console.error(error);
+        console.error(
+          'Unable to update doctor:',
+          error
+        );
+
+        this.saving = false;
 
         this.notification.error(
           'Unable to update doctor'
@@ -234,8 +314,11 @@ loadDepartments(): void {
 
   }
 
-
   save(): void {
+
+    if (this.saving) {
+      return;
+    }
 
     if (this.form.invalid) {
 
@@ -245,13 +328,11 @@ loadDepartments(): void {
 
     }
 
-
     if (this.data) {
 
       this.updateDoctor();
 
-    }
-    else {
+    } else {
 
       this.createDoctor();
 
@@ -259,8 +340,11 @@ loadDepartments(): void {
 
   }
 
-
   close(): void {
+
+    if (this.saving) {
+      return;
+    }
 
     this.dialogRef.close();
 

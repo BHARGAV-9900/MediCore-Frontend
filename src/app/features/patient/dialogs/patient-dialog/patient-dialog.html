@@ -1,180 +1,325 @@
 <h2 mat-dialog-title>
-
-    {{ data ? 'Update Patient' : 'Create Patient' }}
-
+  {{ data ? 'Update Patient' : 'Create Patient' }}
 </h2>
+
 
 <mat-dialog-content>
 
-<form [formGroup]="form">
+  <form [formGroup]="form">
 
-<h3>Personal Information</h3>
+    <!-- Personal Information -->
 
-<div class="row">
+    <h3>Personal Information</h3>
 
-<mat-form-field appearance="outline">
+    <div class="row">
 
-<mat-label>First Name</mat-label>
+      <mat-form-field appearance="outline">
 
-<input
-matInput
-formControlName="firstName">
+        <mat-label>First Name</mat-label>
 
-</mat-form-field>
+        <input
+          matInput
+          formControlName="firstName"
+          autocomplete="given-name">
 
-<mat-form-field appearance="outline">
+        @if (
+          form.controls.firstName.hasError('required') &&
+          form.controls.firstName.touched
+        ) {
 
-<mat-label>Last Name</mat-label>
+          <mat-error>
+            First name is required
+          </mat-error>
 
-<input
-matInput
-formControlName="lastName">
+        }
 
-</mat-form-field>
+      </mat-form-field>
 
-</div>
 
+      <mat-form-field appearance="outline">
 
-<div class="row">
+        <mat-label>Last Name</mat-label>
 
-<mat-form-field appearance="outline">
+        <input
+          matInput
+          formControlName="lastName"
+          autocomplete="family-name">
 
-<mat-label>Date of Birth</mat-label>
+        @if (
+          form.controls.lastName.hasError('required') &&
+          form.controls.lastName.touched
+        ) {
 
-<input
-matInput
-type="date"
-formControlName="dateOfBirth">
+          <mat-error>
+            Last name is required
+          </mat-error>
 
-</mat-form-field>
+        }
 
+      </mat-form-field>
 
-<mat-form-field appearance="outline">
+    </div>
 
-<mat-label>Gender</mat-label>
 
-<mat-select formControlName="gender">
+    <div class="row">
 
-@for (g of genders; track g.id){
+      <mat-form-field appearance="outline">
 
-<mat-option [value]="g.id">
+        <mat-label>Date of Birth</mat-label>
 
-{{ g.name }}
+        <input
+          matInput
+          type="date"
+          formControlName="dateOfBirth">
 
-</mat-option>
+        @if (
+          form.controls.dateOfBirth.hasError('required') &&
+          form.controls.dateOfBirth.touched
+        ) {
 
-}
+          <mat-error>
+            Date of birth is required
+          </mat-error>
 
-</mat-select>
+        }
 
-</mat-form-field>
+      </mat-form-field>
 
-</div>
 
+      <mat-form-field appearance="outline">
 
-<mat-form-field appearance="outline" class="full-width">
+        <mat-label>Gender</mat-label>
 
-<mat-label>Blood Group</mat-label>
+        <mat-select
+          formControlName="gender">
 
-<mat-select formControlName="bloodGroup">
+          @for (
+            gender of genders;
+            track gender.id
+          ) {
 
-@for (b of bloodGroups; track b.id){
+            <mat-option
+              [value]="gender.id">
 
-<mat-option [value]="b.id">
+              {{ gender.name }}
 
-{{ b.name }}
+            </mat-option>
 
-</mat-option>
+          }
 
-}
+        </mat-select>
 
-</mat-select>
+        @if (
+          form.controls.gender.invalid &&
+          form.controls.gender.touched
+        ) {
 
-</mat-form-field>
+          <mat-error>
+            Gender is required
+          </mat-error>
 
+        }
 
-<mat-form-field appearance="outline">
+      </mat-form-field>
 
-    <mat-label>Phone Number</mat-label>
+    </div>
 
-    <input
-        matInput
-        formControlName="phoneNumber">
 
-</mat-form-field>
+    <div class="row">
 
-<mat-form-field appearance="outline">
+      <mat-form-field appearance="outline">
 
-    <mat-label>Email</mat-label>
+        <mat-label>Blood Group</mat-label>
 
-    <input
-        matInput
-        formControlName="email">
+        <mat-select
+          formControlName="bloodGroup">
 
-</mat-form-field>
+          @for (
+            bloodGroup of bloodGroups;
+            track bloodGroup.id
+          ) {
 
+            <mat-option
+              [value]="bloodGroup.id">
 
-<mat-form-field appearance="outline">
+              {{ bloodGroup.name }}
 
-    <mat-label>Address</mat-label>
+            </mat-option>
 
-    <textarea
-        matInput
-        rows="3"
-        formControlName="address">
+          }
 
-    </textarea>
+        </mat-select>
 
-</mat-form-field>
+        @if (
+          form.controls.bloodGroup.invalid &&
+          form.controls.bloodGroup.touched
+        ) {
 
-<mat-form-field appearance="outline">
+          <mat-error>
+            Blood group is required
+          </mat-error>
 
-    <mat-label>Emergency Contact Name</mat-label>
+        }
 
-    <input
-        matInput
-        formControlName="emergencyContactName">
+      </mat-form-field>
 
-</mat-form-field>
 
-<mat-form-field appearance="outline">
+      <mat-form-field appearance="outline">
 
-    <mat-label>Emergency Contact Phone</mat-label>
+        <mat-label>Phone Number</mat-label>
 
-    <input
-        matInput
-        formControlName="emergencyContactPhone">
+        <input
+          matInput
+          type="tel"
+          formControlName="phoneNumber"
+          autocomplete="tel">
 
-</mat-form-field>
+        @if (
+          form.controls.phoneNumber.hasError('required') &&
+          form.controls.phoneNumber.touched
+        ) {
 
-<mat-form-field appearance="outline">
+          <mat-error>
+            Phone number is required
+          </mat-error>
 
-    <mat-label>Insurance Number</mat-label>
+        }
 
-    <input
+      </mat-form-field>
+
+    </div>
+
+
+    <!-- Contact Information -->
+
+    <h3>Contact Information</h3>
+
+
+    <div class="row">
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>Email</mat-label>
+
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          autocomplete="email">
+
+        @if (
+          form.controls.email.hasError('email') &&
+          form.controls.email.touched
+        ) {
+
+          <mat-error>
+            Enter a valid email address
+          </mat-error>
+
+        }
+
+      </mat-form-field>
+
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>Address</mat-label>
+
+        <input
+          matInput
+          formControlName="address"
+          autocomplete="street-address">
+
+      </mat-form-field>
+
+    </div>
+
+
+    <!-- Emergency Contact -->
+
+    <h3>Emergency Contact</h3>
+
+
+    <div class="row">
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>Emergency Contact Name</mat-label>
+
+        <input
+          matInput
+          formControlName="emergencyContactName">
+
+      </mat-form-field>
+
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>Emergency Contact Phone</mat-label>
+
+        <input
+          matInput
+          type="tel"
+          formControlName="emergencyContactPhone">
+
+      </mat-form-field>
+
+    </div>
+
+
+    <!-- Insurance -->
+
+    <h3>Insurance</h3>
+
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>Insurance Number</mat-label>
+
+      <input
         matInput
         formControlName="insuranceNumber">
 
-</mat-form-field>
+    </mat-form-field>
+
+  </form>
+
+</mat-dialog-content>
 
 
-<div class="actions">
+<mat-dialog-actions align="end">
 
-    <button
-        mat-button
-        (click)="close()">
+  <button
+    mat-button
+    type="button"
+    [disabled]="saving"
+    (click)="close()">
 
-        Cancel
+    Cancel
 
-    </button>
+  </button>
 
-    <button
-        mat-raised-button
-        color="primary"
-        (click)="save()">
 
-        {{ data ? 'Update' : 'Save' }}
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    [disabled]="saving"
+    (click)="save()">
 
-    </button>
+    @if (saving) {
 
-</div>
+      Saving...
+
+    }
+    @else {
+
+      {{ data ? 'Update' : 'Save' }}
+
+    }
+
+  </button>
+
+</mat-dialog-actions>

@@ -20,8 +20,18 @@ import { Appointment }
 import { AppointmentDialog }
   from '../../dialogs/appointment-dialog/appointment-dialog';
 
+import { AppointmentDeleteConfirmation }
+  from '../../dialogs/delete-confirmation/delete-confirmation';
+
+import {
+  AppointmentStatusConfirmation,
+  AppointmentStatusConfirmationData
+} from '../../dialogs/status-confirmation/status-confirmation';
+
 import { NotificationService }
   from '../../../../core/services/notification.service';
+
+
 
 
 @Component({
@@ -157,53 +167,65 @@ export class AppointmentList implements OnInit {
   // Delete Appointment
   // =========================================================
 
-  deleteAppointment(
-    id: number
-  ): void {
+ deleteAppointment(
+  appointment: Appointment
+): void {
 
-    const confirmed =
-      confirm(
-        'Are you sure you want to delete this appointment?'
-      );
-
-
-    if (!confirmed) {
-
-      return;
-
-    }
+  const dialogRef =
+    this.dialog.open(
+      AppointmentDeleteConfirmation,
+      {
+        width: '450px',
+        maxWidth: '95vw',
+        data: appointment
+      }
+    );
 
 
-    this.service.delete(id).subscribe({
+  dialogRef.afterClosed().subscribe(
+    confirmed => {
 
-      next: () => {
+      if (!confirmed) {
 
-        this.notification.success(
-          'Appointment deleted successfully'
-        );
-
-        this.loadAppointments();
-
-      },
-
-      error: error => {
-
-        console.error(
-          'Delete appointment error:',
-          error
-        );
-
-        this.notification.error(
-          error?.error?.message ??
-          'Unable to delete appointment'
-        );
+        return;
 
       }
 
-    });
 
-  }
+      this.service
+        .delete(appointment.id)
+        .subscribe({
 
+          next: () => {
+
+            this.notification.success(
+              'Appointment deleted successfully'
+            );
+
+            this.loadAppointments();
+
+          },
+
+          error: error => {
+
+            console.error(
+              'Delete appointment error:',
+              error
+            );
+
+            this.notification.error(
+              error?.error?.message ??
+              'Unable to delete appointment'
+            );
+
+          }
+
+        });
+
+    }
+  );
+
+}
 
   // =========================================================
   // Get Readable Status
@@ -247,16 +269,50 @@ export class AppointmentList implements OnInit {
   // =========================================================
 
   checkIn(
-    appointment: Appointment
-  ): void {
+  appointment: Appointment
+): void {
 
-    this.updateStatus(
-      appointment,
-      2,
-      'Check in'
+  const data: AppointmentStatusConfirmationData = {
+
+    appointment,
+
+    action: 'check-in'
+
+  };
+
+
+  const dialogRef =
+    this.dialog.open(
+      AppointmentStatusConfirmation,
+      {
+        width: '450px',
+        maxWidth: '95vw',
+        maxHeight: '90vh',
+        data
+      }
     );
 
-  }
+
+  dialogRef.afterClosed().subscribe(
+    confirmed => {
+
+      if (!confirmed) {
+
+        return;
+
+      }
+
+
+      this.updateStatus(
+        appointment,
+        2,
+        'Check in'
+      );
+
+    }
+  );
+
+}
 
 
   // =========================================================
@@ -301,30 +357,50 @@ export class AppointmentList implements OnInit {
   // =========================================================
 
   cancelAppointment(
-    appointment: Appointment
-  ): void {
+  appointment: Appointment
+): void {
 
-    const confirmed =
-      confirm(
-        'Are you sure you want to cancel this appointment?'
-      );
+  const data: AppointmentStatusConfirmationData = {
 
+    appointment,
 
-    if (!confirmed) {
+    action: 'cancel'
 
-      return;
-
-    }
+  };
 
 
-    this.updateStatus(
-      appointment,
-      5,
-      'Cancel appointment'
+  const dialogRef =
+    this.dialog.open(
+      AppointmentStatusConfirmation,
+      {
+        width: '450px',
+        maxWidth: '95vw',
+        maxHeight: '90vh',
+        data
+      }
     );
 
-  }
 
+  dialogRef.afterClosed().subscribe(
+    confirmed => {
+
+      if (!confirmed) {
+
+        return;
+
+      }
+
+
+      this.updateStatus(
+        appointment,
+        5,
+        'Cancel appointment'
+      );
+
+    }
+  );
+
+}
 
   // =========================================================
   // Mark No Show
@@ -332,29 +408,50 @@ export class AppointmentList implements OnInit {
   // =========================================================
 
   markNoShow(
-    appointment: Appointment
-  ): void {
+  appointment: Appointment
+): void {
 
-    const confirmed =
-      confirm(
-        'Are you sure you want to mark this appointment as No Show?'
-      );
+  const data: AppointmentStatusConfirmationData = {
 
+    appointment,
 
-    if (!confirmed) {
+    action: 'no-show'
 
-      return;
-
-    }
+  };
 
 
-    this.updateStatus(
-      appointment,
-      6,
-      'Mark as No Show'
+  const dialogRef =
+    this.dialog.open(
+      AppointmentStatusConfirmation,
+      {
+        width: '450px',
+        maxWidth: '95vw',
+        maxHeight: '90vh',
+        data
+      }
     );
 
-  }
+
+  dialogRef.afterClosed().subscribe(
+    confirmed => {
+
+      if (!confirmed) {
+
+        return;
+
+      }
+
+
+      this.updateStatus(
+        appointment,
+        6,
+        'Mark as No Show'
+      );
+
+    }
+  );
+
+}
 
 
   // =========================================================

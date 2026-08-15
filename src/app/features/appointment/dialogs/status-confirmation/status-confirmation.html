@@ -1,0 +1,92 @@
+<h2 mat-dialog-title>
+  {{ title }}
+</h2>
+
+<div class="dialog-content">
+
+  <p class="message">
+    {{ message }}
+  </p>
+
+  <div class="appointment-details">
+
+    <div class="detail-row">
+
+      <span class="label">
+        Patient
+      </span>
+
+      <span class="value">
+        {{ data.appointment.patientName }}
+      </span>
+
+    </div>
+
+    <div class="detail-row">
+
+      <span class="label">
+        Doctor
+      </span>
+
+      <span class="value doctor-name">
+        {{ data.appointment.doctorName }}
+      </span>
+
+    </div>
+
+    <div class="detail-row">
+
+      <span class="label">
+        Date
+      </span>
+
+      <span class="value">
+        {{
+          data.appointment.appointmentDate
+            | date:'dd-MM-yyyy'
+        }}
+      </span>
+
+    </div>
+
+    <div class="detail-row">
+
+      <span class="label">
+        Time
+      </span>
+
+      <span class="value">
+        {{
+          data.appointment.appointmentDate
+            | date:'hh:mm a'
+        }}
+      </span>
+
+    </div>
+
+  </div>
+
+</div>
+
+<mat-dialog-actions align="end">
+
+  <button
+    mat-button
+    type="button"
+    (click)="close()">
+
+    Close
+
+  </button>
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    (click)="confirm()">
+
+    {{ confirmText }}
+
+  </button>
+
+</mat-dialog-actions>

@@ -1,6 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { MatDialog } from '@angular/material/dialog';
 
 import { MATERIAL_MODULES } from '../../../../shared/material/material';
@@ -9,6 +8,7 @@ import { DepartmentService } from '../../services/department.service';
 import { Department } from '../../models/department';
 
 import { DepartmentDialog } from '../../dialogs/department-dialog/department-dialog';
+import { DeleteConfirmation } from '../../dialogs/delete-confirmation/delete-confirmation';
 
 import { NotificationService } from '../../../../core/services/notification.service';
 
@@ -24,14 +24,9 @@ import { NotificationService } from '../../../../core/services/notification.serv
 })
 export class DepartmentList implements OnInit {
 
-  private readonly service =
-    inject(DepartmentService);
-
-  private readonly dialog =
-    inject(MatDialog);
-
-  private readonly notification =
-    inject(NotificationService);
+  private readonly service = inject(DepartmentService);
+  private readonly dialog = inject(MatDialog);
+  private readonly notification = inject(NotificationService);
 
   departments: Department[] = [];
 
@@ -45,9 +40,7 @@ export class DepartmentList implements OnInit {
   ];
 
   ngOnInit(): void {
-
     this.loadDepartments();
-
   }
 
   loadDepartments(): void {
@@ -58,10 +51,7 @@ export class DepartmentList implements OnInit {
 
       next: response => {
 
-        console.log(response);
-
-        this.departments =
-          response.data;
+        this.departments = response.data ?? [];
 
         this.loading = false;
 
@@ -69,87 +59,93 @@ export class DepartmentList implements OnInit {
 
       error: error => {
 
-        console.error(error);
+        console.error('Failed to load departments:', error);
 
         this.loading = false;
+
+        this.notification.error(
+          'Unable to load departments'
+        );
 
       }
 
     });
-
   }
 
-  openDialog(
-    department?: Department
-  ): void {
+  openDialog(department?: Department): void {
 
-    const dialogRef =
-      this.dialog.open(
-        DepartmentDialog,
-        {
-          width: '560px',
-          data: department
-        }
-      );
-
-    dialogRef.afterClosed().subscribe(
-      result => {
-
-        if (result) {
-
-          this.loadDepartments();
-
-        }
-
+    const dialogRef = this.dialog.open(
+      DepartmentDialog,
+      {
+        width: '560px',
+        maxWidth: '95vw',
+        disableClose: true,
+        data: department
       }
     );
 
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result === true) {
+        this.loadDepartments();
+      }
+
+    });
   }
 
-  editDepartment(
-    department: Department
-  ): void {
+  editDepartment(department: Department): void {
 
     this.openDialog(department);
 
   }
 
-  deleteDepartment(
-    id: number
-  ): void {
+  deleteDepartment(department: Department): void {
 
-    const confirmed =
-      confirm(
-        'Are you sure you want to delete this department?'
-      );
-
-    if (!confirmed) {
-
-      return;
-
-    }
-
-    this.service.delete(id).subscribe({
-
-      next: () => {
-
-        this.notification.success(
-          'Department deleted successfully'
-        );
-
-        this.loadDepartments();
-
-      },
-
-      error: error => {
-
-        console.error(error);
-
-        this.notification.error(
-          'Unable to delete department'
-        );
-
+    const dialogRef = this.dialog.open(
+      DeleteConfirmation,
+      {
+        width: '420px',
+        maxWidth: '95vw',
+        data: department
       }
+    );
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+
+      if (confirmed !== true) {
+        return;
+      }
+
+      this.loading = true;
+
+      this.service.delete(department.id).subscribe({
+
+        next: () => {
+
+          this.notification.success(
+            'Department deleted successfully'
+          );
+
+          this.loadDepartments();
+
+        },
+
+        error: error => {
+
+          console.error(
+            'Failed to delete department:',
+            error
+          );
+
+          this.loading = false;
+
+          this.notification.error(
+            'Unable to delete department'
+          );
+
+        }
+
+      });
 
     });
 

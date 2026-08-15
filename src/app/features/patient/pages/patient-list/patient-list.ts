@@ -12,6 +12,9 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { PatientDialog } from '../../dialogs/patient-dialog/patient-dialog';
 
+import { PatientDeleteConfirmation }
+  from '../../dialogs/delete-confirmation/delete-confirmation';
+
 import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
@@ -96,31 +99,54 @@ export class PatientList implements OnInit {
 
 }
 
-deletePatient(id: number): void {
+deletePatient(patient: Patient): void {
 
-  if (!confirm('Are you sure you want to delete this patient?')) {
-    return;
-  }
+  const dialogRef = this.dialog.open(
+    PatientDeleteConfirmation,
+    {
+      width: '500px',
+      maxWidth: '95vw',
+      data: patient
+    }
+  );
 
-  this.service.delete(id).subscribe({
 
-    next: () => {
+  dialogRef.afterClosed().subscribe(
+    confirmed => {
 
-      this.notification.success('Patient deleted successfully');
+      if (!confirmed) {
 
-      this.loadPatients();
+        return;
 
-    },
+      }
 
-    error: error => {
 
-      console.error(error);
+      this.service.delete(patient.id).subscribe({
 
-      this.notification.error('Unable to delete patient');
+        next: () => {
+
+          this.notification.success(
+            'Patient deleted successfully'
+          );
+
+          this.loadPatients();
+
+        },
+
+        error: error => {
+
+          console.error(error);
+
+          this.notification.error(
+            'Unable to delete patient'
+          );
+
+        }
+
+      });
 
     }
-
-  });
+  );
 
 }
 

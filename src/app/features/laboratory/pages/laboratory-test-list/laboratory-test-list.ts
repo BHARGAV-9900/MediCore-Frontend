@@ -20,6 +20,9 @@ from '../../models/laboratory-test';
 import { LaboratoryTestDialog }
 from '../../dialogs/laboratory-test-dialog/laboratory-test-dialog';
 
+import { LaboratoryTestDeleteConfirmation }
+  from '../../dialogs/laboratory-test-delete-confirmation/laboratory-test-delete-confirmation';
+
 import { NotificationService }
 from '../../../../core/services/notification.service';
 
@@ -153,50 +156,60 @@ implements OnInit {
   // Delete laboratory test
 
   deleteLaboratoryTest(
-    id: number
-  ): void {
+  laboratoryTest: LaboratoryTest
+): void {
 
-    const confirmed =
-      confirm(
-        'Are you sure you want to delete this laboratory test?'
-      );
+  const dialogRef =
+    this.dialog.open(
+      LaboratoryTestDeleteConfirmation,
+      {
+        width: '500px',
+        maxWidth: '95vw',
+        data: laboratoryTest
+      }
+    );
 
 
-    if (!confirmed) {
+  dialogRef.afterClosed().subscribe(
+    confirmed => {
 
-      return;
+      if (!confirmed) {
+
+        return;
+
+      }
+
+
+      this.service
+        .delete(laboratoryTest.id)
+        .subscribe({
+
+          next: () => {
+
+            this.notification.success(
+              'Laboratory test deleted successfully'
+            );
+
+            this.loadLaboratoryTests();
+
+          },
+
+          error: error => {
+
+            console.error(error);
+
+            this.notification.error(
+              error?.error?.message ??
+              'Unable to delete laboratory test'
+            );
+
+          }
+
+        });
 
     }
+  );
 
-
-    this.service.delete(id).subscribe({
-
-      next: () => {
-
-        this.notification.success(
-          'Laboratory test deleted successfully'
-        );
-
-        this.loadLaboratoryTests();
-
-      },
-
-
-      error: error => {
-        console.error(
-          'Failed to create laboratory test:',
-          error
-        );
-
-        this.loading = false;
-
-        this.notification.error(
-          error?.error?.message ??
-          'Unable to create laboratory test'
-        );
-      }
-    });
-
-  }
+}
 
 }

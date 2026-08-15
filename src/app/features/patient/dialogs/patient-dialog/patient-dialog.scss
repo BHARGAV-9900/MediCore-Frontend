@@ -1,0 +1,73 @@
+:host {
+  display: block;
+}
+
+
+mat-dialog-content {
+  padding-top: 0;
+  max-height: 70vh;
+}
+
+
+form {
+  padding-top: 4px;
+}
+
+
+h3 {
+  margin: 18px 0 12px;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  color: #444;
+
+  &:first-child {
+    margin-top: 4px;
+  }
+}
+
+
+.row {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+
+mat-form-field {
+  width: 100%;
+}
+
+
+.full-width {
+  width: 100%;
+}
+
+
+mat-dialog-actions {
+  padding: 12px 24px 20px;
+
+  gap: 8px;
+}
+
+
+mat-dialog-actions button {
+  border-radius: 24px;
+}
+
+
+@media (max-width: 700px) {
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  mat-dialog-content {
+    max-height: 65vh;
+  }
+
+}

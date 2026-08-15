@@ -1,0 +1,103 @@
+<h2 mat-dialog-title>
+  Delete Laboratory Test
+</h2>
+
+
+<mat-dialog-content>
+
+  <p class="message">
+
+    Are you sure you want to delete
+
+    <strong>
+      {{ data.name }}
+    </strong>?
+
+  </p>
+
+
+  <div class="test-details">
+
+    <div class="detail-row">
+
+      <span class="label">
+        Test ID
+      </span>
+
+      <span class="value">
+        {{ data.id }}
+      </span>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Test Name
+      </span>
+
+      <span class="value">
+        {{ data.name }}
+      </span>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Price
+      </span>
+
+      <span class="value">
+        ₹{{ data.price }}
+     </span>
+
+    </div>
+
+
+    @if (data.description) {
+
+      <div class="detail-row">
+
+        <span class="label">
+          Description
+        </span>
+
+        <span class="value">
+          {{ data.description }}
+        </span>
+
+      </div>
+
+    }
+
+  </div>
+
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+
+  <button
+    mat-button
+    type="button"
+    (click)="cancel()">
+
+    Cancel
+
+  </button>
+
+
+  <button
+    mat-raised-button
+    color="warn"
+    type="button"
+    (click)="delete()">
+
+    Delete
+
+  </button>
+
+</mat-dialog-actions>
