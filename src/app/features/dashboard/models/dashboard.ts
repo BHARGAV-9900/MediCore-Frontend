@@ -12,6 +12,8 @@ export interface DashboardData {
 
   totalMedicines: number;
 
+  lowStockMedicines: number;
+
   pendingBills: number;
 
   paidBills: number;

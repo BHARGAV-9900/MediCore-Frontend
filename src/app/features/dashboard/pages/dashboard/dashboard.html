@@ -26,7 +26,9 @@
       class="dashboard-refresh-icon"
       [class.spinning]="loading"
       aria-hidden="true">
+
       refresh
+
     </mat-icon>
 
     <span>
@@ -84,17 +86,13 @@
 
 @if (!loading && dashboard) {
 
-
   <!-- ========================================= -->
   <!-- SUMMARY -->
   <!-- ========================================= -->
 
   <div class="summary-grid">
 
-
-    <!-- ===================================== -->
     <!-- TOTAL PATIENTS -->
-    <!-- ===================================== -->
 
     <div class="summary-card">
 
@@ -121,9 +119,7 @@
     </div>
 
 
-    <!-- ===================================== -->
     <!-- TOTAL DOCTORS -->
-    <!-- ===================================== -->
 
     <div class="summary-card">
 
@@ -150,9 +146,7 @@
     </div>
 
 
-    <!-- ===================================== -->
     <!-- TOTAL DEPARTMENTS -->
-    <!-- ===================================== -->
 
     <div class="summary-card">
 
@@ -179,9 +173,7 @@
     </div>
 
 
-    <!-- ===================================== -->
     <!-- TOTAL APPOINTMENTS -->
-    <!-- ===================================== -->
 
     <div class="summary-card">
 
@@ -235,10 +227,7 @@
 
     <div class="stats-grid">
 
-
-      <!-- ===================================== -->
       <!-- TODAY'S APPOINTMENTS -->
-      <!-- ===================================== -->
 
       <div class="stat-card">
 
@@ -265,9 +254,7 @@
       </div>
 
 
-      <!-- ===================================== -->
       <!-- TOTAL MEDICINES -->
-      <!-- ===================================== -->
 
       <div class="stat-card">
 
@@ -294,9 +281,34 @@
       </div>
 
 
-      <!-- ===================================== -->
+      <!-- LOW STOCK MEDICINES -->
+
+      <div class="stat-card low-stock-card">
+
+        <div class="stat-icon low-stock">
+
+          <mat-icon aria-hidden="true">
+            warning
+          </mat-icon>
+
+        </div>
+
+        <div class="stat-content">
+
+          <span>
+            Low Stock Medicines
+          </span>
+
+          <strong>
+            {{ dashboard.lowStockMedicines }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
       <!-- LABORATORY ORDERS -->
-      <!-- ===================================== -->
 
       <div class="stat-card">
 
@@ -323,9 +335,7 @@
       </div>
 
 
-      <!-- ===================================== -->
-      <!-- TOTAL PRESCRIPTIONS -->
-      <!-- ===================================== -->
+      <!-- PRESCRIPTIONS -->
 
       <div class="stat-card">
 
@@ -350,7 +360,6 @@
         </div>
 
       </div>
-
 
     </div>
 
@@ -382,10 +391,7 @@
 
     <div class="stats-grid">
 
-
-      <!-- ===================================== -->
       <!-- PENDING BILLS -->
-      <!-- ===================================== -->
 
       <div class="stat-card">
 
@@ -412,9 +418,7 @@
       </div>
 
 
-      <!-- ===================================== -->
       <!-- PAID BILLS -->
-      <!-- ===================================== -->
 
       <div class="stat-card">
 
@@ -441,9 +445,7 @@
       </div>
 
 
-      <!-- ===================================== -->
       <!-- TOTAL REVENUE -->
-      <!-- ===================================== -->
 
       <div class="stat-card revenue-card">
 
@@ -469,10 +471,8 @@
 
       </div>
 
-
     </div>
 
   </div>
-
 
 }

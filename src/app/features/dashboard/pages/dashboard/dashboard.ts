@@ -15,7 +15,6 @@ import {
 
 import { MatIconModule } from '@angular/material/icon';
 
-
 @Component({
   selector: 'app-dashboard',
 
@@ -38,11 +37,9 @@ export class Dashboard implements OnInit {
 
   errorMessage = '';
 
-
   constructor(
     private dashboardService: DashboardService
   ) {}
-
 
   ngOnInit(): void {
 
@@ -50,13 +47,11 @@ export class Dashboard implements OnInit {
 
   }
 
-
   loadDashboard(): void {
 
     this.loading = true;
 
     this.errorMessage = '';
-
 
     this.dashboardService
       .getDashboard()
@@ -76,7 +71,6 @@ export class Dashboard implements OnInit {
 
         },
 
-
         error: (error) => {
 
           console.error(
@@ -95,7 +89,6 @@ export class Dashboard implements OnInit {
       });
 
   }
-
 
   refreshDashboard(): void {
 
