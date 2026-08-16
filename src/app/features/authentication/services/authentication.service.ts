@@ -25,10 +25,15 @@ import { ChangePasswordRequest } from '../models/change-password-request';
 
 
 interface ApiResponse<T> {
+
   success: boolean;
+
   message: string;
+
   data: T;
+
   errors: unknown;
+
 }
 
 
@@ -69,24 +74,94 @@ export class AuthenticationService {
 
         tap(response => {
 
-          localStorage.setItem(
-            StorageConstants.ACCESS_TOKEN,
-            response.data.accessToken
-          );
-
-          localStorage.setItem(
-            StorageConstants.REFRESH_TOKEN,
-            response.data.refreshToken
-          );
-
-          localStorage.setItem(
-            StorageConstants.EXPIRES_AT,
+          this.storeAuthentication(
+            response.data.accessToken,
+            response.data.refreshToken,
             response.data.expiresAt
           );
 
         })
 
       );
+
+  }
+
+
+  // =========================================================
+  // REFRESH ACCESS TOKEN
+  // =========================================================
+
+  refreshToken():
+    Observable<LoginResponse> {
+
+    const refreshToken =
+      localStorage.getItem(
+        StorageConstants.REFRESH_TOKEN
+      );
+
+    if (!refreshToken) {
+
+      return new Observable(observer => {
+
+        observer.error(
+          new Error(
+            'Refresh token is not available.'
+          )
+        );
+
+      });
+
+    }
+
+
+    return this.api
+      .post<LoginResponse>(
+        ApiEndpoints.AUTH.REFRESH_TOKEN,
+        {
+          refreshToken
+        }
+      )
+      .pipe(
+
+        tap(response => {
+
+          this.storeAuthentication(
+            response.data.accessToken,
+            response.data.refreshToken,
+            response.data.expiresAt
+          );
+
+        })
+
+      );
+
+  }
+
+
+  // =========================================================
+  // STORE AUTHENTICATION
+  // =========================================================
+
+  private storeAuthentication(
+    accessToken: string,
+    refreshToken: string,
+    expiresAt: string
+  ): void {
+
+    localStorage.setItem(
+      StorageConstants.ACCESS_TOKEN,
+      accessToken
+    );
+
+    localStorage.setItem(
+      StorageConstants.REFRESH_TOKEN,
+      refreshToken
+    );
+
+    localStorage.setItem(
+      StorageConstants.EXPIRES_AT,
+      expiresAt
+    );
 
   }
 
@@ -118,68 +193,84 @@ export class AuthenticationService {
 
 
   // =========================================================
-// INITIALIZE AUTHENTICATION
-// =========================================================
+  // INITIALIZE AUTHENTICATION
+  // =========================================================
 
-initializeAuthentication(): Observable<boolean> {
+  initializeAuthentication():
+    Observable<boolean> {
 
-  const accessToken =
-    localStorage.getItem(
-      StorageConstants.ACCESS_TOKEN
-    );
-
-  // No access token.
-  if (!accessToken) {
-
-    this.currentUserSubject.next(null);
-
-    return of(false);
-
-  }
-
-  // Access token exists.
-  // Restore the current user from backend.
-  return this.loadCurrentUser().pipe(
-
-    tap(response => {
-
-      console.log(
-        'Authentication restored:',
-        response.data
+    const accessToken =
+      localStorage.getItem(
+        StorageConstants.ACCESS_TOKEN
       );
 
-    }),
 
-    map(() => true),
+    // ---------------------------------------------------------
+    // No access token
+    // ---------------------------------------------------------
 
-    catchError(error => {
+    if (!accessToken) {
 
-      console.error(
-        'Failed to restore authentication:',
-        error
-      );
-
-      this.clearAuthentication();
+      this.currentUserSubject.next(null);
 
       return of(false);
 
-    })
+    }
 
-  );
 
-}
+    // ---------------------------------------------------------
+    // Access token exists.
+    // Try restoring current user.
+    // If access token is expired, interceptor will attempt
+    // refresh automatically.
+    // ---------------------------------------------------------
+
+    return this.loadCurrentUser()
+      .pipe(
+
+        tap(response => {
+
+          console.log(
+            'Authentication restored:',
+            response.data
+          );
+
+        }),
+
+        map(() => true),
+
+        catchError(error => {
+
+          console.error(
+            'Failed to restore authentication:',
+            error
+          );
+
+          this.clearAuthentication();
+
+          return of(false);
+
+        })
+
+      );
+
+  }
+
 
   // =========================================================
   // GET CURRENT USER
-  // =========================================================  
+  // =========================================================
+
   getCurrentUser():
-  Observable<ApiResponse<UserProfile>> {
+    Observable<ApiResponse<UserProfile>> {
 
-  return this.api.get<ApiResponse<UserProfile>>(
-    ApiEndpoints.AUTH.ME
-  );
+    return this.api
+      .get<ApiResponse<UserProfile>>(
+        ApiEndpoints.AUTH.ME
+      );
 
-}
+  }
+
 
   // =========================================================
   // CURRENT USER SNAPSHOT
@@ -189,6 +280,19 @@ initializeAuthentication(): Observable<boolean> {
     UserProfile | null {
 
     return this.currentUserSubject.value;
+
+  }
+
+
+  // =========================================================
+  // IS AUTHENTICATED
+  // =========================================================
+
+  isAuthenticated(): boolean {
+
+    return !!localStorage.getItem(
+      StorageConstants.ACCESS_TOKEN
+    );
 
   }
 
@@ -206,31 +310,33 @@ initializeAuthentication(): Observable<boolean> {
       );
 
 
+    // ---------------------------------------------------------
+    // No refresh token
+    // ---------------------------------------------------------
+
     if (!refreshToken) {
 
       this.clearAuthentication();
 
-      return new Observable(observer => {
+      return of({
 
-        observer.next({
+        success: true,
 
-          success: true,
+        message:
+          'Logged out successfully.',
 
-          message:
-            'Logged out successfully.',
+        data: true,
 
-          data: true,
-
-          errors: null
-
-        });
-
-        observer.complete();
+        errors: null
 
       });
 
     }
 
+
+    // ---------------------------------------------------------
+    // Server logout
+    // ---------------------------------------------------------
 
     return this.api
       .post<ApiResponse<boolean>>(
@@ -244,6 +350,19 @@ initializeAuthentication(): Observable<boolean> {
         tap(() => {
 
           this.clearAuthentication();
+
+        }),
+
+        catchError(error => {
+
+          /*
+           * Even if the server logout request fails,
+           * remove the local authentication state.
+           */
+
+          this.clearAuthentication();
+
+          throw error;
 
         })
 
@@ -281,7 +400,8 @@ initializeAuthentication(): Observable<boolean> {
 
   changePassword(
     request: ChangePasswordRequest
-  ): Observable<ApiResponse<boolean>> {
+  ):
+    Observable<ApiResponse<boolean>> {
 
     return this.api.post<ApiResponse<boolean>>(
       ApiEndpoints.AUTH.CHANGE_PASSWORD,
