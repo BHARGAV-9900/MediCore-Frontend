@@ -1,103 +1,119 @@
-<h2 mat-dialog-title>
-  Delete Laboratory Test
-</h2>
+<div class="delete-dialog">
+
+  <div class="delete-icon">
+
+    <mat-icon>
+      delete_outline
+    </mat-icon>
+
+  </div>
 
 
-<mat-dialog-content>
+  <div class="delete-content">
 
-  <p class="message">
-
-    Are you sure you want to delete
-
-    <strong>
-      {{ data.name }}
-    </strong>?
-
-  </p>
+    <h2>
+      Delete Laboratory Test
+    </h2>
 
 
-  <div class="test-details">
-
-    <div class="detail-row">
-
-      <span class="label">
-        Test ID
-      </span>
-
-      <span class="value">
-        {{ data.id }}
-      </span>
-
-    </div>
+    <p>
+      Are you sure you want to delete this laboratory test?
+    </p>
 
 
-    <div class="detail-row">
-
-      <span class="label">
-        Test Name
-      </span>
-
-      <span class="value">
-        {{ data.name }}
-      </span>
-
-    </div>
-
-
-    <div class="detail-row">
-
-      <span class="label">
-        Price
-      </span>
-
-      <span class="value">
-        ₹{{ data.price }}
-     </span>
-
-    </div>
-
-
-    @if (data.description) {
+    <div class="details-card">
 
       <div class="detail-row">
 
         <span class="label">
-          Description
+          Test ID
         </span>
 
         <span class="value">
-          {{ data.description }}
+          #{{ data.id }}
         </span>
 
       </div>
 
-    }
+
+      <div class="detail-row">
+
+        <span class="label">
+          Test Name
+        </span>
+
+        <span class="value">
+          {{ data.name }}
+        </span>
+
+      </div>
+
+
+      <div class="detail-row">
+
+        <span class="label">
+          Price
+        </span>
+
+        <span class="value">
+          ₹{{ data.price }}
+        </span>
+
+      </div>
+
+
+      @if (data.description) {
+
+        <div class="detail-row">
+
+          <span class="label">
+            Description
+          </span>
+
+          <span class="value">
+            {{ data.description }}
+          </span>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <p class="warning">
+      This action cannot be undone.
+    </p>
 
   </div>
 
-</mat-dialog-content>
+
+  <div class="dialog-actions">
+
+    <button
+      mat-button
+      type="button"
+      (click)="cancel()">
+
+      Cancel
+
+    </button>
 
 
-<mat-dialog-actions align="end">
+    <button
+      mat-flat-button
+      type="button"
+      class="delete-button"
+      (click)="delete()">
 
-  <button
-    mat-button
-    type="button"
-    (click)="cancel()">
+      <mat-icon>
+        delete
+      </mat-icon>
 
-    Cancel
+      Delete
 
-  </button>
+    </button>
 
+  </div>
 
-  <button
-    mat-raised-button
-    color="warn"
-    type="button"
-    (click)="delete()">
-
-    Delete
-
-  </button>
-
-</mat-dialog-actions>
+</div>

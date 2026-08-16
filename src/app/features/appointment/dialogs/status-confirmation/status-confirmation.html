@@ -1,12 +1,25 @@
-<h2 mat-dialog-title>
-  {{ title }}
-</h2>
+<div class="status-dialog">
 
-<div class="dialog-content">
+  <div class="status-icon">
+
+    <mat-icon>
+      {{ data.action === 'cancel' || data.action === 'no-show'
+        ? 'warning'
+        : 'help_outline' }}
+    </mat-icon>
+
+  </div>
+
+
+  <h2>
+    {{ title }}
+  </h2>
+
 
   <p class="message">
     {{ message }}
   </p>
+
 
   <div class="appointment-details">
 
@@ -22,17 +35,19 @@
 
     </div>
 
+
     <div class="detail-row">
 
       <span class="label">
         Doctor
       </span>
 
-      <span class="value doctor-name">
+      <span class="value">
         {{ data.appointment.doctorName }}
       </span>
 
     </div>
+
 
     <div class="detail-row">
 
@@ -48,6 +63,7 @@
       </span>
 
     </div>
+
 
     <div class="detail-row">
 
@@ -66,27 +82,50 @@
 
   </div>
 
+
+  <p
+    class="warning"
+    *ngIf="
+      data.action === 'cancel' ||
+      data.action === 'no-show'
+    ">
+
+    This action will change the appointment status.
+
+  </p>
+
+
+  <div class="dialog-actions">
+
+    <button
+      mat-button
+      type="button"
+      class="cancel-button"
+      (click)="close()">
+
+      Cancel
+
+    </button>
+
+
+    <button
+      mat-raised-button
+      type="button"
+      class="confirm-button"
+      [class.danger-button]="
+        data.action === 'cancel' ||
+        data.action === 'no-show'
+      "
+      (click)="confirm()">
+
+      <mat-icon>
+        check
+      </mat-icon>
+
+      {{ confirmText }}
+
+    </button>
+
+  </div>
+
 </div>
-
-<mat-dialog-actions align="end">
-
-  <button
-    mat-button
-    type="button"
-    (click)="close()">
-
-    Close
-
-  </button>
-
-  <button
-    mat-raised-button
-    color="primary"
-    type="button"
-    (click)="confirm()">
-
-    {{ confirmText }}
-
-  </button>
-
-</mat-dialog-actions>

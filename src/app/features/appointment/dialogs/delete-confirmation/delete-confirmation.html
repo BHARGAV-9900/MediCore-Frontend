@@ -1,97 +1,115 @@
-<h2 mat-dialog-title>
+<div class="delete-dialog">
 
-  Delete Appointment
+  <div class="delete-icon">
 
-</h2>
-
-
-<mat-dialog-content>
-
-  <p class="confirmation-message">
-
-    Are you sure you want to delete this appointment?
-
-  </p>
-
-
-  <div class="appointment-details">
-
-    <div class="detail-row">
-
-      <span class="label">
-        Patient
-      </span>
-
-      <span class="value">
-        {{ data.patientName }}
-      </span>
-
-    </div>
-
-
-    <div class="detail-row">
-
-      <span class="label">
-        Doctor
-      </span>
-
-      <span class="value doctor">
-        {{ data.doctorName }}
-      </span>
-
-    </div>
-
-
-    <div class="detail-row">
-
-      <span class="label">
-        Date
-      </span>
-
-      <span class="value">
-        {{ formattedDate }}
-      </span>
-
-    </div>
-
-
-    <div class="detail-row">
-
-      <span class="label">
-        Time
-      </span>
-
-      <span class="value">
-        {{ formattedTime }}
-      </span>
-
-    </div>
+    <mat-icon>
+      delete_outline
+    </mat-icon>
 
   </div>
 
-</mat-dialog-content>
+
+  <div class="delete-content">
+
+    <h2>
+      Delete Appointment
+    </h2>
 
 
-<mat-dialog-actions align="end">
-
-  <button
-    mat-button
-    type="button"
-    (click)="cancel()">
-
-    Cancel
-
-  </button>
+    <p>
+      Are you sure you want to delete this appointment?
+    </p>
 
 
-  <button
-    mat-raised-button
-    color="warn"
-    type="button"
-    (click)="delete()">
+    <div class="details-card">
 
-    Delete
+      <div class="detail-row">
 
-  </button>
+        <span class="label">
+          Patient
+        </span>
 
-</mat-dialog-actions>
+        <span class="value">
+          {{ data.patientName }}
+        </span>
+
+      </div>
+
+
+      <div class="detail-row">
+
+        <span class="label">
+          Doctor
+        </span>
+
+        <span class="value">
+          {{ data.doctorName }}
+        </span>
+
+      </div>
+
+
+      <div class="detail-row">
+
+        <span class="label">
+          Date
+        </span>
+
+        <span class="value">
+          {{ formattedDate }}
+        </span>
+
+      </div>
+
+
+      <div class="detail-row">
+
+        <span class="label">
+          Time
+        </span>
+
+        <span class="value">
+          {{ formattedTime }}
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <p class="warning">
+      This action cannot be undone.
+    </p>
+
+  </div>
+
+
+  <div class="dialog-actions">
+
+    <button
+      mat-button
+      type="button"
+      (click)="cancel()">
+
+      Cancel
+
+    </button>
+
+
+    <button
+      mat-flat-button
+      type="button"
+      class="delete-button"
+      (click)="delete()">
+
+      <mat-icon>
+        delete
+      </mat-icon>
+
+      Delete
+
+    </button>
+
+  </div>
+
+</div>

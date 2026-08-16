@@ -22,7 +22,12 @@ export interface AppointmentStatusConfirmationData {
 
   appointment: Appointment;
 
-  action: 'check-in' | 'cancel' | 'no-show';
+  action:
+    | 'check-in'
+    | 'start-consultation'
+    | 'complete'
+    | 'cancel'
+    | 'no-show';
 
 }
 
@@ -62,11 +67,20 @@ export class AppointmentStatusConfirmation {
       case 'check-in':
         return 'Check In Patient';
 
+      case 'start-consultation':
+        return 'Start Consultation';
+
+      case 'complete':
+        return 'Complete Appointment';
+
       case 'cancel':
         return 'Cancel Appointment';
 
       case 'no-show':
         return 'Mark No Show';
+
+      default:
+        return 'Confirm Action';
 
     }
 
@@ -80,11 +94,20 @@ export class AppointmentStatusConfirmation {
       case 'check-in':
         return 'Are you sure you want to check in this patient?';
 
+      case 'start-consultation':
+        return 'Are you sure you want to start the consultation for this appointment?';
+
+      case 'complete':
+        return 'Are you sure you want to mark this appointment as completed?';
+
       case 'cancel':
         return 'Are you sure you want to cancel this appointment?';
 
       case 'no-show':
         return 'Are you sure you want to mark this appointment as No Show?';
+
+      default:
+        return 'Are you sure you want to continue?';
 
     }
 
@@ -98,11 +121,36 @@ export class AppointmentStatusConfirmation {
       case 'check-in':
         return 'Check In';
 
+      case 'start-consultation':
+        return 'Start Consultation';
+
+      case 'complete':
+        return 'Complete';
+
       case 'cancel':
         return 'Cancel Appointment';
 
       case 'no-show':
         return 'Mark No Show';
+
+      default:
+        return 'Confirm';
+
+    }
+
+  }
+
+
+  get confirmColor(): string {
+
+    switch (this.data.action) {
+
+      case 'cancel':
+      case 'no-show':
+        return 'warn';
+
+      default:
+        return 'primary';
 
     }
 

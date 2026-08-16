@@ -32,6 +32,10 @@ import {
   MedicalRecordDialog
 } from '../../dialogs/medical-record-dialog/medical-record-dialog';
 
+import {
+  MedicalRecordDeleteConfirmation
+} from '../../dialogs/medical-record-delete-confirmation/medical-record-delete-confirmation';
+
 
 @Component({
   selector: 'app-medical-record-list',
@@ -194,50 +198,67 @@ implements OnInit {
     record: MedicalRecord
   ): void {
 
-    const confirmed =
-      window.confirm(
-        `Are you sure you want to delete Medical Record #${record.id}?`
+    const dialogRef =
+      this.dialog.open(
+        MedicalRecordDeleteConfirmation,
+        {
+          width: '560px',
+
+          maxWidth: '95vw',
+
+          autoFocus: false,
+
+          disableClose: true,
+
+          data: record
+        }
       );
 
 
-    if (!confirmed) {
+    dialogRef
+      .afterClosed()
+      .subscribe(confirmed => {
 
-      return;
+        if (!confirmed) {
 
-    }
-
-
-    this.loading = true;
-
-
-    this.service
-      .delete(record.id)
-      .subscribe({
-
-        next: () => {
-
-          this.loading = false;
-
-          this.notification.success(
-            'Medical record deleted successfully'
-          );
-
-          this.loadMedicalRecords();
-
-        },
-
-        error: error => {
-
-          console.error(error);
-
-          this.loading = false;
-
-          this.notification.error(
-            error?.error?.message ??
-            'Unable to delete medical record'
-          );
+          return;
 
         }
+
+
+        this.loading = true;
+
+
+        this.service
+          .delete(record.id)
+          .subscribe({
+
+            next: () => {
+
+              this.loading = false;
+
+              this.notification.success(
+                'Medical record deleted successfully'
+              );
+
+              this.loadMedicalRecords();
+
+            },
+
+            error: error => {
+
+              console.error(error);
+
+              this.loading = false;
+
+              this.notification.error(
+                error?.error?.message ??
+                'Unable to delete medical record'
+              );
+
+            }
+
+          });
 
       });
 

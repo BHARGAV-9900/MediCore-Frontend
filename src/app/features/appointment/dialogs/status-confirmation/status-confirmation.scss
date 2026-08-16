@@ -1,18 +1,79 @@
 :host {
   display: block;
-  overflow: hidden;
 }
 
 
-.dialog-content {
-  padding: 0 24px;
+.status-dialog {
+  padding: 28px;
+  box-sizing: border-box;
 }
 
+
+/* =========================================================
+   Icon
+   ========================================================= */
+
+.status-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 18px;
+
+  border-radius: 50%;
+
+  background: #eff6ff;
+}
+
+
+.status-icon mat-icon {
+  color: #2563eb;
+
+  font-size: 26px;
+
+  width: 26px;
+  height: 26px;
+}
+
+
+/* Warning actions */
+
+.status-dialog:has(.danger-button) .status-icon {
+  background: #fff7ed;
+}
+
+
+.status-dialog:has(.danger-button) .status-icon mat-icon {
+  color: #f97316;
+}
+
+
+/* =========================================================
+   Heading
+   ========================================================= */
+
+.status-dialog h2 {
+  margin: 0;
+
+  font-size: 22px;
+
+  font-weight: 600;
+
+  color: #0f172a;
+}
+
+
+/* =========================================================
+   Message
+   ========================================================= */
 
 .message {
-  margin: 0 0 20px;
+  margin: 8px 0 0;
 
-  color: #4a4a4a;
+  color: #64748b;
 
   font-size: 14px;
 
@@ -20,12 +81,20 @@
 }
 
 
+/* =========================================================
+   Appointment Details
+   ========================================================= */
+
 .appointment-details {
-  background: #f7f7f9;
+  margin-top: 18px;
+
+  padding: 14px 16px;
+
+  border: 1px solid #e2e8f0;
 
   border-radius: 10px;
 
-  padding: 16px;
+  background: #f8fafc;
 }
 
 
@@ -43,31 +112,116 @@
 
 
 .label {
-  color: #666;
+  color: #64748b;
 
   font-weight: 500;
 }
 
 
 .value {
-  color: #333;
+  color: #1f2937;
 
-  font-weight: 500;
+  font-weight: 600;
 }
 
 
-.doctor-name {
-  color: #e53935;
+/* =========================================================
+   Warning
+   ========================================================= */
+
+.warning {
+  margin: 16px 0 0;
+
+  color: #dc2626;
+
+  font-size: 13px;
+
+  line-height: 1.5;
 }
 
 
-mat-dialog-actions {
-  padding: 12px 24px 20px;
+/* =========================================================
+   Actions
+   ========================================================= */
 
-  gap: 8px;
+.dialog-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 24px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid #e5e7eb;
 }
 
 
-mat-dialog-actions button {
+.cancel-button {
+  color: #0369a1 !important;
+
+  font-weight: 600;
+}
+
+
+.confirm-button {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
   border-radius: 24px;
+
+  background: #0d6efd !important;
+
+  color: #ffffff !important;
+
+  font-weight: 600;
+}
+
+
+.confirm-button mat-icon {
+  font-size: 18px;
+
+  width: 18px;
+  height: 18px;
+}
+
+
+/* =========================================================
+   Danger actions
+   ========================================================= */
+
+.confirm-button.danger-button {
+  background: #dc2626 !important;
+
+  color: #ffffff !important;
+}
+
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .status-dialog {
+    padding: 22px;
+  }
+
+
+  .detail-row {
+    grid-template-columns: 90px 1fr;
+  }
+
+
+  .dialog-actions {
+    flex-wrap: wrap;
+  }
+
 }

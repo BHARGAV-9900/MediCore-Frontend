@@ -3,41 +3,87 @@
 }
 
 
-mat-dialog-content {
-  padding-top: 0;
+.delete-dialog {
+  padding: 28px;
+  box-sizing: border-box;
 }
 
 
-.message {
-  margin: 0 0 18px;
+.delete-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 18px;
+
+  border-radius: 50%;
+
+  background: #fef2f2;
+}
+
+
+.delete-icon mat-icon {
+  color: #dc2626;
+
+  font-size: 26px;
+
+  width: 26px;
+  height: 26px;
+}
+
+
+.delete-content h2 {
+  margin: 0;
+
+  font-size: 22px;
+
+  font-weight: 600;
+
+  line-height: 1.3;
+
+  color: #111827;
+}
+
+
+.delete-content > p:not(.warning) {
+  margin: 8px 0 0;
+
+  color: #64748b;
 
   font-size: 14px;
 
   line-height: 1.5;
-
-  color: #444;
 }
 
 
-.order-details {
-  padding: 16px;
+.details-card {
+  margin-top: 18px;
+
+  padding: 14px 16px;
+
+  border: 1px solid #e5e7eb;
 
   border-radius: 10px;
 
-  background: #f7f7f9;
+  background: #f8fafc;
 }
 
 
 .detail-row {
   display: grid;
 
-  grid-template-columns: 120px 1fr;
+  grid-template-columns: 140px 1fr;
 
-  gap: 12px;
+  gap: 16px;
 
   margin-bottom: 12px;
 
   font-size: 14px;
+
+  line-height: 1.5;
 }
 
 
@@ -47,14 +93,14 @@ mat-dialog-content {
 
 
 .label {
-  color: #666;
+  color: #64748b;
 
   font-weight: 500;
 }
 
 
 .value {
-  color: #222;
+  color: #1f2937;
 
   font-weight: 600;
 
@@ -62,22 +108,88 @@ mat-dialog-content {
 }
 
 
-mat-dialog-actions {
-  padding: 12px 24px 20px;
+.warning {
+  margin-top: 14px !important;
 
-  gap: 8px;
+  color: #dc2626 !important;
+
+  font-size: 13px !important;
+
+  line-height: 1.5;
+
+  font-weight: 500;
 }
 
 
-mat-dialog-actions button {
-  border-radius: 24px;
+.dialog-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 24px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+
+.dialog-actions > button:first-child {
+  min-width: 82px;
+
+  font-weight: 600;
+
+  color: #0369a1 !important;
+}
+
+
+.delete-button {
+  min-width: 110px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  background: #dc2626 !important;
+
+  color: #ffffff !important;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  border-radius: 24px !important;
+
+  box-shadow: none !important;
+}
+
+
+.delete-button mat-icon {
+  font-size: 19px;
+
+  width: 19px;
+
+  height: 19px;
+}
+
+
+.delete-button:hover {
+  background: #b91c1c !important;
 }
 
 
 @media (max-width: 600px) {
 
   .detail-row {
-    grid-template-columns: 100px 1fr;
+    grid-template-columns: 110px 1fr;
   }
 
 }

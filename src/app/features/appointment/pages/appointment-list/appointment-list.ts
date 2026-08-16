@@ -320,17 +320,51 @@ export class AppointmentList implements OnInit {
   // Checked In → In Progress
   // =========================================================
 
-  startConsultation(
-    appointment: Appointment
-  ): void {
+startConsultation(
+  appointment: Appointment
+): void {
 
-    this.updateStatus(
-      appointment,
-      3,
-      'Start consultation'
+  const data: AppointmentStatusConfirmationData = {
+
+    appointment,
+
+    action: 'start-consultation'
+
+  };
+
+
+  const dialogRef =
+    this.dialog.open(
+      AppointmentStatusConfirmation,
+      {
+        width: '450px',
+        maxWidth: '95vw',
+        maxHeight: '90vh',
+        data
+      }
     );
 
-  }
+
+  dialogRef.afterClosed().subscribe(
+    confirmed => {
+
+      if (!confirmed) {
+
+        return;
+
+      }
+
+
+      this.updateStatus(
+        appointment,
+        3,
+        'Start consultation'
+      );
+
+    }
+  );
+
+}
 
 
   // =========================================================
@@ -338,18 +372,51 @@ export class AppointmentList implements OnInit {
   // In Progress → Completed
   // =========================================================
 
-  completeAppointment(
-    appointment: Appointment
-  ): void {
+ completeAppointment(
+  appointment: Appointment
+): void {
 
-    this.updateStatus(
-      appointment,
-      4,
-      'Complete appointment'
+  const data: AppointmentStatusConfirmationData = {
+
+    appointment,
+
+    action: 'complete'
+
+  };
+
+
+  const dialogRef =
+    this.dialog.open(
+      AppointmentStatusConfirmation,
+      {
+        width: '450px',
+        maxWidth: '95vw',
+        maxHeight: '90vh',
+        data
+      }
     );
 
-  }
 
+  dialogRef.afterClosed().subscribe(
+    confirmed => {
+
+      if (!confirmed) {
+
+        return;
+
+      }
+
+
+      this.updateStatus(
+        appointment,
+        4,
+        'Complete appointment'
+      );
+
+    }
+  );
+
+}
 
   // =========================================================
   // Cancel Appointment

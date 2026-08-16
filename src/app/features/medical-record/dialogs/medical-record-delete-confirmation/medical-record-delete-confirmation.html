@@ -1,5 +1,7 @@
 <div class="delete-dialog">
 
+  <!-- Delete Icon -->
+
   <div class="delete-icon">
 
     <mat-icon>
@@ -9,24 +11,28 @@
   </div>
 
 
+  <!-- Content -->
+
   <div class="delete-content">
 
     <h2>
-      Delete Patient
+      Delete Medical Record
     </h2>
 
 
     <p>
-      Are you sure you want to delete this patient?
+      Are you sure you want to delete this medical record?
     </p>
 
+
+    <!-- Medical Record Details -->
 
     <div class="details-card">
 
       <div class="detail-row">
 
         <span class="label">
-          Patient ID
+          Medical Record ID
         </span>
 
         <span class="value">
@@ -39,39 +45,60 @@
       <div class="detail-row">
 
         <span class="label">
-          Name
+          Appointment ID
         </span>
 
         <span class="value">
-          {{ data.firstName }} {{ data.lastName }}
+          #{{ data.appointmentId }}
         </span>
 
       </div>
 
 
-      <div class="detail-row">
-
-        <span class="label">
-          Phone
-        </span>
-
-        <span class="value">
-          {{ data.phoneNumber }}
-        </span>
-
-      </div>
-
-
-      @if (data.email) {
+      @if (data.diagnosis) {
 
         <div class="detail-row">
 
           <span class="label">
-            Email
+            Diagnosis
           </span>
 
           <span class="value">
-            {{ data.email }}
+            {{ data.diagnosis }}
+          </span>
+
+        </div>
+
+      }
+
+
+      @if (data.symptoms) {
+
+        <div class="detail-row">
+
+          <span class="label">
+            Symptoms
+          </span>
+
+          <span class="value">
+            {{ data.symptoms }}
+          </span>
+
+        </div>
+
+      }
+
+
+      @if (data.treatmentPlan) {
+
+        <div class="detail-row">
+
+          <span class="label">
+            Treatment Plan
+          </span>
+
+          <span class="value">
+            {{ data.treatmentPlan }}
           </span>
 
         </div>
@@ -81,12 +108,16 @@
     </div>
 
 
+    <!-- Warning -->
+
     <p class="warning">
       This action cannot be undone.
     </p>
 
   </div>
 
+
+  <!-- Actions -->
 
   <div class="dialog-actions">
 
@@ -104,7 +135,7 @@
       mat-flat-button
       type="button"
       class="delete-button"
-      (click)="delete()">
+      (click)="confirm()">
 
       <mat-icon>
         delete
