@@ -4,25 +4,38 @@ import {
   inject
 } from '@angular/core';
 
-import { CommonModule } from '@angular/common';
+import {
+  CommonModule
+} from '@angular/common';
 
 import {
   MATERIAL_MODULES
 } from '../../../../shared/material/material';
 
-import { MatDialog } from '@angular/material/dialog';
+import {
+  MatDialog
+} from '@angular/material/dialog';
 
-import { Payment } from '../../models/payment';
+import {
+  Payment
+} from '../../models/payment';
 
-import { PaymentService }
-  from '../../services/payment.service';
+import {
+  PaymentService
+} from '../../services/payment.service';
 
-import { NotificationService }
-  from '../../../../core/services/notification.service';
+import {
+  NotificationService
+} from '../../../../core/services/notification.service';
 
 import {
   PaymentDialog
 } from '../../dialogs/payment-dialog/payment-dialog';
+
+import {
+  PaymentDeleteConfirmation
+} from '../../dialogs/payment-delete-confirmation/payment-delete-confirmation';
+
 
 @Component({
   selector: 'app-payments',
@@ -46,21 +59,30 @@ export class Payments
   private readonly service =
     inject(PaymentService);
 
+
   private readonly notification =
     inject(NotificationService);
+
 
   private readonly dialog =
     inject(MatDialog);
 
+
   payments: Payment[] = [];
 
   loading = false;
+
 
   ngOnInit(): void {
 
     this.loadPayments();
 
   }
+
+
+  // =========================================================
+  // Load Payments
+  // =========================================================
 
   loadPayments(): void {
 
@@ -96,6 +118,11 @@ export class Payments
 
   }
 
+
+  // =========================================================
+  // Add Payment
+  // =========================================================
+
   addPayment(): void {
 
     const dialogRef =
@@ -103,7 +130,9 @@ export class Payments
         PaymentDialog,
         {
           width: '620px',
+
           maxWidth: '95vw',
+
           maxHeight: '90vh',
 
           autoFocus: false,
@@ -114,6 +143,7 @@ export class Payments
             'payment-dialog-panel'
         }
       );
+
 
     dialogRef
       .afterClosed()
@@ -129,6 +159,11 @@ export class Payments
 
   }
 
+
+  // =========================================================
+  // Edit Payment
+  // =========================================================
+
   editPayment(
     payment: Payment
   ): void {
@@ -138,7 +173,9 @@ export class Payments
         PaymentDialog,
         {
           width: '620px',
+
           maxWidth: '95vw',
+
           maxHeight: '90vh',
 
           autoFocus: false,
@@ -152,6 +189,7 @@ export class Payments
         }
       );
 
+
     dialogRef
       .afterClosed()
       .subscribe(result => {
@@ -166,55 +204,85 @@ export class Payments
 
   }
 
+
+  // =========================================================
+  // Delete Payment
+  // =========================================================
+
   deletePayment(
     payment: Payment
   ): void {
 
-    const confirmed =
-      window.confirm(
-        `Are you sure you want to delete payment #${payment.id}?`
+    const dialogRef =
+      this.dialog.open(
+        PaymentDeleteConfirmation,
+        {
+          width: '520px',
+
+          maxWidth: '95vw',
+
+          autoFocus: false,
+
+          disableClose: true,
+
+          data: payment
+        }
       );
 
-    if (!confirmed) {
 
-      return;
+    dialogRef
+      .afterClosed()
+      .subscribe(confirmed => {
 
-    }
+        if (!confirmed) {
 
-    this.loading = true;
-
-    this.service
-      .delete(payment.id)
-      .subscribe({
-
-        next: () => {
-
-          this.loading = false;
-
-          this.notification.success(
-            'Payment deleted successfully'
-          );
-
-          this.loadPayments();
-
-        },
-
-        error: error => {
-
-          console.error(error);
-
-          this.loading = false;
-
-          this.notification.error(
-            error?.error?.message ??
-            'Unable to delete payment'
-          );
+          return;
 
         }
+
+
+        this.loading = true;
+
+
+        this.service
+          .delete(payment.id)
+          .subscribe({
+
+            next: () => {
+
+              this.loading = false;
+
+              this.notification.success(
+                'Payment deleted successfully'
+              );
+
+              this.loadPayments();
+
+            },
+
+            error: error => {
+
+              console.error(error);
+
+              this.loading = false;
+
+              this.notification.error(
+                error?.error?.message ??
+                'Unable to delete payment'
+              );
+
+            }
+
+          });
 
       });
 
   }
+
+
+  // =========================================================
+  // Payment Method
+  // =========================================================
 
   getPaymentMethodName(
     method: number

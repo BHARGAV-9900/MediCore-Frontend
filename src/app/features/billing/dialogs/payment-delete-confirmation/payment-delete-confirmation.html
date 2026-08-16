@@ -1,0 +1,136 @@
+<div class="delete-dialog">
+
+  <div class="delete-icon">
+
+    <mat-icon>
+      delete_outline
+    </mat-icon>
+
+  </div>
+
+
+  <div class="delete-content">
+
+    <h2>
+      Delete Payment
+    </h2>
+
+
+    <p>
+      Are you sure you want to delete this payment?
+    </p>
+
+
+    <div class="payment-info">
+
+      <div class="payment-row">
+
+        <span class="label">
+          Payment ID
+        </span>
+
+        <span class="value">
+          #{{ data.id }}
+        </span>
+
+      </div>
+
+
+      <div class="payment-row">
+
+        <span class="label">
+          Bill ID
+        </span>
+
+        <span class="value">
+          #{{ data.billId }}
+        </span>
+
+      </div>
+
+
+      <div class="payment-row">
+
+        <span class="label">
+          Amount
+        </span>
+
+        <span class="value">
+          ₹{{ data.amount | number:'1.2-2' }}
+        </span>
+
+      </div>
+
+
+      <div class="payment-row">
+
+        <span class="label">
+          Payment Method
+        </span>
+
+        <span class="value">
+
+          {{
+            getPaymentMethodName(
+              data.paymentMethod
+            )
+          }}
+
+        </span>
+
+      </div>
+
+
+      <div class="payment-row">
+
+        <span class="label">
+          Paid On
+        </span>
+
+        <span class="value">
+
+          {{ data.paidOn | date:'dd MMM yyyy, hh:mm a' }}
+
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <p class="warning">
+      This action cannot be undone.
+    </p>
+
+  </div>
+
+
+  <div class="dialog-actions">
+
+    <button
+      mat-button
+      type="button"
+      (click)="cancel()">
+
+      Cancel
+
+    </button>
+
+
+    <button
+      mat-flat-button
+      type="button"
+      class="delete-button"
+      (click)="confirm()">
+
+      <mat-icon>
+        delete
+      </mat-icon>
+
+      Delete
+
+    </button>
+
+  </div>
+
+</div>
