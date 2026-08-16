@@ -24,12 +24,23 @@ import {
 } from '@angular/material/button';
 
 import { NotificationService } from '../../services/notification.service';
+
 import { Notification } from '../../models/notification';
+
 import { CreateNotification } from '../../models/create-notification';
 
 import {
   NotificationDialogComponent
 } from '../../dialogs/notification-dialog/notification-dialog';
+
+import {
+  NotificationDeleteConfirmationComponent
+} from '../../dialogs/notification-delete-confirmation/notification-delete-confirmation';
+
+import {
+  NotificationMarkReadConfirmationComponent
+} from '../../dialogs/notification-mark-read-confirmation/notification-mark-read-confirmation';
+
 
 @Component({
   selector: 'app-notification-list',
@@ -55,6 +66,7 @@ export class NotificationListComponent
 
   errorMessage = '';
 
+
   constructor(
     private readonly notificationService:
       NotificationService,
@@ -66,13 +78,18 @@ export class NotificationListComponent
       MatSnackBar
   ) {}
 
+
   ngOnInit(): void {
+
     this.loadNotifications();
+
   }
+
 
   loadNotifications(): void {
 
     this.loading = true;
+
     this.errorMessage = '';
 
     this.notificationService
@@ -106,9 +123,13 @@ export class NotificationListComponent
 
   }
 
+
   refresh(): void {
+
     this.loadNotifications();
+
   }
+
 
   openAddDialog(): void {
 
@@ -123,12 +144,15 @@ export class NotificationListComponent
         }
       );
 
+
     dialogRef.afterClosed()
       .subscribe(
         (result: CreateNotification | undefined) => {
 
           if (!result) {
+
             return;
+
           }
 
           this.createNotification(result);
@@ -137,6 +161,7 @@ export class NotificationListComponent
       );
 
   }
+
 
   private createNotification(
     notification: CreateNotification
@@ -179,13 +204,63 @@ export class NotificationListComponent
 
   }
 
+
   markAsRead(
     notification: Notification
   ): void {
 
     if (notification.isRead) {
+
       return;
+
     }
+
+
+    const dialogRef =
+      this.dialog.open(
+        NotificationMarkReadConfirmationComponent,
+        {
+          width: '520px',
+          maxWidth: '95vw',
+          maxHeight: '90vh',
+
+          autoFocus: false,
+
+          disableClose: true,
+
+          panelClass:
+            'notification-mark-read-dialog-panel',
+
+          data: notification
+        }
+      );
+
+
+    dialogRef.afterClosed()
+      .subscribe(
+        (confirmed: boolean | undefined) => {
+
+          if (!confirmed) {
+
+            return;
+
+          }
+
+          this.markAsReadConfirmed(
+            notification
+          );
+
+        }
+      );
+
+  }
+
+
+  private markAsReadConfirmed(
+    notification: Notification
+  ): void {
+
+    this.loading = true;
 
     this.notificationService
       .markAsRead(notification.id)
@@ -194,6 +269,8 @@ export class NotificationListComponent
         next: () => {
 
           notification.isRead = true;
+
+          this.loading = false;
 
           this.showSuccess(
             'Notification marked as read.'
@@ -208,6 +285,8 @@ export class NotificationListComponent
             error
           );
 
+          this.loading = false;
+
           this.showError(
             'Failed to mark notification as read.'
           );
@@ -218,18 +297,56 @@ export class NotificationListComponent
 
   }
 
+
   deleteNotification(
     notification: Notification
   ): void {
 
-    const confirmed =
-      window.confirm(
-        `Are you sure you want to delete "${notification.title}"?`
+    const dialogRef =
+      this.dialog.open(
+        NotificationDeleteConfirmationComponent,
+        {
+          width: '520px',
+          maxWidth: '95vw',
+          maxHeight: '90vh',
+
+          autoFocus: false,
+
+          disableClose: true,
+
+          panelClass:
+            'notification-delete-dialog-panel',
+
+          data: notification
+        }
       );
 
-    if (!confirmed) {
-      return;
-    }
+
+    dialogRef.afterClosed()
+      .subscribe(
+        (confirmed: boolean | undefined) => {
+
+          if (!confirmed) {
+
+            return;
+
+          }
+
+          this.deleteNotificationConfirmed(
+            notification
+          );
+
+        }
+      );
+
+  }
+
+
+  private deleteNotificationConfirmed(
+    notification: Notification
+  ): void {
+
+    this.loading = true;
 
     this.notificationService
       .delete(notification.id)
@@ -239,8 +356,11 @@ export class NotificationListComponent
 
           this.notifications =
             this.notifications.filter(
-              item => item.id !== notification.id
+              item =>
+                item.id !== notification.id
             );
+
+          this.loading = false;
 
           this.showSuccess(
             'Notification deleted successfully.'
@@ -255,6 +375,8 @@ export class NotificationListComponent
             error
           );
 
+          this.loading = false;
+
           this.showError(
             'Failed to delete notification.'
           );
@@ -265,13 +387,17 @@ export class NotificationListComponent
 
   }
 
-  getTypeClass(type: string): string {
+
+  getTypeClass(
+    type: string
+  ): string {
 
     return type
       .toLowerCase()
       .replace(/\s+/g, '-');
 
   }
+
 
   private showSuccess(
     message: string
@@ -282,13 +408,20 @@ export class NotificationListComponent
       'Close',
       {
         duration: 3000,
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-        panelClass: ['success-snackbar']
+
+        horizontalPosition:
+          'right',
+
+        verticalPosition:
+          'top',
+
+        panelClass:
+          ['success-snackbar']
       }
     );
 
   }
+
 
   private showError(
     message: string
@@ -299,9 +432,15 @@ export class NotificationListComponent
       'Close',
       {
         duration: 4000,
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-        panelClass: ['error-snackbar']
+
+        horizontalPosition:
+          'right',
+
+        verticalPosition:
+          'top',
+
+        panelClass:
+          ['error-snackbar']
       }
     );
 

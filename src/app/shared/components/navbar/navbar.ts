@@ -11,8 +11,17 @@ import { RouterLink } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
-import { Subject, forkJoin, interval } from 'rxjs';
-import { startWith, switchMap, takeUntil } from 'rxjs/operators';
+import {
+  Subject,
+  forkJoin,
+  interval
+} from 'rxjs';
+
+import {
+  startWith,
+  switchMap,
+  takeUntil
+} from 'rxjs/operators';
 
 import { AuthenticationService }
   from '../../../features/authentication/services/authentication.service';
@@ -36,19 +45,17 @@ import { UserProfile }
     RouterLink,
     NgClass,
     MatIconModule
-
   ],
 
   templateUrl: './navbar.html',
 
-  styleUrl: './navbar.scss',
-
-
+  styleUrl: './navbar.scss'
 })
 export class Navbar
   implements OnInit, OnDestroy {
 
-  private readonly router = inject(Router);
+  private readonly router =
+    inject(Router);
 
   private readonly authService =
     inject(AuthenticationService);
@@ -79,37 +86,49 @@ export class Navbar
 
   notificationLoading = false;
 
-    currentUser: UserProfile | null = null;
+
+  // =========================================================
+  // CURRENT USER
+  // =========================================================
+
+  currentUser: UserProfile | null = null;
+
+
   // =========================================================
   // INITIALIZATION
   // =========================================================
 
   ngOnInit(): void {
 
-
     this.authService.currentUser$
+      .pipe(
+        takeUntil(this.destroy$)
+      )
       .subscribe(user => {
 
         this.currentUser = user;
 
       });
 
-    this.loadNotifications();
 
     /*
      * Refresh notifications every 60 seconds.
      *
-     * startWith(0) makes the first request happen immediately.
+     * startWith(0) makes the first request
+     * happen immediately.
      */
     interval(60000)
       .pipe(
         startWith(0),
+
         switchMap(() =>
           this.notificationService.getAll()
         ),
+
         takeUntil(this.destroy$)
       )
       .subscribe({
+
         next: response => {
 
           this.notifications =
@@ -132,6 +151,7 @@ export class Navbar
           );
 
         }
+
       });
 
   }
@@ -347,8 +367,8 @@ export class Navbar
     this.notificationMenuOpen = false;
 
     /*
-     * We can later make notification types navigate
-     * to their related modules.
+     * Notification-specific navigation
+     * can be added later.
      *
      * For now, open the full notifications page.
      */
@@ -378,48 +398,61 @@ export class Navbar
   // NOTIFICATION TYPE ICON
   // =========================================================
 
- getNotificationIcon(type: string): string {
+  getNotificationIcon(
+    type: string
+  ): string {
 
-  const normalizedType =
-    type?.toLowerCase() ?? '';
+    const normalizedType =
+      type?.toLowerCase() ?? '';
 
-  if (
-    normalizedType.includes('appointment')
-  ) {
-    return 'calendar_month';
+    if (
+      normalizedType.includes('appointment')
+    ) {
+
+      return 'calendar_month';
+
+    }
+
+    if (
+      normalizedType.includes('laboratory') ||
+      normalizedType.includes('lab')
+    ) {
+
+      return 'science';
+
+    }
+
+    if (
+      normalizedType.includes('inventory') ||
+      normalizedType.includes('stock') ||
+      normalizedType.includes('medicine')
+    ) {
+
+      return 'medication';
+
+    }
+
+    if (
+      normalizedType.includes('payment') ||
+      normalizedType.includes('billing')
+    ) {
+
+      return 'payments';
+
+    }
+
+    if (
+      normalizedType.includes('patient')
+    ) {
+
+      return 'person';
+
+    }
+
+    return 'notifications';
+
   }
 
-  if (
-    normalizedType.includes('laboratory') ||
-    normalizedType.includes('lab')
-  ) {
-    return 'science';
-  }
-
-  if (
-    normalizedType.includes('inventory') ||
-    normalizedType.includes('stock') ||
-    normalizedType.includes('medicine')
-  ) {
-    return 'medication';
-  }
-
-  if (
-    normalizedType.includes('payment') ||
-    normalizedType.includes('billing')
-  ) {
-    return 'payments';
-  }
-
-  if (
-    normalizedType.includes('patient')
-  ) {
-    return 'person';
-  }
-
-  return 'notifications';
-
-}
 
   // =========================================================
   // NOTIFICATION TYPE CLASS
@@ -572,6 +605,10 @@ export class Navbar
   }
 
 
+  // =========================================================
+  // LOGOUT
+  // =========================================================
+
   logout(): void {
 
     this.userMenuOpen = false;
@@ -647,6 +684,10 @@ export class Navbar
   }
 
 
+  // =========================================================
+  // PROFILE
+  // =========================================================
+
   openProfile(): void {
 
     this.router.navigate([
@@ -655,6 +696,10 @@ export class Navbar
 
   }
 
+
+  // =========================================================
+  // CHANGE PASSWORD
+  // =========================================================
 
   openChangePassword(): void {
 

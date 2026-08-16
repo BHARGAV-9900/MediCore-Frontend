@@ -1,0 +1,136 @@
+<div class="dialog-container">
+
+  <div class="dialog-header">
+
+    <div class="icon-wrapper">
+
+      <mat-icon>
+        mark_email_read
+      </mat-icon>
+
+    </div>
+
+    <h2>
+      Mark Notification as Read
+    </h2>
+
+    <p>
+      Are you sure you want to mark this notification as read?
+    </p>
+
+  </div>
+
+
+  <div class="notification-details">
+
+    <div class="detail-row">
+
+      <span class="detail-label">
+        Notification ID
+      </span>
+
+      <strong>
+        #{{ notification.id }}
+      </strong>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="detail-label">
+        Title
+      </span>
+
+      <strong>
+        {{ notification.title }}
+      </strong>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="detail-label">
+        Message
+      </span>
+
+      <strong>
+        {{ notification.message }}
+      </strong>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="detail-label">
+        Type
+      </span>
+
+      <strong>
+        {{ notification.type }}
+      </strong>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="detail-label">
+        Status
+      </span>
+
+      <span class="status-badge unread">
+
+        <mat-icon>
+          notifications_active
+        </mat-icon>
+
+        Unread
+
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="warning-message">
+
+    This notification will be marked as read.
+
+  </div>
+
+
+  <div class="dialog-divider"></div>
+
+
+  <div class="dialog-actions">
+
+    <button
+      type="button"
+      class="cancel-button"
+      (click)="cancel()">
+
+      Cancel
+
+    </button>
+
+
+    <button
+      type="button"
+      class="confirm-button"
+      (click)="confirm()">
+
+      <mat-icon>
+        mark_email_read
+      </mat-icon>
+
+      Mark as Read
+
+    </button>
+
+  </div>
+
+</div>

@@ -1,0 +1,155 @@
+<div class="delete-dialog">
+
+  <!-- Header Icon -->
+
+  <div class="delete-icon-wrapper">
+
+    <mat-icon>
+      delete_outline
+    </mat-icon>
+
+  </div>
+
+
+  <!-- Title -->
+
+  <h2>
+    Delete Notification
+  </h2>
+
+
+  <!-- Description -->
+
+  <p class="description">
+
+    Are you sure you want to delete this
+    notification?
+
+  </p>
+
+
+  <!-- Notification Details -->
+
+  <div class="notification-details">
+
+    <div class="detail-row">
+
+      <span class="label">
+        Notification ID
+      </span>
+
+      <strong>
+        #{{ notification.id }}
+      </strong>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Title
+      </span>
+
+      <strong class="value">
+        {{ notification.title }}
+      </strong>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Message
+      </span>
+
+      <strong class="value message">
+        {{ notification.message }}
+      </strong>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Type
+      </span>
+
+      <strong class="value">
+        {{ notification.type }}
+      </strong>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Status
+      </span>
+
+      <strong
+        class="status"
+        [class.read]="notification.isRead">
+
+        {{
+          notification.isRead
+            ? 'Read'
+            : 'Unread'
+        }}
+
+      </strong>
+
+    </div>
+
+  </div>
+
+
+  <!-- Warning -->
+
+  <p class="warning">
+
+    This action cannot be undone.
+
+  </p>
+
+
+  <!-- Divider -->
+
+  <div class="divider"></div>
+
+
+  <!-- Actions -->
+
+  <div class="actions">
+
+    <button
+      mat-button
+      type="button"
+      class="cancel-button"
+      (click)="cancel()">
+
+      Cancel
+
+    </button>
+
+
+    <button
+      mat-raised-button
+      type="button"
+      class="delete-button"
+      (click)="confirmDelete()">
+
+      <mat-icon>
+        delete
+      </mat-icon>
+
+      Delete
+
+    </button>
+
+  </div>
+
+</div>

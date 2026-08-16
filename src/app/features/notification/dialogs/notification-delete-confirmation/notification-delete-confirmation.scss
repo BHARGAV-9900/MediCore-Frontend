@@ -1,0 +1,242 @@
+:host {
+  display: block;
+}
+
+
+.delete-dialog {
+  padding: 28px 28px 22px;
+
+  background: #ffffff;
+  border-radius: 18px;
+}
+
+
+.delete-icon-wrapper {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 16px;
+
+  border-radius: 50%;
+
+  background: #fff1f2;
+}
+
+
+.delete-icon-wrapper mat-icon {
+  color: #dc2626;
+
+  font-size: 25px;
+
+  width: 25px;
+  height: 25px;
+}
+
+
+h2 {
+  margin: 0;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  color: #111827;
+}
+
+
+.description {
+  margin: 6px 0 20px;
+
+  font-size: 14px;
+
+  color: #64748b;
+
+  line-height: 1.5;
+}
+
+
+.notification-details {
+  padding: 16px;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 10px;
+
+  background: #f8fafc;
+}
+
+
+.detail-row {
+  display: grid;
+
+  grid-template-columns:
+    150px minmax(0, 1fr);
+
+  gap: 12px;
+
+  align-items: start;
+
+  margin-bottom: 12px;
+
+  font-size: 14px;
+}
+
+
+.detail-row:last-child {
+  margin-bottom: 0;
+}
+
+
+.label {
+  color: #64748b;
+}
+
+
+.detail-row strong {
+  color: #1e293b;
+
+  font-weight: 600;
+
+  overflow-wrap: anywhere;
+}
+
+
+.value {
+  line-height: 1.45;
+}
+
+
+.message {
+  max-height: 80px;
+
+  overflow-y: auto;
+}
+
+
+.status {
+  display: inline-flex;
+
+  width: fit-content;
+
+  padding: 5px 12px;
+
+  border-radius: 16px;
+
+  background: #fff7ed;
+
+  color: #c2410c;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+.status.read {
+  background: #dcfce7;
+
+  color: #15803d;
+}
+
+
+.warning {
+  margin: 16px 0 0;
+
+  color: #dc2626;
+
+  font-size: 13px;
+
+  font-weight: 500;
+}
+
+
+.divider {
+  height: 1px;
+
+  margin: 20px 0 14px;
+
+  background: #e5e7eb;
+}
+
+
+.actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+
+.cancel-button {
+  min-width: 76px;
+
+  color: #2563eb;
+
+  font-weight: 600;
+}
+
+
+.delete-button {
+  min-width: 112px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  border-radius: 22px;
+
+  background: #dc2626 !important;
+
+  color: #ffffff !important;
+
+  font-weight: 600;
+}
+
+
+.delete-button mat-icon {
+  font-size: 18px;
+
+  width: 18px;
+  height: 18px;
+}
+
+
+.delete-button:hover {
+  background: #b91c1c !important;
+}
+
+
+@media (max-width: 600px) {
+
+  .delete-dialog {
+    padding: 22px 20px 18px;
+  }
+
+
+  .detail-row {
+    grid-template-columns: 1fr;
+
+    gap: 3px;
+  }
+
+
+  .actions {
+    width: 100%;
+  }
+
+
+  .cancel-button,
+  .delete-button {
+    flex: 1;
+  }
+
+}

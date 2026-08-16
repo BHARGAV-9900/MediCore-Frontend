@@ -1,0 +1,263 @@
+:host {
+  display: block;
+}
+
+
+.dialog-container {
+  padding: 28px 28px 24px;
+  background: #ffffff;
+  border-radius: 20px;
+}
+
+
+.dialog-header {
+  margin-bottom: 20px;
+}
+
+
+.icon-wrapper {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #e8f1ff;
+
+  margin-bottom: 16px;
+}
+
+
+.icon-wrapper mat-icon {
+  color: #0066cc;
+  font-size: 26px;
+  width: 26px;
+  height: 26px;
+}
+
+
+h2 {
+  margin: 0 0 6px;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  color: #111827;
+}
+
+
+.dialog-header p {
+  margin: 0;
+
+  font-size: 14px;
+
+  color: #64748b;
+}
+
+
+.notification-details {
+  padding: 20px;
+
+  border: 1px solid #dbe3ec;
+
+  border-radius: 10px;
+
+  background: #f8fafc;
+}
+
+
+.detail-row {
+  display: grid;
+
+  grid-template-columns: 165px 1fr;
+
+  align-items: center;
+
+  gap: 10px;
+
+  min-height: 32px;
+}
+
+
+.detail-label {
+  color: #58708f;
+
+  font-size: 14px;
+}
+
+
+.detail-row strong {
+  color: #111827;
+
+  font-size: 14px;
+
+  word-break: break-word;
+}
+
+
+.status-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 5px;
+
+  width: fit-content;
+
+  padding: 6px 12px;
+
+  border-radius: 20px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+
+.status-badge mat-icon {
+  width: 16px;
+  height: 16px;
+
+  font-size: 16px;
+}
+
+
+.status-badge.unread {
+  background: #fff0d6;
+
+  color: #e67e00;
+}
+
+
+.warning-message {
+  margin-top: 18px;
+
+  font-size: 14px;
+
+  color: #0066cc;
+}
+
+
+.dialog-divider {
+  height: 1px;
+
+  background: #e5e7eb;
+
+  margin: 22px 0 18px;
+}
+
+
+.dialog-actions {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+}
+
+
+.cancel-button {
+  border: none;
+
+  background: transparent;
+
+  color: #0066cc;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  padding: 10px 16px;
+
+  cursor: pointer;
+}
+
+
+.cancel-button:hover {
+  background: #f1f5f9;
+
+  border-radius: 8px;
+}
+
+
+.confirm-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  border: none;
+
+  border-radius: 22px;
+
+  padding: 11px 20px;
+
+  background: #0066cc;
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+.confirm-button mat-icon {
+  width: 18px;
+  height: 18px;
+
+  font-size: 18px;
+}
+
+
+.confirm-button:hover {
+  background: #0052a3;
+}
+
+
+@media (max-width: 600px) {
+
+  .dialog-container {
+    padding: 22px 20px;
+  }
+
+
+  h2 {
+    font-size: 21px;
+  }
+
+
+  .detail-row {
+    grid-template-columns: 1fr;
+
+    gap: 3px;
+
+    padding: 6px 0;
+  }
+
+
+  .dialog-actions {
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+  }
+
+
+  .cancel-button,
+  .confirm-button {
+    width: 100%;
+  }
+
+}
