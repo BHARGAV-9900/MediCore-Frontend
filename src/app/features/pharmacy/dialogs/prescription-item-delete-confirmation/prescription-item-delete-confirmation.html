@@ -1,0 +1,154 @@
+<div class="delete-dialog">
+
+  <div class="delete-icon">
+
+    <mat-icon>
+      delete_outline
+    </mat-icon>
+
+  </div>
+
+
+  <div class="delete-content">
+
+    <h2>
+      Delete Prescription Item
+    </h2>
+
+
+    <p>
+      Are you sure you want to delete this prescription item?
+    </p>
+
+
+    <div class="item-info">
+
+      <div class="item-row">
+
+        <span class="label">
+          Prescription Item ID
+        </span>
+
+        <span class="value">
+          #{{ data.id }}
+        </span>
+
+      </div>
+
+
+      <div class="item-row">
+
+        <span class="label">
+          Prescription ID
+        </span>
+
+        <span class="value">
+          #{{ data.prescriptionId }}
+        </span>
+
+      </div>
+
+
+      <div class="item-row">
+
+        <span class="label">
+          Medicine
+        </span>
+
+        <span class="value">
+          {{ data.medicineName }}
+        </span>
+
+      </div>
+
+
+      <div class="item-row">
+
+        <span class="label">
+          Dosage
+        </span>
+
+        <span class="value">
+          {{ data.dosage }}
+        </span>
+
+      </div>
+
+
+      <div class="item-row">
+
+        <span class="label">
+          Frequency
+        </span>
+
+        <span class="value">
+          {{ data.frequency }}
+        </span>
+
+      </div>
+
+
+      <div class="item-row">
+
+        <span class="label">
+          Duration
+        </span>
+
+        <span class="value">
+          {{ data.durationInDays }} days
+        </span>
+
+      </div>
+
+
+      <div class="item-row">
+
+        <span class="label">
+          Quantity
+        </span>
+
+        <span class="value">
+          {{ data.quantity }}
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <p class="warning">
+      This action cannot be undone.
+    </p>
+
+  </div>
+
+
+  <div class="dialog-actions">
+
+    <button
+      mat-button
+      type="button"
+      (click)="cancel()">
+
+      Cancel
+
+    </button>
+
+
+    <button
+      mat-flat-button
+      type="button"
+      class="delete-button"
+      (click)="confirm()">
+
+      <mat-icon>
+        delete
+      </mat-icon>
+
+      Delete
+
+    </button>
+
+  </div>
+
+</div>

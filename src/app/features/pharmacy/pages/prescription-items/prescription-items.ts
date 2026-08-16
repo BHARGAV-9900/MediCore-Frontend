@@ -32,6 +32,11 @@ import {
   PrescriptionItemDialog
 } from '../../dialogs/prescription-item-dialog/prescription-item-dialog';
 
+import {
+  PrescriptionItemDeleteConfirmation
+} from '../../dialogs/prescription-item-delete-confirmation/prescription-item-delete-confirmation';
+
+
 @Component({
   selector: 'app-prescription-items',
 
@@ -54,15 +59,20 @@ export class PrescriptionItems
   private readonly service =
     inject(PrescriptionItemService);
 
+
   private readonly notification =
     inject(NotificationService);
+
 
   private readonly dialog =
     inject(MatDialog);
 
+
   items: PrescriptionItem[] = [];
 
+
   loading = false;
+
 
   ngOnInit(): void {
 
@@ -70,9 +80,11 @@ export class PrescriptionItems
 
   }
 
+
   loadItems(): void {
 
     this.loading = true;
+
 
     this.service
       .getAll()
@@ -86,6 +98,7 @@ export class PrescriptionItems
           this.loading = false;
 
         },
+
 
         error: error => {
 
@@ -104,6 +117,7 @@ export class PrescriptionItems
 
   }
 
+
   addPrescriptionItem(): void {
 
     const dialogRef =
@@ -111,16 +125,20 @@ export class PrescriptionItems
         PrescriptionItemDialog,
         {
           width: '620px',
+
           maxWidth: '95vw',
+
           maxHeight: '90vh',
 
           autoFocus: false,
+
           disableClose: true,
 
           panelClass:
             'prescription-item-dialog-panel'
         }
       );
+
 
     dialogRef.afterClosed()
       .subscribe(result => {
@@ -134,6 +152,7 @@ export class PrescriptionItems
       });
 
   }
+
 
   editPrescriptionItem(
     item: PrescriptionItem
@@ -144,10 +163,13 @@ export class PrescriptionItems
         PrescriptionItemDialog,
         {
           width: '620px',
+
           maxWidth: '95vw',
+
           maxHeight: '90vh',
 
           autoFocus: false,
+
           disableClose: true,
 
           panelClass:
@@ -156,6 +178,7 @@ export class PrescriptionItems
           data: item
         }
       );
+
 
     dialogRef.afterClosed()
       .subscribe(result => {
@@ -170,51 +193,75 @@ export class PrescriptionItems
 
   }
 
+
   deleteItem(
     item: PrescriptionItem
   ): void {
 
-    const confirmed =
-      window.confirm(
-        `Are you sure you want to delete "${item.medicineName}" from this prescription?`
+    const dialogRef =
+      this.dialog.open(
+        PrescriptionItemDeleteConfirmation,
+        {
+          width: '520px',
+
+          maxWidth: '95vw',
+
+          autoFocus: false,
+
+          disableClose: true,
+
+          data: item
+        }
       );
 
-    if (!confirmed) {
 
-      return;
+    dialogRef.afterClosed()
+      .subscribe(confirmed => {
 
-    }
+        if (!confirmed) {
 
-    this.loading = true;
-
-    this.service
-      .delete(item.id)
-      .subscribe({
-
-        next: () => {
-
-          this.loading = false;
-
-          this.notification.success(
-            'Prescription item deleted successfully'
-          );
-
-          this.loadItems();
-
-        },
-
-        error: error => {
-
-          console.error(error);
-
-          this.loading = false;
-
-          this.notification.error(
-            error?.error?.message ??
-            'Unable to delete prescription item'
-          );
+          return;
 
         }
+
+
+        this.loading = true;
+
+
+        this.service
+          .delete(item.id)
+          .subscribe({
+
+            next: () => {
+
+              this.loading = false;
+
+
+              this.notification.success(
+                'Prescription item deleted successfully'
+              );
+
+
+              this.loadItems();
+
+            },
+
+
+            error: error => {
+
+              console.error(error);
+
+              this.loading = false;
+
+
+              this.notification.error(
+                error?.error?.message ??
+                'Unable to delete prescription item'
+              );
+
+            }
+
+          });
 
       });
 
