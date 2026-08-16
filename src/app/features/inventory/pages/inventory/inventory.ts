@@ -32,6 +32,10 @@ import {
   InventoryDialog
 } from '../../dialogs/inventory-dialog/inventory-dialog';
 
+import {
+  InventoryDeleteConfirmation
+} from '../../dialogs/inventory-delete-confirmation/inventory-delete-confirmation';
+
 
 @Component({
   selector: 'app-inventory',
@@ -118,21 +122,23 @@ export class Inventory
 
   addInventory(): void {
 
-    const dialogRef = this.dialog.open(
-      InventoryDialog,
-      {
-        width: '700px',
-        maxWidth: '95vw',
+    const dialogRef =
+      this.dialog.open(
+        InventoryDialog,
+        {
+          width: '700px',
+          maxWidth: '95vw',
 
-        height: 'auto',
-        maxHeight: '90vh',
+          height: 'auto',
+          maxHeight: '90vh',
 
-        autoFocus: false,
-        disableClose: true,
+          autoFocus: false,
+          disableClose: true,
 
-        panelClass: 'inventory-dialog-panel'
-      }
-    );
+          panelClass:
+            'inventory-dialog-panel'
+        }
+      );
 
 
     dialogRef
@@ -154,23 +160,25 @@ export class Inventory
     inventory: InventoryModel
   ): void {
 
-    const dialogRef = this.dialog.open(
-      InventoryDialog,
-      {
-        width: '700px',
-        maxWidth: '95vw',
+    const dialogRef =
+      this.dialog.open(
+        InventoryDialog,
+        {
+          width: '700px',
+          maxWidth: '95vw',
 
-        height: 'auto',
-        maxHeight: '90vh',
+          height: 'auto',
+          maxHeight: '90vh',
 
-        autoFocus: false,
-        disableClose: true,
+          autoFocus: false,
+          disableClose: true,
 
-        panelClass: 'inventory-dialog-panel',
+          panelClass:
+            'inventory-dialog-panel',
 
-        data: inventory
-      }
-    );
+          data: inventory
+        }
+      );
 
 
     dialogRef
@@ -192,51 +200,71 @@ export class Inventory
     inventory: InventoryModel
   ): void {
 
-    const confirmed =
-      window.confirm(
-        `Are you sure you want to delete inventory #${inventory.id}?`
+    const dialogRef =
+      this.dialog.open(
+        InventoryDeleteConfirmation,
+        {
+          width: '560px',
+          maxWidth: '95vw',
+
+          autoFocus: false,
+          disableClose: true,
+
+          panelClass:
+            'inventory-delete-dialog-panel',
+
+          data: {
+            inventory
+          }
+        }
       );
 
 
-    if (!confirmed) {
+    dialogRef
+      .afterClosed()
+      .subscribe(confirmed => {
 
-      return;
+        if (!confirmed) {
 
-    }
-
-
-    this.loading = true;
-
-
-    this.service
-      .delete(inventory.id)
-      .subscribe({
-
-        next: () => {
-
-          this.loading = false;
-
-          this.notification.success(
-            'Inventory deleted successfully'
-          );
-
-          this.loadInventory();
-
-        },
-
-
-        error: error => {
-
-          console.error(error);
-
-          this.loading = false;
-
-          this.notification.error(
-            error?.error?.message ??
-            'Unable to delete inventory'
-          );
+          return;
 
         }
+
+
+        this.loading = true;
+
+
+        this.service
+          .delete(inventory.id)
+          .subscribe({
+
+            next: () => {
+
+              this.loading = false;
+
+              this.notification.success(
+                'Inventory deleted successfully'
+              );
+
+              this.loadInventory();
+
+            },
+
+
+            error: error => {
+
+              console.error(error);
+
+              this.loading = false;
+
+              this.notification.error(
+                error?.error?.message ??
+                'Unable to delete inventory'
+              );
+
+            }
+
+          });
 
       });
 

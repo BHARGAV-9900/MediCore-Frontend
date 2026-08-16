@@ -1,0 +1,119 @@
+<div class="action-dialog">
+
+  <div class="dialog-header">
+
+    <div class="action-icon">
+
+      <mat-icon>
+        block
+      </mat-icon>
+
+    </div>
+
+    <h2>
+      Deactivate User
+    </h2>
+
+    <p>
+      Are you sure you want to deactivate this user?
+    </p>
+
+  </div>
+
+
+  <div class="details-card">
+
+    <div class="detail-row">
+
+      <span class="label">
+        Name
+      </span>
+
+      <strong>
+        {{ data.user.fullName }}
+      </strong>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Email
+      </span>
+
+      <strong>
+        {{ data.user.email }}
+      </strong>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Role
+      </span>
+
+      <strong>
+        {{ data.user.role }}
+      </strong>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Status
+      </span>
+
+      <span class="status-badge">
+        Active
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="warning-message">
+
+    This user will no longer be able to access the system.
+
+  </div>
+
+
+  <div class="dialog-divider"></div>
+
+
+  <div class="dialog-actions">
+
+    <button
+      mat-button
+      type="button"
+      class="cancel-button"
+      (click)="cancel()">
+
+      Cancel
+
+    </button>
+
+
+    <button
+      mat-flat-button
+      type="button"
+      class="deactivate-button"
+      (click)="confirm()">
+
+      <mat-icon>
+        block
+      </mat-icon>
+
+      Deactivate
+
+    </button>
+
+  </div>
+
+</div>
