@@ -1,0 +1,120 @@
+<div class="delete-dialog">
+
+  <div class="delete-icon">
+
+    <mat-icon>
+      delete_outline
+    </mat-icon>
+
+  </div>
+
+
+  <div class="delete-content">
+
+    <h2>
+      Delete Bill
+    </h2>
+
+
+    <p>
+      Are you sure you want to delete this bill?
+    </p>
+
+
+    <div class="bill-info">
+
+      <div class="bill-row">
+
+        <span class="label">
+          Bill ID
+        </span>
+
+        <span class="value">
+          #{{ data.id }}
+        </span>
+
+      </div>
+
+
+      <div class="bill-row">
+
+        <span class="label">
+          Appointment ID
+        </span>
+
+        <span class="value">
+          #{{ data.appointmentId }}
+        </span>
+
+      </div>
+
+
+      <div class="bill-row">
+
+        <span class="label">
+          Total Amount
+        </span>
+
+        <span class="value">
+          ₹{{ data.totalAmount | number:'1.2-2' }}
+        </span>
+
+      </div>
+
+
+      <div class="bill-row">
+
+        <span class="label">
+          Payment Status
+        </span>
+
+        <span
+          class="status"
+          [class.paid]="data.isPaid"
+          [class.unpaid]="!data.isPaid">
+
+          {{ data.isPaid ? 'Paid' : 'Unpaid' }}
+
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <p class="warning">
+      This action cannot be undone.
+    </p>
+
+  </div>
+
+
+  <div class="dialog-actions">
+
+    <button
+      mat-button
+      type="button"
+      (click)="cancel()">
+
+      Cancel
+
+    </button>
+
+
+    <button
+      mat-flat-button
+      type="button"
+      class="delete-button"
+      (click)="confirm()">
+
+      <mat-icon>
+        delete
+      </mat-icon>
+
+      Delete
+
+    </button>
+
+  </div>
+
+</div>

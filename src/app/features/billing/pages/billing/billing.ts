@@ -31,6 +31,12 @@ import {
 import {
   BillDialog
 } from '../../dialogs/bill-dialog/bill-dialog';
+
+import {
+  BillDeleteConfirmation
+} from '../../dialogs/bill-delete-confirmation/bill-delete-confirmation';
+
+
 @Component({
   selector: 'app-billing',
 
@@ -53,11 +59,14 @@ export class Billing
   private readonly service =
     inject(BillService);
 
+
   private readonly notification =
     inject(NotificationService);
 
+
   private readonly dialog =
     inject(MatDialog);
+
 
   bills: Bill[] = [];
 
@@ -70,6 +79,10 @@ export class Billing
 
   }
 
+
+  // =========================================================
+  // Load Bills
+  // =========================================================
 
   loadBills(): void {
 
@@ -106,6 +119,10 @@ export class Billing
   }
 
 
+  // =========================================================
+  // Add Bill
+  // =========================================================
+
   addBill(): void {
 
     const dialogRef =
@@ -113,16 +130,20 @@ export class Billing
         BillDialog,
         {
           width: '620px',
+
           maxWidth: '95vw',
+
           maxHeight: '90vh',
 
           autoFocus: false,
+
           disableClose: true,
 
           panelClass:
             'bill-dialog-panel'
         }
       );
+
 
     dialogRef.afterClosed()
       .subscribe(result => {
@@ -137,6 +158,10 @@ export class Billing
 
   }
 
+
+  // =========================================================
+  // Edit Bill
+  // =========================================================
 
   editBill(
     bill: Bill
@@ -147,10 +172,13 @@ export class Billing
         BillDialog,
         {
           width: '620px',
+
           maxWidth: '95vw',
+
           maxHeight: '90vh',
 
           autoFocus: false,
+
           disableClose: true,
 
           panelClass:
@@ -159,6 +187,7 @@ export class Billing
           data: bill
         }
       );
+
 
     dialogRef.afterClosed()
       .subscribe(result => {
@@ -174,52 +203,74 @@ export class Billing
   }
 
 
+  // =========================================================
+  // Delete Bill
+  // =========================================================
+
   deleteBill(
     bill: Bill
   ): void {
 
-    const confirmed =
-      window.confirm(
-        `Are you sure you want to delete bill #${bill.id}?`
+    const dialogRef =
+      this.dialog.open(
+        BillDeleteConfirmation,
+        {
+          width: '520px',
+
+          maxWidth: '95vw',
+
+          autoFocus: false,
+
+          disableClose: true,
+
+          data: bill
+        }
       );
 
-    if (!confirmed) {
 
-      return;
+    dialogRef.afterClosed()
+      .subscribe(confirmed => {
 
-    }
+        if (!confirmed) {
 
-
-    this.loading = true;
-
-    this.service
-      .delete(bill.id)
-      .subscribe({
-
-        next: () => {
-
-          this.loading = false;
-
-          this.notification.success(
-            'Bill deleted successfully'
-          );
-
-          this.loadBills();
-
-        },
-
-        error: error => {
-
-          console.error(error);
-
-          this.loading = false;
-
-          this.notification.error(
-            error?.error?.message ??
-            'Unable to delete bill'
-          );
+          return;
 
         }
+
+
+        this.loading = true;
+
+
+        this.service
+          .delete(bill.id)
+          .subscribe({
+
+            next: () => {
+
+              this.loading = false;
+
+              this.notification.success(
+                'Bill deleted successfully'
+              );
+
+              this.loadBills();
+
+            },
+
+            error: error => {
+
+              console.error(error);
+
+              this.loading = false;
+
+              this.notification.error(
+                error?.error?.message ??
+                'Unable to delete bill'
+              );
+
+            }
+
+          });
 
       });
 
