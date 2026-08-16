@@ -276,106 +276,73 @@ export class UserList
   }
 
 
-  activateUser(
-    user: User
-  ): void {
+ activateUser(user: User): void {
+  this.service
+    .activate(user.id)
+    .subscribe({
+      next: () => {
+        this.notification.success(
+          'User activated successfully'
+        );
 
-    this.service
-      .activate(user.id)
-      .subscribe({
+        this.loadUsers();
+      },
 
-        next: () => {
+      error: error => {
+        console.error(error);
 
-          this.notification.success(
-            'User activated successfully'
-          );
+        this.notification.error(
+          'Unable to activate user'
+        );
+      }
+    });
+}
 
-          this.loadUsers();
+deactivateUser(user: User): void {
+  const dialogRef = this.dialog.open(
+    UserDeactivateConfirmation,
+    {
+      width: '560px',
+      maxWidth: '95vw',
+      autoFocus: false,
+      disableClose: true,
+      panelClass: 'user-deactivate-dialog-panel',
+      data: {
+        user
+      }
+    }
+  );
 
-        },
+  dialogRef
+    .afterClosed()
+    .subscribe(confirmed => {
 
+      if (!confirmed) {
+        return;
+      }
 
-        error: error => {
+      this.service
+        .deactivate(user.id)
+        .subscribe({
+          next: () => {
 
-          console.error(error);
+            this.notification.success(
+              'User deactivated successfully'
+            );
 
-          this.notification.error(
-            'Unable to activate user'
-          );
+            this.loadUsers();
+          },
 
-        }
+          error: error => {
+            console.error(error);
 
-      });
-
-  }
-
-
-  deactivateUser(
-    user: User
-  ): void {
-
-    const dialogRef =
-      this.dialog.open(
-        UserDeactivateConfirmation,
-        {
-          width: '560px',
-          maxWidth: '95vw',
-
-          autoFocus: false,
-          disableClose: true,
-
-          panelClass:
-            'user-deactivate-dialog-panel',
-
-          data: {
-            user
+            this.notification.error(
+              'Unable to deactivate user'
+            );
           }
-        }
-      );
-
-
-    dialogRef
-      .afterClosed()
-      .subscribe(confirmed => {
-
-        if (!confirmed) {
-
-          return;
-
-        }
-
-
-        this.service
-          .deactivate(user.id)
-          .subscribe({
-
-            next: () => {
-
-              this.notification.success(
-                'User deactivated successfully'
-              );
-
-              this.loadUsers();
-
-            },
-
-
-            error: error => {
-
-              console.error(error);
-
-              this.notification.error(
-                'Unable to deactivate user'
-              );
-
-            }
-
-          });
-
-      });
-
-  }
-
+        });
+    });
+}
 
   deleteUser(
     user: User
