@@ -30,125 +30,91 @@ import { NotificationService } from '../../../../core/services/notification.serv
 export class PatientList implements OnInit {
 
   private readonly service = inject(PatientService);
-  
   private readonly dialog = inject(MatDialog);
-
   private readonly notification = inject(NotificationService);
 
   patients: Patient[] = [];
 
   displayedColumns = [
-
     'id',
-
     'firstName',
-
     'lastName',
-
-    'phone',
-
+    'dateOfBirth',
+    'gender',
+    'bloodGroup',
+    'phoneNumber',
+    'email',
+    'address',
+    'emergencyContact',
+    'insuranceNumber',
+    'status',
     'actions'
-
   ];
 
   ngOnInit(): void {
-
     this.loadPatients();
-
   }
 
   loadPatients(): void {
-
     this.service.getAll().subscribe({
-
       next: response => {
-
         this.patients = response.data;
-
       },
-
       error: error => {
-
         console.error(error);
-
+        this.notification.error('Unable to load patients');
       }
-
     });
-
   }
 
   openDialog(patient?: Patient): void {
+    const dialogRef = this.dialog.open(
+      PatientDialog,
+      {
+        width: '900px',
+        maxWidth: '95vw',
+        data: patient
+      }
+    );
 
-  const dialogRef = this.dialog.open(
-    PatientDialog,
-    {
-      width: '900px',
-      data: patient
-    }
-  );
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadPatients();
+      }
+    });
+  }
 
-  dialogRef.afterClosed().subscribe(result => {
+  deletePatient(patient: Patient): void {
+    const dialogRef = this.dialog.open(
+      PatientDeleteConfirmation,
+      {
+        width: '500px',
+        maxWidth: '95vw',
+        data: patient
+      }
+    );
 
-    if (result) {
-
-      this.loadPatients();
-
-    }
-
-  });
-
-}
-
-deletePatient(patient: Patient): void {
-
-  const dialogRef = this.dialog.open(
-    PatientDeleteConfirmation,
-    {
-      width: '500px',
-      maxWidth: '95vw',
-      data: patient
-    }
-  );
-
-
-  dialogRef.afterClosed().subscribe(
-    confirmed => {
-
+    dialogRef.afterClosed().subscribe(confirmed => {
       if (!confirmed) {
-
         return;
-
       }
 
-
       this.service.delete(patient.id).subscribe({
-
         next: () => {
-
           this.notification.success(
             'Patient deleted successfully'
           );
 
           this.loadPatients();
-
         },
-
         error: error => {
-
           console.error(error);
 
           this.notification.error(
             'Unable to delete patient'
           );
-
         }
-
       });
-
-    }
-  );
-
+    });
+  }
 }
-
-}
-
