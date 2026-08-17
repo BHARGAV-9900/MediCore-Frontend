@@ -18,13 +18,12 @@
           formControlName="firstName"
           autocomplete="given-name">
 
-        @if (
-          form.controls.firstName.invalid &&
-          form.controls.firstName.touched
-        ) {
-          <mat-error>
-            First name is required
-          </mat-error>
+        @if (form.controls.firstName.hasError('required') && form.controls.firstName.touched) {
+          <mat-error>First name is required</mat-error>
+        }
+
+        @if (form.controls.firstName.hasError('maxlength') && form.controls.firstName.touched) {
+          <mat-error>Maximum 50 characters</mat-error>
         }
 
       </mat-form-field>
@@ -39,13 +38,12 @@
           formControlName="lastName"
           autocomplete="family-name">
 
-        @if (
-          form.controls.lastName.invalid &&
-          form.controls.lastName.touched
-        ) {
-          <mat-error>
-            Last name is required
-          </mat-error>
+        @if (form.controls.lastName.hasError('required') && form.controls.lastName.touched) {
+          <mat-error>Last name is required</mat-error>
+        }
+
+        @if (form.controls.lastName.hasError('maxlength') && form.controls.lastName.touched) {
+          <mat-error>Maximum 50 characters</mat-error>
         }
 
       </mat-form-field>
@@ -66,22 +64,16 @@
           formControlName="email"
           autocomplete="email">
 
-        @if (
-          form.controls.email.hasError('required') &&
-          form.controls.email.touched
-        ) {
-          <mat-error>
-            Email is required
-          </mat-error>
+        @if (form.controls.email.hasError('required') && form.controls.email.touched) {
+          <mat-error>Email is required</mat-error>
         }
 
-        @if (
-          form.controls.email.hasError('email') &&
-          form.controls.email.touched
-        ) {
-          <mat-error>
-            Enter a valid email address
-          </mat-error>
+        @if (form.controls.email.hasError('email') && form.controls.email.touched) {
+          <mat-error>Enter a valid email address</mat-error>
+        }
+
+        @if (form.controls.email.hasError('maxlength') && form.controls.email.touched) {
+          <mat-error>Maximum 150 characters</mat-error>
         }
 
       </mat-form-field>
@@ -97,13 +89,12 @@
           formControlName="phoneNumber"
           autocomplete="tel">
 
-        @if (
-          form.controls.phoneNumber.invalid &&
-          form.controls.phoneNumber.touched
-        ) {
-          <mat-error>
-            Phone number is required
-          </mat-error>
+        @if (form.controls.phoneNumber.hasError('required') && form.controls.phoneNumber.touched) {
+          <mat-error>Phone number is required</mat-error>
+        }
+
+        @if (form.controls.phoneNumber.hasError('maxlength') && form.controls.phoneNumber.touched) {
+          <mat-error>Maximum 20 characters</mat-error>
         }
 
       </mat-form-field>
@@ -122,13 +113,12 @@
           matInput
           formControlName="specialization">
 
-        @if (
-          form.controls.specialization.invalid &&
-          form.controls.specialization.touched
-        ) {
-          <mat-error>
-            Specialization is required
-          </mat-error>
+        @if (form.controls.specialization.hasError('required') && form.controls.specialization.touched) {
+          <mat-error>Specialization is required</mat-error>
+        }
+
+        @if (form.controls.specialization.hasError('maxlength') && form.controls.specialization.touched) {
+          <mat-error>Maximum 100 characters</mat-error>
         }
 
       </mat-form-field>
@@ -142,16 +132,10 @@
           matInput
           type="number"
           min="0"
-          max="60"
           formControlName="experienceYears">
 
-        @if (
-          form.controls.experienceYears.invalid &&
-          form.controls.experienceYears.touched
-        ) {
-          <mat-error>
-            Enter valid experience
-          </mat-error>
+        @if (form.controls.experienceYears.invalid && form.controls.experienceYears.touched) {
+          <mat-error>Experience cannot be negative</mat-error>
         }
 
       </mat-form-field>
@@ -166,28 +150,20 @@
 
         <mat-label>Department</mat-label>
 
-        <mat-select formControlName="departmentId">
+        <mat-select
+          formControlName="departmentId"
+          [disabled]="loadingDepartments">
 
-          @for (
-            department of departments;
-            track department.id
-          ) {
-
+          @for (department of departments; track department.id) {
             <mat-option [value]="department.id">
               {{ department.name }}
             </mat-option>
-
           }
 
         </mat-select>
 
-        @if (
-          form.controls.departmentId.invalid &&
-          form.controls.departmentId.touched
-        ) {
-          <mat-error>
-            Department is required
-          </mat-error>
+        @if (form.controls.departmentId.invalid && form.controls.departmentId.touched) {
+          <mat-error>Department is required</mat-error>
         }
 
       </mat-form-field>
@@ -200,16 +176,12 @@
         <input
           matInput
           type="number"
-          min="0"
+          min="0.01"
+          step="0.01"
           formControlName="consultationFee">
 
-        @if (
-          form.controls.consultationFee.invalid &&
-          form.controls.consultationFee.touched
-        ) {
-          <mat-error>
-            Consultation fee must be 0 or greater
-          </mat-error>
+        @if (form.controls.consultationFee.invalid && form.controls.consultationFee.touched) {
+          <mat-error>Consultation fee must be greater than 0</mat-error>
         }
 
       </mat-form-field>
@@ -230,27 +202,20 @@
     type="button"
     [disabled]="saving"
     (click)="close()">
-
     Cancel
-
   </button>
-
 
   <button
     mat-raised-button
     color="primary"
     type="button"
-    [disabled]="saving"
+    [disabled]="saving || loadingDepartments"
     (click)="save()">
 
     @if (saving) {
-
       Saving...
-
     } @else {
-
       {{ data ? 'Update' : 'Save' }}
-
     }
 
   </button>
