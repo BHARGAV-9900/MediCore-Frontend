@@ -190,16 +190,20 @@ export class DoctorDialog implements OnInit {
   }
 
   private getErrorMessage(
-    error: any,
-    fallback: string
-  ): string {
+  error: any,
+  fallback: string
+): string {
 
-    return error?.error?.message
-      ?? error?.error?.title
-      ?? error?.message
-      ?? fallback;
-
+  // Duplicate doctor email
+  if (error?.status === 409) {
+    return 'A doctor with this email already exists.';
   }
+
+  return error?.error?.message
+    ?? error?.error?.title
+    ?? fallback;
+
+}
 
   createDoctor(): void {
 
