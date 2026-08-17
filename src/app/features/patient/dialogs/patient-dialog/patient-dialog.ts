@@ -52,79 +52,46 @@ export class PatientDialog implements OnInit {
   })();
 
   form = this.fb.group({
-    firstName: this.fb.control(
-      '',
-      [
-        Validators.required,
-        Validators.maxLength(100)
-      ]
-    ),
-
-    lastName: this.fb.control(
-      '',
-      [
-        Validators.required,
-        Validators.maxLength(100)
-      ]
-    ),
-
-    dateOfBirth: this.fb.control(
-      '',
-      [
-        Validators.required,
-        Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)
-      ]
-    ),
-
-    gender: this.fb.control<number | null>(
-      null,
-      Validators.required
-    ),
-
-    bloodGroup: this.fb.control<number | null>(
-      null,
-      Validators.required
-    ),
-
-    phoneNumber: this.fb.control(
-      '',
-      [
-        Validators.required,
-        Validators.pattern(/^\d{10,15}$/),
-        Validators.maxLength(15)
-      ]
-    ),
-
-    email: this.fb.control(
-      '',
-      [
-        Validators.required,
-        Validators.email
-      ]
-    ),
-
-    address: this.fb.control(
-      '',
-      Validators.maxLength(500)
-    ),
-
-    emergencyContactName: this.fb.control(
-      '',
+    firstName: this.fb.control('', [
+      Validators.required,
       Validators.maxLength(100)
-    ),
+    ]),
 
-    emergencyContactPhone: this.fb.control(
-      '',
-      [
-        Validators.maxLength(15),
-        Validators.pattern(/^\d{10,15}$/)
-      ]
-    ),
-
-    insuranceNumber: this.fb.control(
-      '',
+    lastName: this.fb.control('', [
+      Validators.required,
       Validators.maxLength(100)
-    )
+    ]),
+
+    dateOfBirth: this.fb.control('', [
+      Validators.required,
+      Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)
+    ]),
+
+    gender: this.fb.control<number | null>(null, Validators.required),
+
+    bloodGroup: this.fb.control<number | null>(null, Validators.required),
+
+    phoneNumber: this.fb.control('', [
+      Validators.required,
+      Validators.pattern(/^\d{10,15}$/),
+      Validators.maxLength(15)
+    ]),
+
+    email: this.fb.control('', [
+      Validators.required,
+      Validators.email
+    ]),
+
+    address: this.fb.control('', Validators.maxLength(500)),
+
+    emergencyContactName: this.fb.control('', Validators.maxLength(100)),
+
+    emergencyContactPhone: this.fb.control('', [
+      Validators.maxLength(15),
+      Validators.pattern(/^\d{10,15}$/)
+    ]),
+
+    insuranceNumber: this.fb.control('', Validators.maxLength(100))
   });
 
   genders = [
@@ -153,9 +120,7 @@ export class PatientDialog implements OnInit {
       firstName: this.data.firstName,
       lastName: this.data.lastName,
       dateOfBirth: this.data.dateOfBirth
-        ? new Date(this.data.dateOfBirth)
-            .toISOString()
-            .split('T')[0]
+        ? new Date(this.data.dateOfBirth).toISOString().split('T')[0]
         : '',
       gender: this.mapGender(this.data.gender),
       bloodGroup: this.mapBloodGroup(this.data.bloodGroup),
@@ -202,6 +167,56 @@ export class PatientDialog implements OnInit {
       insuranceNumber: this.form.value.insuranceNumber ?? ''
     };
 
+    // Give the user an immediate, friendly duplicate message before the
+    // request reaches the API. The API still remains the final authority.
+    this.service.getAll().subscribe({
+      next: response => {
+        const email = model.email.trim().toLowerCase();
+        const phone = model.phoneNumber.trim();
+
+        const duplicateEmail = response.data.some(patient =>
+          patient.email?.trim().toLowerCase() === email
+        );
+
+        const duplicatePhone = response.data.some(patient =>
+          patient.phoneNumber?.trim() === phone
+        );
+
+        if (duplicateEmail && duplicatePhone) {
+          this.saving = false;
+          this.notification.error(
+            'A patient with this email and phone number already exists.'
+          );
+          return;
+        }
+
+        if (duplicateEmail) {
+          this.saving = false;
+          this.notification.error(
+            'A patient with this email already exists.'
+          );
+          return;
+        }
+
+        if (duplicatePhone) {
+          this.saving = false;
+          this.notification.error(
+            'A patient with this phone number already exists.'
+          );
+          return;
+        }
+
+        this.submitCreatePatient(model);
+      },
+      error: error => {
+        console.error('Unable to check existing patients:', error);
+        // Do not block creation if the duplicate pre-check itself fails.
+        this.submitCreatePatient(model);
+      }
+    });
+  }
+
+  private submitCreatePatient(model: CreatePatient): void {
     this.service.create(model).subscribe({
       next: () => {
         this.notification.success('Patient created successfully');
@@ -247,8 +262,6 @@ export class PatientDialog implements OnInit {
   private getConflictMessage(error: any): string {
     const body = error?.error;
 
-    // Angular may receive the response body as a JSON object.
-    // Support both camelCase and PascalCase property names.
     const message =
       body?.message ??
       body?.Message ??
@@ -259,14 +272,12 @@ export class PatientDialog implements OnInit {
       return message;
     }
 
-    // Validation/business-rule errors can be returned as an array.
     const errors = body?.errors ?? body?.Errors;
 
     if (Array.isArray(errors) && errors.length > 0) {
       return errors.join(' ');
     }
 
-    // Sometimes the API returns the response body as plain text.
     if (typeof body === 'string' && body.trim()) {
       return body;
     }
