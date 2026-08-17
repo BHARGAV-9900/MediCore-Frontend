@@ -66,7 +66,7 @@ export class DoctorDialog implements OnInit {
       '',
       [
         Validators.required,
-        Validators.maxLength(100)
+        Validators.maxLength(50)
       ]
     ],
 
@@ -74,7 +74,7 @@ export class DoctorDialog implements OnInit {
       '',
       [
         Validators.required,
-        Validators.maxLength(100)
+        Validators.maxLength(50)
       ]
     ],
 
@@ -83,7 +83,7 @@ export class DoctorDialog implements OnInit {
       [
         Validators.required,
         Validators.email,
-        Validators.maxLength(200)
+        Validators.maxLength(150)
       ]
     ],
 
@@ -99,7 +99,7 @@ export class DoctorDialog implements OnInit {
       '',
       [
         Validators.required,
-        Validators.maxLength(150)
+        Validators.maxLength(100)
       ]
     ],
 
@@ -107,8 +107,7 @@ export class DoctorDialog implements OnInit {
       0,
       [
         Validators.required,
-        Validators.min(0),
-        Validators.max(60)
+        Validators.min(0)
       ]
     ],
 
@@ -116,7 +115,7 @@ export class DoctorDialog implements OnInit {
       0,
       [
         Validators.required,
-        Validators.min(0)
+        Validators.min(0.01)
       ]
     ],
 
@@ -190,6 +189,18 @@ export class DoctorDialog implements OnInit {
 
   }
 
+  private getErrorMessage(
+    error: any,
+    fallback: string
+  ): string {
+
+    return error?.error?.message
+      ?? error?.error?.title
+      ?? error?.message
+      ?? fallback;
+
+  }
+
   createDoctor(): void {
 
     const model: CreateDoctor = {
@@ -242,7 +253,10 @@ export class DoctorDialog implements OnInit {
         this.saving = false;
 
         this.notification.error(
-          'Unable to create doctor'
+          this.getErrorMessage(
+            error,
+            'Unable to create doctor'
+          )
         );
 
       }
@@ -305,7 +319,10 @@ export class DoctorDialog implements OnInit {
         this.saving = false;
 
         this.notification.error(
-          'Unable to update doctor'
+          this.getErrorMessage(
+            error,
+            'Unable to update doctor'
+          )
         );
 
       }
