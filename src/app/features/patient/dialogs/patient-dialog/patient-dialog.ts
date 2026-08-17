@@ -208,7 +208,7 @@ export class PatientDialog implements OnInit {
         this.dialogRef.close(true);
       },
       error: error => {
-        console.error(error);
+        console.error('Create patient failed:', error);
         this.saving = false;
         this.notification.error(this.getConflictMessage(error));
       }
@@ -237,7 +237,7 @@ export class PatientDialog implements OnInit {
         this.dialogRef.close(true);
       },
       error: error => {
-        console.error(error);
+        console.error('Update patient failed:', error);
         this.saving = false;
         this.notification.error(this.getConflictMessage(error));
       }
@@ -245,18 +245,38 @@ export class PatientDialog implements OnInit {
   }
 
   private getConflictMessage(error: any): string {
+    const body = error?.error;
+
+    // Angular may receive the response body as a JSON object.
+    // Support both camelCase and PascalCase property names.
+    const message =
+      body?.message ??
+      body?.Message ??
+      body?.title ??
+      body?.Title;
+
+    if (typeof message === 'string' && message.trim()) {
+      return message;
+    }
+
+    // Validation/business-rule errors can be returned as an array.
+    const errors = body?.errors ?? body?.Errors;
+
+    if (Array.isArray(errors) && errors.length > 0) {
+      return errors.join(' ');
+    }
+
+    // Sometimes the API returns the response body as plain text.
+    if (typeof body === 'string' && body.trim()) {
+      return body;
+    }
+
     if (error?.status === 409) {
-      if (typeof error?.error === 'string') {
-        return error.error;
-      }
+      return 'A patient with the same email or phone number already exists.';
+    }
 
-      if (error?.error?.message) {
-        return error.error.message;
-      }
-
-      if (error?.error?.title) {
-        return error.error.title;
-      }
+    if (error?.status === 400) {
+      return 'Please check the patient details and try again.';
     }
 
     return 'Unable to save patient';
