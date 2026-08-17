@@ -45,7 +45,11 @@ export class PatientDialog implements OnInit {
 
   saving = false;
 
-  readonly maxDate = new Date().toISOString().split('T')[0];
+  readonly maxDate = (() => {
+    const date = new Date();
+    date.setDate(date.getDate() - 1);
+    return date.toISOString().split('T')[0];
+  })();
 
   form = this.fb.group({
     firstName: this.fb.control(
@@ -206,10 +210,7 @@ export class PatientDialog implements OnInit {
       error: error => {
         console.error(error);
         this.saving = false;
-
-        const message = this.getConflictMessage(error);
-
-        this.notification.error(message);
+        this.notification.error(this.getConflictMessage(error));
       }
     });
   }
@@ -238,10 +239,7 @@ export class PatientDialog implements OnInit {
       error: error => {
         console.error(error);
         this.saving = false;
-
-        const message = this.getConflictMessage(error);
-
-        this.notification.error(message);
+        this.notification.error(this.getConflictMessage(error));
       }
     });
   }
