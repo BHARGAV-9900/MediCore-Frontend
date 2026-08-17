@@ -3,153 +3,169 @@
   width: 100%;
 }
 
-
 .page-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   margin-bottom: 22px;
 }
 
-
 .page-title h2 {
   margin: 0;
-
   font-size: 24px;
   font-weight: 600;
-
   color: #172033;
 }
 
-
 .page-title p {
   margin: 4px 0 0;
-
   font-size: 14px;
-
   color: #64748b;
 }
 
-
 .page-header button {
   min-width: 125px;
-
   border-radius: 22px;
-
   color: #1976d2;
   border-color: #94a3b8;
 }
 
-
 .page-header mat-icon {
   margin-right: 5px;
-
   font-size: 19px;
-
   vertical-align: middle;
 }
 
-
 .table-container {
   width: 100%;
-
   overflow-x: auto;
-
   background: transparent;
+  border-radius: 8px;
 }
 
-
 .patient-table {
-  width: 100%;
-
+  width: max-content;
+  min-width: 1500px;
   background: transparent;
-
   border-collapse: collapse;
 }
 
-
 .patient-table th {
   height: 48px;
-
   padding: 0 14px;
-
   font-size: 13px;
   font-weight: 600;
-
   color: #172033;
-
   border-bottom: 1px solid #cbd5e1;
-
   white-space: nowrap;
 }
 
-
 .patient-table td {
-  height: 46px;
-
-  padding: 0 14px;
-
+  min-height: 46px;
+  padding: 10px 14px;
   font-size: 14px;
-
   color: #1e293b;
-
   border-bottom: 1px solid #d7dde5;
+  white-space: nowrap;
 }
-
 
 .patient-table tr {
   background: transparent;
 }
 
-
 .patient-table tr:hover {
   background: #f8fafc;
 }
 
-
 .patient-table th:first-child,
 .patient-table td:first-child {
-  width: 70px;
+  width: 60px;
 }
 
-
-.patient-table th:last-child,
-.patient-table td:last-child {
-  width: 130px;
+.email-cell {
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+.address-cell {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.emergency-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.25;
+}
+
+.emergency-contact small {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.blood-group {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: #ecfdf5;
+  color: #047857;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-badge.inactive {
+  background: #f1f5f9;
+  color: #64748b;
+}
 
 .action-buttons {
   display: flex;
-
   align-items: center;
-
   gap: 4px;
 }
 
+.patient-table th:last-child,
+.patient-table td:last-child {
+  position: sticky;
+  right: 0;
+  background: #f8fafc;
+  width: 120px;
+  min-width: 120px;
+}
+
+.action-buttons button {
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+}
 
 .edit-button {
   color: #1976d2;
 }
 
-
 .delete-button {
   color: #334155;
 }
 
-
-.action-buttons button {
-  width: 36px;
-  height: 36px;
-
-  line-height: 36px;
-}
-
-
 .action-buttons mat-icon {
   font-size: 20px;
-
   width: 20px;
   height: 20px;
 }
