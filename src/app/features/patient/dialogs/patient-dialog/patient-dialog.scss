@@ -4,6 +4,7 @@
   box-sizing: border-box;
 }
 
+<<<<<<< HEAD
 /* =========================================================
    DIALOG TITLE
    ========================================================= */
@@ -17,6 +18,13 @@ mat-dialog-title {
   color: #1f2937;
 
   font-size: 24px;
+=======
+mat-dialog-title {
+  margin: 0 !important;
+  padding: 20px 24px 8px !important;
+  color: #1f2937;
+  font-size: 23px;
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
   font-weight: 600;
   line-height: 1.3;
 }
@@ -37,9 +45,12 @@ mat-dialog-content {
   box-sizing: border-box;
 }
 
-/* =========================================================
-   FORM
-   ========================================================= */
+mat-dialog-content {
+  margin: 0;
+  padding: 0 24px 4px !important;
+  overflow: hidden !important;
+  max-height: none !important;
+}
 
 form {
   display: block;
@@ -50,6 +61,7 @@ form {
   box-sizing: border-box;
 }
 
+<<<<<<< HEAD
 /* =========================================================
    SECTION HEADINGS
    ========================================================= */
@@ -60,6 +72,12 @@ h3 {
   color: #374151;
 
   font-size: 15px;
+=======
+h3 {
+  margin: 10px 0 8px;
+  color: #374151;
+  font-size: 14px;
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
   font-weight: 700;
   line-height: 1.3;
 }
@@ -68,6 +86,7 @@ h3:first-of-type {
   margin-top: 4px;
 }
 
+<<<<<<< HEAD
 /* =========================================================
    TWO COLUMN ROW
    ========================================================= */
@@ -84,11 +103,15 @@ h3:first-of-type {
   margin: 0 0 8px;
 
   box-sizing: border-box;
+=======
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  margin-bottom: 6px;
+  align-items: start;
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
 }
-
-/* =========================================================
-   FORM FIELDS
-   ========================================================= */
 
 mat-form-field {
   display: block;
@@ -105,6 +128,7 @@ mat-form-field {
   width: 100% !important;
 }
 
+<<<<<<< HEAD
 /* =========================================================
    MATERIAL FORM FIELD SIZE
    ========================================================= */
@@ -113,10 +137,15 @@ mat-form-field {
   width: 100% !important;
 
   --mat-form-field-container-height: 50px;
+=======
+::ng-deep .mat-mdc-form-field {
+  --mat-form-field-container-height: 46px;
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
   --mat-form-field-container-vertical-padding: 8px;
 }
 
 ::ng-deep .mat-mdc-text-field-wrapper {
+<<<<<<< HEAD
   width: 100% !important;
 
   min-height: 50px !important;
@@ -227,13 +256,66 @@ mat-dialog-actions {
   background: #ffffff;
 
   box-sizing: border-box;
+=======
+  min-height: 46px !important;
 }
 
-/* =========================================================
-   CANCEL BUTTON
-   ========================================================= */
+::ng-deep .mat-mdc-form-field-infix {
+  min-height: 46px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  min-height: 18px;
+}
+
+input,
+mat-select {
+  font-size: 14px;
+}
+
+.phone-prefix {
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.phone-help {
+  min-height: 46px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 12px;
+  border: 1px dashed #d1d5db;
+  border-radius: 6px;
+  background: #f9fafb;
+  color: #6b7280;
+  font-size: 11px;
+  box-sizing: border-box;
+}
+
+.phone-help strong {
+  margin-top: 2px;
+  color: #374151;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 0 !important;
+  padding: 12px 24px 16px !important;
+  border-top: 1px solid #e5e7eb;
+  background: #fafbfc;
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
+}
 
 mat-dialog-actions button:first-child {
+<<<<<<< HEAD
   min-width: 72px;
 
   height: 40px;
@@ -260,17 +342,33 @@ mat-dialog-actions button[color='primary'] {
 
   padding: 0 22px !important;
 
+=======
+  height: 40px;
+  color: #0069b4 !important;
+  font-weight: 600 !important;
+  border-radius: 20px !important;
+}
+
+mat-dialog-actions button[color='primary'] {
+  height: 42px !important;
+  min-width: 92px !important;
+  padding: 0 22px !important;
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
   display: inline-flex !important;
 
   align-items: center !important;
 
   justify-content: center !important;
+<<<<<<< HEAD
 
   background: #0069d9 !important;
 
+=======
+  background: #005cbb !important;
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
   color: #ffffff !important;
-
   border: none !important;
+<<<<<<< HEAD
 
   border-radius: 22px !important;
 
@@ -280,6 +378,13 @@ mat-dialog-actions button[color='primary'] {
 
   line-height: 1 !important;
 
+=======
+  border-radius: 21px !important;
+  font-family: inherit !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
   box-shadow: none !important;
 }
 
@@ -295,6 +400,7 @@ mat-dialog-actions button[color='primary']:disabled {
   opacity: 0.75;
 }
 
+<<<<<<< HEAD
 /* =========================================================
    REMOVE SCROLLBAR
    ========================================================= */
@@ -369,8 +475,39 @@ mat-dialog-content::-webkit-scrollbar {
     font-size: 20px;
   }
 
+=======
+/* Keep the patient form compact and hide internal scrollbars. */
+mat-dialog-content,
+mat-dialog-content * {
+  scrollbar-width: none;
+}
+
+mat-dialog-content::-webkit-scrollbar,
+mat-dialog-content *::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+@media (max-width: 700px) {
+  mat-dialog-title {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+    font-size: 21px;
+  }
+
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
   mat-dialog-content {
     padding: 0 16px 6px !important;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .phone-help {
+    display: none;
   }
 
   mat-dialog-actions {

@@ -29,10 +29,16 @@ import { CreatePatient } from '../../models/create-patient';
 import { UpdatePatient } from '../../models/update-patient';
 
 interface CountryOption {
+<<<<<<< HEAD
   code: CountryCode;
   name: string;
   callingCode: string;
   flag: string;
+=======
+  code: string;
+  name: string;
+  dialCode: string;
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
 }
 
 @Component({
@@ -92,6 +98,19 @@ export class PatientDialog implements OnInit {
     return date.toISOString().split('T')[0];
   })();
 
+  readonly countries: CountryOption[] = [
+    { code: 'IN', name: 'India', dialCode: '+91' },
+    { code: 'US', name: 'United States', dialCode: '+1' },
+    { code: 'CA', name: 'Canada', dialCode: '+1' },
+    { code: 'GB', name: 'United Kingdom', dialCode: '+44' },
+    { code: 'AE', name: 'United Arab Emirates', dialCode: '+971' },
+    { code: 'AU', name: 'Australia', dialCode: '+61' },
+    { code: 'SG', name: 'Singapore', dialCode: '+65' },
+    { code: 'DE', name: 'Germany', dialCode: '+49' },
+    { code: 'FR', name: 'France', dialCode: '+33' },
+    { code: 'NZ', name: 'New Zealand', dialCode: '+64' }
+  ];
+
   form = this.fb.group({
 
     firstName: this.fb.control('', [
@@ -119,6 +138,7 @@ export class PatientDialog implements OnInit {
       Validators.required
     ),
 
+<<<<<<< HEAD
     /*
      * The user enters only the local/national number.
      *
@@ -132,6 +152,13 @@ export class PatientDialog implements OnInit {
     phoneNumber: this.fb.control('', [
       Validators.required,
       Validators.maxLength(15)
+=======
+    countryCode: this.fb.control('IN', Validators.required),
+
+    phoneNumber: this.fb.control('', [
+      Validators.required,
+      Validators.pattern(/^\d{7,12}$/)
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
     ]),
 
     email: this.fb.control('', [
@@ -139,8 +166,20 @@ export class PatientDialog implements OnInit {
       Validators.email
     ]),
 
+<<<<<<< HEAD
     address: this.fb.control('', [
       Validators.maxLength(500)
+=======
+    address: this.fb.control('', Validators.maxLength(500)),
+
+    emergencyContactName: this.fb.control('', Validators.maxLength(100)),
+
+    emergencyCountryCode: this.fb.control('IN', Validators.required),
+
+    emergencyContactPhone: this.fb.control('', [
+      Validators.required,
+      Validators.pattern(/^\d{7,12}$/)
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
     ]),
 
     emergencyContactName: this.fb.control('', [
@@ -173,12 +212,25 @@ export class PatientDialog implements OnInit {
     { id: 8, name: 'O-' }
   ];
 
+  get selectedCountry(): CountryOption {
+    return this.countries.find(
+      country => country.code === this.form.controls.countryCode.value
+    ) ?? this.countries[0];
+  }
+
+  get selectedEmergencyCountry(): CountryOption {
+    return this.countries.find(
+      country => country.code === this.form.controls.emergencyCountryCode.value
+    ) ?? this.countries[0];
+  }
+
   ngOnInit(): void {
 
     if (!this.data) {
       return;
     }
 
+<<<<<<< HEAD
     const phoneData =
       this.getStoredPhoneParts(
         this.data.phoneNumber
@@ -233,6 +285,29 @@ export class PatientDialog implements OnInit {
 
       insuranceNumber:
         this.data.insuranceNumber
+=======
+    const patientPhone = this.splitInternationalPhone(this.data.phoneNumber);
+    const emergencyPhone = this.splitInternationalPhone(
+      this.data.emergencyContactPhone
+    );
+
+    this.form.patchValue({
+      firstName: this.data.firstName,
+      lastName: this.data.lastName,
+      dateOfBirth: this.data.dateOfBirth
+        ? new Date(this.data.dateOfBirth).toISOString().split('T')[0]
+        : '',
+      gender: this.mapGender(this.data.gender),
+      bloodGroup: this.mapBloodGroup(this.data.bloodGroup),
+      countryCode: patientPhone.countryCode,
+      phoneNumber: patientPhone.localNumber,
+      email: this.data.email,
+      address: this.data.address,
+      emergencyContactName: this.data.emergencyContactName,
+      emergencyCountryCode: emergencyPhone.countryCode,
+      emergencyContactPhone: emergencyPhone.localNumber,
+      insuranceNumber: this.data.insuranceNumber
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
     });
   }
 
@@ -419,6 +494,16 @@ export class PatientDialog implements OnInit {
    */
 
   save(): void {
+<<<<<<< HEAD
+=======
+    if (!this.isPhoneLengthValid('phoneNumber')) {
+      this.form.controls.phoneNumber.setErrors({ phoneLength: true });
+    }
+
+    if (!this.isPhoneLengthValid('emergencyContactPhone')) {
+      this.form.controls.emergencyContactPhone.setErrors({ phoneLength: true });
+    }
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
 
     if (this.form.invalid) {
 
@@ -634,6 +719,7 @@ export class PatientDialog implements OnInit {
   ): void {
 
     const model: CreatePatient = {
+<<<<<<< HEAD
 
       firstName:
         this.form.value.firstName!,
@@ -759,6 +845,28 @@ export class PatientDialog implements OnInit {
         );
       }
     });
+=======
+      firstName: this.form.value.firstName!.trim(),
+      lastName: this.form.value.lastName!.trim(),
+      dateOfBirth: this.form.value.dateOfBirth!,
+      gender: this.form.value.gender!,
+      bloodGroup: this.form.value.bloodGroup!,
+      phoneNumber: this.buildInternationalPhone(
+        this.form.value.countryCode!,
+        this.form.value.phoneNumber!
+      ),
+      email: this.form.value.email!.trim().toLowerCase(),
+      address: this.form.value.address?.trim() ?? '',
+      emergencyContactName: this.form.value.emergencyContactName?.trim() ?? '',
+      emergencyContactPhone: this.buildInternationalPhone(
+        this.form.value.emergencyCountryCode!,
+        this.form.value.emergencyContactPhone!
+      ),
+      insuranceNumber: this.form.value.insuranceNumber?.trim() ?? ''
+    };
+
+    this.submitCreatePatient(model);
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
   }
 
   private normalizeStoredPhone(
@@ -835,6 +943,7 @@ export class PatientDialog implements OnInit {
     const model: UpdatePatient = {
 
       id: this.data!.id,
+<<<<<<< HEAD
 
       firstName:
         this.form.value.firstName!,
@@ -872,6 +981,25 @@ export class PatientDialog implements OnInit {
         this.form.value
           .insuranceNumber
         ?? ''
+=======
+      firstName: this.form.value.firstName!.trim(),
+      lastName: this.form.value.lastName!.trim(),
+      dateOfBirth: this.form.value.dateOfBirth!,
+      gender: this.form.value.gender!,
+      bloodGroup: this.form.value.bloodGroup!,
+      phoneNumber: this.buildInternationalPhone(
+        this.form.value.countryCode!,
+        this.form.value.phoneNumber!
+      ),
+      email: this.form.value.email!.trim().toLowerCase(),
+      address: this.form.value.address?.trim() ?? '',
+      emergencyContactName: this.form.value.emergencyContactName?.trim() ?? '',
+      emergencyContactPhone: this.buildInternationalPhone(
+        this.form.value.emergencyCountryCode!,
+        this.form.value.emergencyContactPhone!
+      ),
+      insuranceNumber: this.form.value.insuranceNumber?.trim() ?? ''
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
     };
 
     this.service.update(model).subscribe({
@@ -960,6 +1088,7 @@ export class PatientDialog implements OnInit {
     return 'Unable to save patient';
   }
 
+<<<<<<< HEAD
   /*
    * =========================================================
    * PHONE VALIDATION ERROR
@@ -1034,6 +1163,67 @@ export class PatientDialog implements OnInit {
       number
     > = {
 
+=======
+  private buildInternationalPhone(
+    countryCode: string,
+    localNumber: string
+  ): string {
+    const country = this.countries.find(x => x.code === countryCode)
+      ?? this.countries[0];
+
+    const digits = localNumber.replace(/\D/g, '');
+
+    return `${country.dialCode}${digits}`;
+  }
+
+  private splitInternationalPhone(phoneNumber: string | null | undefined): {
+    countryCode: string;
+    localNumber: string;
+  } {
+    const value = (phoneNumber ?? '').trim();
+
+    if (!value.startsWith('+')) {
+      return {
+        countryCode: 'IN',
+        localNumber: value.replace(/\D/g, '')
+      };
+    }
+
+    const matchingCountries = this.countries
+      .filter(country => value.startsWith(country.dialCode))
+      .sort((a, b) => b.dialCode.length - a.dialCode.length);
+
+    const country = matchingCountries[0];
+
+    if (!country) {
+      return {
+        countryCode: 'IN',
+        localNumber: value.replace(/\D/g, '').replace(/^91/, '')
+      };
+    }
+
+    return {
+      countryCode: country.code,
+      localNumber: value.substring(country.dialCode.length).replace(/\D/g, '')
+    };
+  }
+
+  private isPhoneLengthValid(
+    controlName: 'phoneNumber' | 'emergencyContactPhone'
+  ): boolean {
+    const control = this.form.controls[controlName];
+    const value = control.value?.replace(/\D/g, '') ?? '';
+
+    return value.length >= 7 && value.length <= 12;
+  }
+
+  private mapGender(value: string | number): number | null {
+    if (typeof value === 'number') {
+      return value;
+    }
+
+    const map: Record<string, number> = {
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
       Male: 1,
       Female: 2,
       Other: 3
@@ -1042,6 +1232,7 @@ export class PatientDialog implements OnInit {
     return map[value] ?? null;
   }
 
+<<<<<<< HEAD
   private mapBloodGroup(
     value: string
   ): number | null {
@@ -1051,6 +1242,14 @@ export class PatientDialog implements OnInit {
       number
     > = {
 
+=======
+  private mapBloodGroup(value: string | number): number | null {
+    if (typeof value === 'number') {
+      return value;
+    }
+
+    const map: Record<string, number> = {
+>>>>>>> be02ec20af318510a899def893ead4e6df6839bc
       APositive: 1,
       ANegative: 2,
       BPositive: 3,
