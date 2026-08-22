@@ -32,7 +32,18 @@ export class AppointmentDialog implements OnInit {
 
   patients: Patient[] = [];
   doctors: Doctor[] = [];
+
+  /**
+   * Minimum date allowed for an appointment.
+   * Format: YYYY-MM-DD
+   */
   minDate = this.getTodayDate();
+
+  /**
+   * Maximum supported date for the HTML date input.
+   * This prevents years beyond four digits.
+   */
+  maxDate = '9999-12-31';
 
   readonly hours = Array.from({ length: 12 }, (_, index) => index + 1);
   readonly minutes = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'];
@@ -55,6 +66,7 @@ export class AppointmentDialog implements OnInit {
 
     if (this.data) {
       const dateTime = new Date(this.data.appointmentDate);
+
       this.form.patchValue({
         patientId: this.data.patientId,
         doctorId: this.data.doctorId,
@@ -93,6 +105,7 @@ export class AppointmentDialog implements OnInit {
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
     const day = String(today.getDate()).padStart(2, '0');
+
     return `${year}-${month}-${day}`;
   }
 
@@ -101,13 +114,56 @@ export class AppointmentDialog implements OnInit {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
+
     return `${year}-${month}-${day}`;
+  }
+
+  /**
+   * Prevent the browser date control from accepting
+   * a year with more than four digits, such as:
+   *
+   * 199999-11-11
+   *
+   * The application only supports the normal
+   * four-digit calendar year format:
+   *
+   * 1999-11-11
+   */
+  normalizeDateInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = input.value;
+
+    if (!value) {
+      return;
+    }
+
+    const parts = value.split('-');
+
+    if (parts.length !== 3) {
+      return;
+    }
+
+    const [year, month, day] = parts;
+
+    if (year.length > 4) {
+      const normalizedYear = year.substring(0, 4);
+      const normalizedValue = `${normalizedYear}-${month}-${day}`;
+
+      input.value = normalizedValue;
+
+      this.form.controls.appointmentDate.setValue(
+        normalizedValue,
+        { emitEvent: false }
+      );
+    }
   }
 
   private get12Hour(date: Date): number {
     const hour = date.getHours();
+
     if (hour === 0) return 12;
     if (hour > 12) return hour - 12;
+
     return hour;
   }
 
@@ -116,6 +172,7 @@ export class AppointmentDialog implements OnInit {
     const hour = this.form.value.appointmentHour!;
     const minute = Number(this.form.value.appointmentMinute!);
     const period = this.form.value.appointmentPeriod!;
+
     let hour24 = hour;
 
     if (period === 'AM') {
@@ -125,7 +182,16 @@ export class AppointmentDialog implements OnInit {
     }
 
     const [year, month, day] = date.split('-').map(Number);
-    return new Date(year, month - 1, day, hour24, minute, 0, 0);
+
+    return new Date(
+      year,
+      month - 1,
+      day,
+      hour24,
+      minute,
+      0,
+      0
+    );
   }
 
   private buildAppointmentDateString(): string {
@@ -133,6 +199,7 @@ export class AppointmentDialog implements OnInit {
     const hour = this.form.value.appointmentHour!;
     const minute = Number(this.form.value.appointmentMinute!);
     const period = this.form.value.appointmentPeriod!;
+
     let hour24 = hour;
 
     if (period === 'AM') {
