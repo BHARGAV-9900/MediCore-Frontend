@@ -347,13 +347,18 @@ export class MedicalRecordDialog {
 
         error: error => {
 
-          console.error(error);
+          console.error(
+            'Create medical record error:',
+            error
+          );
 
           this.loading = false;
 
           this.notification.error(
-            error?.error?.message ??
-            'Unable to create medical record'
+            this.getErrorMessage(
+              error,
+              'Unable to create medical record'
+            )
           );
 
         }
@@ -395,18 +400,95 @@ export class MedicalRecordDialog {
 
         error: error => {
 
-          console.error(error);
+          console.error(
+            'Update medical record error:',
+            error
+          );
 
           this.loading = false;
 
           this.notification.error(
-            error?.error?.message ??
-            'Unable to update medical record'
+            this.getErrorMessage(
+              error,
+              'Unable to update medical record'
+            )
           );
 
         }
 
       });
+
+  }
+
+
+  /**
+   * Extract the actual error message returned
+   * by the MediCore Nexus API.
+   *
+   * The backend uses:
+   *
+   * {
+   *   success: false,
+   *   message: "...",
+   *   data: null,
+   *   errors: null
+   * }
+   *
+   */
+  private getErrorMessage(
+    error: any,
+    fallback: string
+  ): string {
+
+    /**
+     * Standard MediCore API response.
+     */
+    if (error?.error?.message) {
+
+      return error.error.message;
+
+    }
+
+
+    /**
+     * Handles capitalized Message property.
+     */
+    if (error?.error?.Message) {
+
+      return error.error.Message;
+
+    }
+
+
+    /**
+     * Handles direct message.
+     */
+    if (error?.message) {
+
+      return error.message;
+
+    }
+
+
+    /**
+     * Handles validation errors array.
+     */
+    if (
+      Array.isArray(
+        error?.error?.errors
+      ) &&
+      error.error.errors.length > 0
+    ) {
+
+      return error.error.errors.join(', ');
+
+    }
+
+
+    /**
+     * Final fallback.
+     */
+    return fallback;
 
   }
 
