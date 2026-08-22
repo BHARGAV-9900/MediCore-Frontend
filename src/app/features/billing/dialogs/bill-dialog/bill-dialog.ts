@@ -100,7 +100,7 @@ export class BillDialog {
       ],
 
       totalAmount: [
-        0,
+        '',
         [
           Validators.required,
           Validators.min(0.01)
@@ -125,7 +125,7 @@ export class BillDialog {
           data.appointmentId,
 
         totalAmount:
-          data.totalAmount
+          String(data.totalAmount)
 
       });
 
@@ -202,8 +202,10 @@ export class BillDialog {
           this.appointmentsLoading = false;
 
           this.notification.error(
-            error?.error?.message ??
-            'Unable to load appointments'
+            this.getErrorMessage(
+              error,
+              'Unable to load appointments'
+            )
           );
 
         }
@@ -256,7 +258,7 @@ export class BillDialog {
     }
 
 
-    if (model.totalAmount <= 0) {
+    if (!Number.isFinite(model.totalAmount) || model.totalAmount <= 0) {
 
       this.form.controls
         .totalAmount
@@ -317,8 +319,10 @@ export class BillDialog {
           this.loading = false;
 
           this.notification.error(
-            error?.error?.message ??
-            'Unable to create bill'
+            this.getErrorMessage(
+              error,
+              'Unable to create bill'
+            )
           );
 
         }
@@ -371,13 +375,46 @@ export class BillDialog {
           this.loading = false;
 
           this.notification.error(
-            error?.error?.message ??
-            'Unable to update bill'
+            this.getErrorMessage(
+              error,
+              'Unable to update bill'
+            )
           );
 
         }
 
       });
+
+  }
+
+
+  private getErrorMessage(
+    error: any,
+    fallback: string
+  ): string {
+
+    const message =
+      error?.error?.message ??
+      error?.error?.Message ??
+      error?.message;
+
+    if (typeof message === 'string' && message.trim()) {
+
+      return message;
+
+    }
+
+    const errors =
+      error?.error?.errors ??
+      error?.error?.Errors;
+
+    if (Array.isArray(errors) && errors.length > 0) {
+
+      return errors.join(', ');
+
+    }
+
+    return fallback;
 
   }
 
