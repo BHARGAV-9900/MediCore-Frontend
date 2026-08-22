@@ -389,8 +389,8 @@ export class MedicalRecordDialog {
   }
 
   /**
-   * Extract the actual message returned by the
-   * MediCore Nexus API.
+   * Extract the actual error message returned
+   * by the MediCore Nexus API.
    */
   private getErrorMessage(
     error: any,
@@ -398,114 +398,31 @@ export class MedicalRecordDialog {
   ): string {
 
     if (error?.error?.message) {
-
       return error.error.message;
-
     }
 
     if (error?.error?.Message) {
-
       return error.error.Message;
-
     }
 
     if (error?.message) {
-
       return error.message;
-
     }
 
     if (
       Array.isArray(error?.error?.errors) &&
       error.error.errors.length > 0
     ) {
-
       return error.error.errors.join(', ');
-
     }
 
     return fallback;
-
   }
-
-  /**
-   * Extract the actual error message returned
-   * by the MediCore Nexus API.
-   *
-   * The backend uses:
-   *
-   * {
-   *   success: false,
-   *   message: "...",
-   *   data: null,
-   *   errors: null
-   * }
-   *
-   */
-  private getErrorMessage(
-    error: any,
-    fallback: string
-  ): string {
-
-    /**
-     * Standard MediCore API response.
-     */
-    if (error?.error?.message) {
-
-      return error.error.message;
-
-    }
-
-
-    /**
-     * Handles capitalized Message property.
-     */
-    if (error?.error?.Message) {
-
-      return error.error.Message;
-
-    }
-
-
-    /**
-     * Handles direct message.
-     */
-    if (error?.message) {
-
-      return error.message;
-
-    }
-
-
-    /**
-     * Handles validation errors array.
-     */
-    if (
-      Array.isArray(
-        error?.error?.errors
-      ) &&
-      error.error.errors.length > 0
-    ) {
-
-      return error.error.errors.join(', ');
-
-    }
-
-
-    /**
-     * Final fallback.
-     */
-    return fallback;
-
-  }
-
 
   cancel(): void {
 
     if (this.loading) {
-
       return;
-
     }
 
     this.dialogRef.close(false);
@@ -513,39 +430,49 @@ export class MedicalRecordDialog {
   }
 
   get appointmentIdControl() {
-
     return this.form.controls.appointmentId;
-
   }
 
   get diagnosisControl() {
-
     return this.form.controls.diagnosis;
-
   }
 
   get symptomsControl() {
-
     return this.form.controls.symptoms;
-
   }
 
   get clinicalNotesControl() {
-
     return this.form.controls.clinicalNotes;
-
   }
 
   get treatmentPlanControl() {
-
     return this.form.controls.treatmentPlan;
-
   }
 
   get followUpInstructionsControl() {
-
     return this.form.controls.followUpInstructions;
+  }
 
+  // Template-safe character counts. Angular strict template checking
+  // treats reactive form values as possibly null.
+  get diagnosisLength(): number {
+    return this.diagnosisControl.value?.length ?? 0;
+  }
+
+  get symptomsLength(): number {
+    return this.symptomsControl.value?.length ?? 0;
+  }
+
+  get clinicalNotesLength(): number {
+    return this.clinicalNotesControl.value?.length ?? 0;
+  }
+
+  get treatmentPlanLength(): number {
+    return this.treatmentPlanControl.value?.length ?? 0;
+  }
+
+  get followUpInstructionsLength(): number {
+    return this.followUpInstructionsControl.value?.length ?? 0;
   }
 
 }
