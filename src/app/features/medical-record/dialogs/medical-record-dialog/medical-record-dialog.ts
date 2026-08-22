@@ -39,28 +39,20 @@ import {
   NotificationService
 } from '../../../../core/services/notification.service';
 
-
 @Component({
   selector: 'app-medical-record-dialog',
-
   standalone: true,
-
   imports: [
     CommonModule,
     ReactiveFormsModule,
     ...MATERIAL_MODULES
   ],
-
-  templateUrl:
-    './medical-record-dialog.html',
-
-  styleUrl:
-    './medical-record-dialog.scss'
+  templateUrl: './medical-record-dialog.html',
+  styleUrl: './medical-record-dialog.scss'
 })
 export class MedicalRecordDialog {
 
-  private readonly fb =
-    inject(FormBuilder);
+  private readonly fb = inject(FormBuilder);
 
   private readonly service =
     inject(MedicalRecordService);
@@ -69,22 +61,18 @@ export class MedicalRecordDialog {
     inject(NotificationService);
 
   private readonly dialogRef =
-    inject(
-      MatDialogRef<MedicalRecordDialog>
-    );
-
+    inject(MatDialogRef<MedicalRecordDialog>);
 
   readonly medicalRecord:
     MedicalRecord | undefined;
 
-
   loading = false;
 
+  form = this.fb.group({
 
-  form = this.fb.nonNullable.group({
-
+    // Start empty instead of 0 so the user can type directly.
     appointmentId: [
-      0,
+      '',
       [
         Validators.required,
         Validators.min(1)
@@ -131,22 +119,19 @@ export class MedicalRecordDialog {
 
   });
 
-
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    data:
-      MedicalRecord | undefined
+    data: MedicalRecord | undefined
   ) {
 
     this.medicalRecord = data;
-
 
     if (data) {
 
       this.form.patchValue({
 
         appointmentId:
-          data.appointmentId,
+          String(data.appointmentId),
 
         diagnosis:
           data.diagnosis,
@@ -169,13 +154,11 @@ export class MedicalRecordDialog {
 
   }
 
-
   get isEditMode(): boolean {
 
     return !!this.medicalRecord;
 
   }
-
 
   get dialogTitle(): string {
 
@@ -185,7 +168,6 @@ export class MedicalRecordDialog {
 
   }
 
-
   get dialogSubtitle(): string {
 
     return this.isEditMode
@@ -193,7 +175,6 @@ export class MedicalRecordDialog {
       : 'Add a new patient medical record';
 
   }
-
 
   get submitButtonText(): string {
 
@@ -205,13 +186,11 @@ export class MedicalRecordDialog {
 
     }
 
-
     return this.isEditMode
       ? 'Update Record'
       : 'Save Record';
 
   }
-
 
   save(): void {
 
@@ -223,39 +202,37 @@ export class MedicalRecordDialog {
 
     }
 
-
     const formValue =
       this.form.getRawValue();
 
+    const appointmentId =
+      Number(formValue.appointmentId);
 
-    const model:
-      CreateMedicalRecord = {
+    const model: CreateMedicalRecord = {
 
-      appointmentId:
-        Number(formValue.appointmentId),
+      appointmentId,
 
       diagnosis:
-        formValue.diagnosis.trim(),
+        formValue.diagnosis!.trim(),
 
       symptoms:
-        formValue.symptoms.trim(),
+        formValue.symptoms!.trim(),
 
       clinicalNotes:
-        formValue.clinicalNotes.trim(),
+        formValue.clinicalNotes!.trim(),
 
       treatmentPlan:
-        formValue.treatmentPlan.trim(),
+        formValue.treatmentPlan!.trim(),
 
       followUpInstructions:
-        formValue.followUpInstructions.trim()
+        formValue.followUpInstructions!.trim()
           || null
 
     };
 
-
     if (
-      !model.appointmentId ||
-      model.appointmentId <= 0
+      !appointmentId ||
+      appointmentId <= 0
     ) {
 
       this.form.controls.appointmentId.setErrors({
@@ -267,7 +244,6 @@ export class MedicalRecordDialog {
       return;
 
     }
-
 
     if (!model.diagnosis) {
 
@@ -281,7 +257,6 @@ export class MedicalRecordDialog {
 
     }
 
-
     if (!model.symptoms) {
 
       this.form.controls.symptoms.setErrors({
@@ -293,7 +268,6 @@ export class MedicalRecordDialog {
       return;
 
     }
-
 
     if (!model.treatmentPlan) {
 
@@ -307,23 +281,19 @@ export class MedicalRecordDialog {
 
     }
 
-
     this.loading = true;
-
 
     if (this.isEditMode) {
 
       this.update(model);
 
-    }
-    else {
+    } else {
 
       this.create(model);
 
     }
 
   }
-
 
   private create(
     model: CreateMedicalRecord
@@ -367,7 +337,6 @@ export class MedicalRecordDialog {
 
   }
 
-
   private update(
     model: CreateMedicalRecord
   ): void {
@@ -377,7 +346,6 @@ export class MedicalRecordDialog {
       return;
 
     }
-
 
     this.service
       .update(
@@ -420,6 +388,45 @@ export class MedicalRecordDialog {
 
   }
 
+  /**
+   * Extract the actual message returned by the
+   * MediCore Nexus API.
+   */
+  private getErrorMessage(
+    error: any,
+    fallback: string
+  ): string {
+
+    if (error?.error?.message) {
+
+      return error.error.message;
+
+    }
+
+    if (error?.error?.Message) {
+
+      return error.error.Message;
+
+    }
+
+    if (error?.message) {
+
+      return error.message;
+
+    }
+
+    if (
+      Array.isArray(error?.error?.errors) &&
+      error.error.errors.length > 0
+    ) {
+
+      return error.error.errors.join(', ');
+
+    }
+
+    return fallback;
+
+  }
 
   /**
    * Extract the actual error message returned
@@ -501,11 +508,9 @@ export class MedicalRecordDialog {
 
     }
 
-
     this.dialogRef.close(false);
 
   }
-
 
   get appointmentIdControl() {
 
@@ -513,13 +518,11 @@ export class MedicalRecordDialog {
 
   }
 
-
   get diagnosisControl() {
 
     return this.form.controls.diagnosis;
 
   }
-
 
   get symptomsControl() {
 
@@ -527,20 +530,17 @@ export class MedicalRecordDialog {
 
   }
 
-
   get clinicalNotesControl() {
 
     return this.form.controls.clinicalNotes;
 
   }
 
-
   get treatmentPlanControl() {
 
     return this.form.controls.treatmentPlan;
 
   }
-
 
   get followUpInstructionsControl() {
 
