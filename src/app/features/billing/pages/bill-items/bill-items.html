@@ -1,0 +1,78 @@
+<section class="page">
+  <div class="page-header">
+    <div>
+      <h1>Bill Items</h1>
+      <p>Manage line items that make up a patient bill</p>
+    </div>
+
+    <button mat-stroked-button color="primary" (click)="addItem()" [disabled]="!selectedBillId">
+      <mat-icon>add</mat-icon>
+      Add Bill Item
+    </button>
+  </div>
+
+  <div class="toolbar">
+    <mat-form-field appearance="outline" class="bill-select">
+      <mat-label>Select Bill</mat-label>
+      <mat-select [(value)]="selectedBillId" (selectionChange)="onBillChange()">
+        @for (bill of bills; track bill.id) {
+          <mat-option [value]="bill.id">
+            Bill #{{ bill.id }} — Appointment #{{ bill.appointmentId }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    @if (selectedBill) {
+      <div class="bill-summary">
+        <span>Bill Total</span>
+        <strong>₹ {{ selectedBill.totalAmount | number:'1.2-2' }}</strong>
+      </div>
+    }
+  </div>
+
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Description</th>
+          <th>Quantity</th>
+          <th>Unit Price</th>
+          <th>Total</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of items; track item.id) {
+          <tr>
+            <td>{{ item.id }}</td>
+            <td class="description">{{ item.description }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>₹ {{ item.unitPrice | number:'1.2-2' }}</td>
+            <td>₹ {{ item.totalAmount | number:'1.2-2' }}</td>
+            <td class="actions">
+              <button mat-icon-button aria-label="Edit" (click)="editItem(item)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button aria-label="Delete" (click)="deleteItem(item)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="empty">No bill items found for this bill.</td>
+          </tr>
+        }
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4" class="total-label">Calculated Items Total</td>
+          <td class="total-value">₹ {{ itemsTotal | number:'1.2-2' }}</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</section>
