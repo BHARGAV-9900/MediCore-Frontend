@@ -5,14 +5,17 @@
 <mat-dialog-content>
   <form [formGroup]="form">
 
+    <!-- =========================
+         PERSONAL INFORMATION
+         ========================= -->
+
     <h3>Personal Information</h3>
 
     <div class="row">
 
+      <!-- First Name -->
       <mat-form-field appearance="outline">
-
         <mat-label>First Name</mat-label>
-<<<<<<< HEAD
 
         <input
           matInput
@@ -26,20 +29,23 @@
           <mat-error>
             First name is required
           </mat-error>
-=======
-        <input matInput formControlName="firstName" autocomplete="given-name">
-        @if (form.controls.firstName.hasError('required') && form.controls.firstName.touched) {
-          <mat-error>First name is required</mat-error>
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
+        }
+
+        @if (
+          form.controls.firstName.hasError('maxlength') &&
+          form.controls.firstName.touched
+        ) {
+          <mat-error>
+            Maximum 100 characters allowed
+          </mat-error>
         }
 
       </mat-form-field>
 
 
+      <!-- Last Name -->
       <mat-form-field appearance="outline">
-
         <mat-label>Last Name</mat-label>
-<<<<<<< HEAD
 
         <input
           matInput
@@ -53,11 +59,15 @@
           <mat-error>
             Last name is required
           </mat-error>
-=======
-        <input matInput formControlName="lastName" autocomplete="family-name">
-        @if (form.controls.lastName.hasError('required') && form.controls.lastName.touched) {
-          <mat-error>Last name is required</mat-error>
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
+        }
+
+        @if (
+          form.controls.lastName.hasError('maxlength') &&
+          form.controls.lastName.touched
+        ) {
+          <mat-error>
+            Maximum 100 characters allowed
+          </mat-error>
         }
 
       </mat-form-field>
@@ -67,8 +77,8 @@
 
     <div class="row">
 
+      <!-- Date Of Birth -->
       <mat-form-field appearance="outline">
-
         <mat-label>Date of Birth</mat-label>
 
         <input
@@ -78,7 +88,6 @@
           min="1900-01-01"
           [max]="maxDate">
 
-<<<<<<< HEAD
         @if (
           form.controls.dateOfBirth.hasError('required') &&
           form.controls.dateOfBirth.touched
@@ -95,47 +104,24 @@
           <mat-error>
             Enter a valid date
           </mat-error>
-=======
-        @if (form.controls.dateOfBirth.hasError('required') && form.controls.dateOfBirth.touched) {
-          <mat-error>Date of birth is required</mat-error>
-        }
-        @if (form.controls.dateOfBirth.hasError('pattern') && form.controls.dateOfBirth.touched) {
-          <mat-error>Enter a valid date</mat-error>
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
         }
 
       </mat-form-field>
 
 
+      <!-- Gender -->
       <mat-form-field appearance="outline">
-
         <mat-label>Gender</mat-label>
-<<<<<<< HEAD
 
-        <mat-select
-          formControlName="gender">
-
-          @for (
-            gender of genders;
-            track gender.id
-          ) {
-
-            <mat-option
-              [value]="gender.id">
-
-              {{ gender.name }}
-
-            </mat-option>
-
-=======
         <mat-select formControlName="gender">
+
           @for (gender of genders; track gender.id) {
-            <mat-option [value]="gender.id">{{ gender.name }}</mat-option>
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
+            <mat-option [value]="gender.id">
+              {{ gender.name }}
+            </mat-option>
           }
 
         </mat-select>
-<<<<<<< HEAD
 
         @if (
           form.controls.gender.invalid &&
@@ -144,10 +130,6 @@
           <mat-error>
             Gender is required
           </mat-error>
-=======
-        @if (form.controls.gender.invalid && form.controls.gender.touched) {
-          <mat-error>Gender is required</mat-error>
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
         }
 
       </mat-form-field>
@@ -157,35 +139,19 @@
 
     <div class="row">
 
+      <!-- Blood Group -->
       <mat-form-field appearance="outline">
-
         <mat-label>Blood Group</mat-label>
-<<<<<<< HEAD
 
-        <mat-select
-          formControlName="bloodGroup">
-
-          @for (
-            bloodGroup of bloodGroups;
-            track bloodGroup.id
-          ) {
-
-            <mat-option
-              [value]="bloodGroup.id">
-
-              {{ bloodGroup.name }}
-
-            </mat-option>
-
-=======
         <mat-select formControlName="bloodGroup">
+
           @for (bloodGroup of bloodGroups; track bloodGroup.id) {
-            <mat-option [value]="bloodGroup.id">{{ bloodGroup.name }}</mat-option>
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
+            <mat-option [value]="bloodGroup.id">
+              {{ bloodGroup.name }}
+            </mat-option>
           }
 
         </mat-select>
-<<<<<<< HEAD
 
         @if (
           form.controls.bloodGroup.invalid &&
@@ -194,162 +160,57 @@
           <mat-error>
             Blood group is required
           </mat-error>
-=======
-        @if (form.controls.bloodGroup.invalid && form.controls.bloodGroup.touched) {
-          <mat-error>Blood group is required</mat-error>
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
         }
 
       </mat-form-field>
 
-<<<<<<< HEAD
 
-      <!-- Patient Phone -->
-      <div class="phone-input-group">
-
-        <mat-form-field
-          appearance="outline"
-          class="phone-country-field">
-
-          <mat-label>Country</mat-label>
-
-          <mat-select
-            [value]="selectedPhoneCountry"
-            (selectionChange)="onPhoneCountryChange($event.value)">
-
-            <mat-select-trigger>
-
-              {{
-                getCountryOption(
-                  selectedPhoneCountry
-                ).flag
-              }}
-
-              +
-
-              {{
-                getCountryOption(
-                  selectedPhoneCountry
-                ).callingCode
-              }}
-
-            </mat-select-trigger>
-
-            @for (
-              country of countryOptions;
-              track country.code
-            ) {
-
-              <mat-option
-                [value]="country.code">
-
-                {{ country.flag }}
-                {{ country.name }}
-                (+{{ country.callingCode }})
-
-              </mat-option>
-
-            }
-
-          </mat-select>
-
-        </mat-form-field>
-
-
-        <mat-form-field
-          appearance="outline"
-          class="phone-number-field">
-
-          <mat-label>Phone Number</mat-label>
-
-          <input
-            matInput
-            type="tel"
-            formControlName="phoneNumber"
-            inputmode="numeric"
-            maxlength="15"
-            autocomplete="tel"
-            (input)="
-              sanitizePhoneNumber(
-                'phoneNumber',
-                $event
-              )
-            ">
-
-          @if (
-            form.controls.phoneNumber.hasError('required') &&
-            form.controls.phoneNumber.touched
-          ) {
-            <mat-error>
-              Phone number is required
-            </mat-error>
-          }
-
-          @if (
-            form.controls.phoneNumber.hasError('phoneInvalid') &&
-            form.controls.phoneNumber.touched
-          ) {
-            <mat-error>
-              Invalid phone number for selected country
-            </mat-error>
-          }
-
-        </mat-form-field>
-
-      </div>
-
-    </div>
-
-
-    <!-- Contact Information -->
-=======
+      <!-- Phone Number -->
       <mat-form-field appearance="outline">
-        <mat-label>Country</mat-label>
-        <mat-select formControlName="countryCode">
-          @for (country of countries; track country.code) {
-            <mat-option [value]="country.code">
-              {{ country.code }} {{ country.dialCode }}
-            </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <mat-form-field appearance="outline" class="full-width">
         <mat-label>Phone Number</mat-label>
-        <span matTextPrefix class="phone-prefix">{{ selectedCountry.dialCode }}&nbsp;</span>
+
         <input
           matInput
           type="tel"
           formControlName="phoneNumber"
           inputmode="numeric"
-          maxlength="12"
-          autocomplete="tel-national">
+          maxlength="15"
+          autocomplete="tel">
 
-        @if (form.controls.phoneNumber.hasError('required') && form.controls.phoneNumber.touched) {
-          <mat-error>Phone number is required</mat-error>
+        @if (
+          form.controls.phoneNumber.hasError('required') &&
+          form.controls.phoneNumber.touched
+        ) {
+          <mat-error>
+            Phone number is required
+          </mat-error>
         }
-        @if ((form.controls.phoneNumber.hasError('pattern') || form.controls.phoneNumber.hasError('phoneLength')) && form.controls.phoneNumber.touched) {
-          <mat-error>Enter 7 to 12 digits</mat-error>
+
+        @if (
+          form.controls.phoneNumber.hasError('pattern') &&
+          form.controls.phoneNumber.touched
+        ) {
+          <mat-error>
+            Enter a valid phone number
+          </mat-error>
         }
+
       </mat-form-field>
 
-      <div class="phone-help">
-        <span>International format</span>
-        <strong>{{ selectedCountry.dialCode }} 9999999999</strong>
-      </div>
     </div>
 
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
+
+    <!-- =========================
+         CONTACT INFORMATION
+         ========================= -->
+
     <h3>Contact Information</h3>
 
     <div class="row">
 
+      <!-- Email -->
       <mat-form-field appearance="outline">
-
         <mat-label>Email</mat-label>
-<<<<<<< HEAD
 
         <input
           matInput
@@ -373,48 +234,35 @@
           <mat-error>
             Enter a valid email address
           </mat-error>
-=======
-        <input matInput type="email" formControlName="email" autocomplete="email">
-        @if (form.controls.email.hasError('required') && form.controls.email.touched) {
-          <mat-error>Email is required</mat-error>
-        }
-        @if (form.controls.email.hasError('email') && form.controls.email.touched) {
-          <mat-error>Enter a valid email address</mat-error>
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
         }
 
       </mat-form-field>
 
 
+      <!-- Address -->
       <mat-form-field appearance="outline">
-
         <mat-label>Address</mat-label>
-<<<<<<< HEAD
 
         <input
           matInput
           formControlName="address"
           autocomplete="street-address">
 
-=======
-        <input matInput formControlName="address" autocomplete="street-address">
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
       </mat-form-field>
 
     </div>
 
-<<<<<<< HEAD
 
-    <!-- Emergency Contact -->
-=======
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
+    <!-- =========================
+         EMERGENCY CONTACT
+         ========================= -->
+
     <h3>Emergency Contact</h3>
 
     <div class="row">
 
+      <!-- Emergency Contact Name -->
       <mat-form-field appearance="outline">
-<<<<<<< HEAD
-
         <mat-label>Emergency Contact Name</mat-label>
 
         <input
@@ -424,169 +272,58 @@
       </mat-form-field>
 
 
-      <!-- Emergency Phone -->
-      <div class="phone-input-group">
+      <!-- Emergency Contact Phone -->
+      <mat-form-field appearance="outline">
+        <mat-label>Emergency Contact Phone</mat-label>
 
-        <mat-form-field
-          appearance="outline"
-          class="phone-country-field">
+        <input
+          matInput
+          type="tel"
+          formControlName="emergencyContactPhone"
+          inputmode="numeric"
+          maxlength="15">
 
-          <mat-label>Country</mat-label>
+        @if (
+          form.controls.emergencyContactPhone.hasError('pattern') &&
+          form.controls.emergencyContactPhone.touched
+        ) {
+          <mat-error>
+            Enter a valid phone number
+          </mat-error>
+        }
 
-          <mat-select
-            [value]="selectedEmergencyCountry"
-            (selectionChange)="
-              onEmergencyCountryChange(
-                $event.value
-              )
-            ">
-
-            <mat-select-trigger>
-
-              {{
-                getCountryOption(
-                  selectedEmergencyCountry
-                ).flag
-              }}
-
-              +
-
-              {{
-                getCountryOption(
-                  selectedEmergencyCountry
-                ).callingCode
-              }}
-
-            </mat-select-trigger>
-
-            @for (
-              country of countryOptions;
-              track country.code
-            ) {
-
-              <mat-option
-                [value]="country.code">
-
-                {{ country.flag }}
-                {{ country.name }}
-                (+{{ country.callingCode }})
-
-              </mat-option>
-
-            }
-
-          </mat-select>
-
-        </mat-form-field>
-
-
-        <mat-form-field
-          appearance="outline"
-          class="phone-number-field">
-
-          <mat-label>
-            Emergency Contact Phone
-          </mat-label>
-
-          <input
-            matInput
-            type="tel"
-            formControlName="emergencyContactPhone"
-            inputmode="numeric"
-            maxlength="15"
-            autocomplete="tel"
-            (input)="
-              sanitizePhoneNumber(
-                'emergencyContactPhone',
-                $event
-              )
-            ">
-
-          @if (
-            form.controls.emergencyContactPhone.hasError(
-              'phoneInvalid'
-            ) &&
-            form.controls.emergencyContactPhone.touched
-          ) {
-            <mat-error>
-              Invalid phone number for selected country
-            </mat-error>
-          }
-
-        </mat-form-field>
-
-      </div>
+      </mat-form-field>
 
     </div>
 
 
-    <!-- Insurance -->
+    <!-- =========================
+         INSURANCE
+         ========================= -->
+
     <h3>Insurance</h3>
 
     <mat-form-field
       appearance="outline"
       class="full-width">
 
-      <mat-label>
-        Insurance Number
-      </mat-label>
+      <mat-label>Insurance Number</mat-label>
 
       <input
         matInput
         formControlName="insuranceNumber">
 
-=======
-        <mat-label>Country</mat-label>
-        <mat-select formControlName="emergencyCountryCode">
-          @for (country of countries; track country.code) {
-            <mat-option [value]="country.code">
-              {{ country.code }} {{ country.dialCode }}
-            </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Emergency Contact Phone</mat-label>
-        <span matTextPrefix class="phone-prefix">{{ selectedEmergencyCountry.dialCode }}&nbsp;</span>
-        <input
-          matInput
-          type="tel"
-          formControlName="emergencyContactPhone"
-          inputmode="numeric"
-          maxlength="12"
-          autocomplete="tel-national">
-
-        @if (form.controls.emergencyContactPhone.hasError('required') && form.controls.emergencyContactPhone.touched) {
-          <mat-error>Emergency contact phone is required</mat-error>
-        }
-        @if ((form.controls.emergencyContactPhone.hasError('pattern') || form.controls.emergencyContactPhone.hasError('phoneLength')) && form.controls.emergencyContactPhone.touched) {
-          <mat-error>Enter 7 to 12 digits</mat-error>
-        }
-      </mat-form-field>
-
-      <div class="phone-help">
-        <span>International format</span>
-        <strong>{{ selectedEmergencyCountry.dialCode }} 9999999999</strong>
-      </div>
-    </div>
-
-    <h3>Insurance</h3>
-
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Insurance Number</mat-label>
-      <input matInput formControlName="insuranceNumber">
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
     </mat-form-field>
 
   </form>
 </mat-dialog-content>
 
 
+<!-- =========================
+     ACTIONS
+     ========================= -->
+
 <mat-dialog-actions align="end">
-<<<<<<< HEAD
 
   <button
     mat-button
@@ -594,14 +331,10 @@
     [disabled]="saving"
     (click)="close()">
 
-=======
-  <button mat-button type="button" [disabled]="saving" (click)="close()">
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
     Cancel
 
   </button>
 
-<<<<<<< HEAD
 
   <button
     mat-raised-button
@@ -610,29 +343,13 @@
     [disabled]="saving"
     (click)="save()">
 
-=======
-  <button mat-raised-button color="primary" type="button" [disabled]="saving" (click)="save()">
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
     @if (saving) {
-
       Saving...
-<<<<<<< HEAD
-
     }
-
     @else {
-
-=======
-    } @else {
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
       {{ data ? 'Update' : 'Save' }}
-
     }
 
   </button>
-<<<<<<< HEAD
 
 </mat-dialog-actions>
-=======
-</mat-dialog-actions>
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc

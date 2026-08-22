@@ -12,13 +12,6 @@ import {
   MatDialogRef
 } from '@angular/material/dialog';
 
-import {
-  getCountries,
-  getCountryCallingCode,
-  parsePhoneNumberFromString,
-  type CountryCode
-} from 'libphonenumber-js';
-
 import { MATERIAL_MODULES } from '../../../../shared/material/material';
 
 import { Patient } from '../../models/patient';
@@ -28,17 +21,12 @@ import { NotificationService } from '../../../../core/services/notification.serv
 import { CreatePatient } from '../../models/create-patient';
 import { UpdatePatient } from '../../models/update-patient';
 
-interface CountryOption {
-<<<<<<< HEAD
-  code: CountryCode;
-  name: string;
-  callingCode: string;
-  flag: string;
-=======
+interface Country {
   code: string;
-  name: string;
   dialCode: string;
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
+  name: string;
+  minLength: number;
+  maxLength: number;
 }
 
 @Component({
@@ -71,24 +59,9 @@ export class PatientDialog implements OnInit {
 
   saving = false;
 
-  /*
-   * India is the default country because the current
-   * MediCore Nexus test data is Indian data.
-   *
-   * Users can change it to USA, UK, Canada, Australia,
-   * or any other supported country.
-   */
-  selectedPhoneCountry: CountryCode = 'IN';
-
-  selectedEmergencyCountry: CountryCode = 'IN';
-
-  /*
-   * Country list generated from libphonenumber-js.
-   * This means we don't have to manually maintain
-   * country calling codes.
-   */
-  readonly countryOptions: CountryOption[] =
-    this.createCountryOptions();
+  // =========================================================
+  // DATE
+  // =========================================================
 
   readonly maxDate = (() => {
     const date = new Date();
@@ -98,18 +71,97 @@ export class PatientDialog implements OnInit {
     return date.toISOString().split('T')[0];
   })();
 
-  readonly countries: CountryOption[] = [
-    { code: 'IN', name: 'India', dialCode: '+91' },
-    { code: 'US', name: 'United States', dialCode: '+1' },
-    { code: 'CA', name: 'Canada', dialCode: '+1' },
-    { code: 'GB', name: 'United Kingdom', dialCode: '+44' },
-    { code: 'AE', name: 'United Arab Emirates', dialCode: '+971' },
-    { code: 'AU', name: 'Australia', dialCode: '+61' },
-    { code: 'SG', name: 'Singapore', dialCode: '+65' },
-    { code: 'DE', name: 'Germany', dialCode: '+49' },
-    { code: 'FR', name: 'France', dialCode: '+33' },
-    { code: 'NZ', name: 'New Zealand', dialCode: '+64' }
+  // =========================================================
+  // COUNTRIES
+  // =========================================================
+
+  countries: Country[] = [
+
+    {
+      code: 'IN',
+      dialCode: '+91',
+      name: 'India',
+      minLength: 10,
+      maxLength: 10
+    },
+
+    {
+      code: 'US',
+      dialCode: '+1',
+      name: 'United States',
+      minLength: 10,
+      maxLength: 10
+    },
+
+    {
+      code: 'CA',
+      dialCode: '+1',
+      name: 'Canada',
+      minLength: 10,
+      maxLength: 10
+    },
+
+    {
+      code: 'GB',
+      dialCode: '+44',
+      name: 'United Kingdom',
+      minLength: 10,
+      maxLength: 10
+    },
+
+    {
+      code: 'AU',
+      dialCode: '+61',
+      name: 'Australia',
+      minLength: 9,
+      maxLength: 9
+    },
+
+    {
+      code: 'AE',
+      dialCode: '+971',
+      name: 'United Arab Emirates',
+      minLength: 9,
+      maxLength: 9
+    },
+
+    {
+      code: 'SG',
+      dialCode: '+65',
+      name: 'Singapore',
+      minLength: 8,
+      maxLength: 8
+    },
+
+    {
+      code: 'DE',
+      dialCode: '+49',
+      name: 'Germany',
+      minLength: 10,
+      maxLength: 11
+    },
+
+    {
+      code: 'FR',
+      dialCode: '+33',
+      name: 'France',
+      minLength: 9,
+      maxLength: 9
+    },
+
+    {
+      code: 'JP',
+      dialCode: '+81',
+      name: 'Japan',
+      minLength: 10,
+      maxLength: 10
+    }
+
   ];
+
+  // =========================================================
+  // FORM
+  // =========================================================
 
   form = this.fb.group({
 
@@ -138,91 +190,143 @@ export class PatientDialog implements OnInit {
       Validators.required
     ),
 
-<<<<<<< HEAD
-    /*
-     * The user enters only the local/national number.
-     *
-     * Example:
-     * India -> 9000012345
-     * USA   -> 4155551234
-     *
-     * We convert it to E.164 before sending it
-     * to the backend.
-     */
-    phoneNumber: this.fb.control('', [
-      Validators.required,
-      Validators.maxLength(15)
-=======
-    countryCode: this.fb.control('IN', Validators.required),
+    // ---------------------------------------------------------
+    // Patient phone
+    // ---------------------------------------------------------
 
-    phoneNumber: this.fb.control('', [
-      Validators.required,
-      Validators.pattern(/^\d{7,12}$/)
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
-    ]),
+    countryCode: this.fb.control(
+      'IN',
+      Validators.required
+    ),
+
+    phoneNumber: this.fb.control(
+      '',
+      [
+        Validators.required,
+        Validators.pattern(/^\d+$/)
+      ]
+    ),
+
+    // ---------------------------------------------------------
+    // Contact
+    // ---------------------------------------------------------
 
     email: this.fb.control('', [
       Validators.required,
       Validators.email
     ]),
 
-<<<<<<< HEAD
-    address: this.fb.control('', [
+    address: this.fb.control(
+      '',
       Validators.maxLength(500)
-=======
-    address: this.fb.control('', Validators.maxLength(500)),
+    ),
 
-    emergencyContactName: this.fb.control('', Validators.maxLength(100)),
+    // ---------------------------------------------------------
+    // Emergency contact
+    // ---------------------------------------------------------
 
-    emergencyCountryCode: this.fb.control('IN', Validators.required),
-
-    emergencyContactPhone: this.fb.control('', [
-      Validators.required,
-      Validators.pattern(/^\d{7,12}$/)
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
-    ]),
-
-    emergencyContactName: this.fb.control('', [
+    emergencyContactName: this.fb.control(
+      '',
       Validators.maxLength(100)
-    ]),
+    ),
 
-    emergencyContactPhone: this.fb.control('', [
-      Validators.maxLength(15)
-    ]),
+    emergencyCountryCode: this.fb.control(
+      'IN',
+      Validators.required
+    ),
 
-    insuranceNumber: this.fb.control('', [
+    emergencyContactPhone: this.fb.control(
+      '',
+      [
+        Validators.pattern(/^\d+$/)
+      ]
+    ),
+
+    // ---------------------------------------------------------
+    // Insurance
+    // ---------------------------------------------------------
+
+    insuranceNumber: this.fb.control(
+      '',
       Validators.maxLength(100)
-    ])
+    )
+
   });
 
+  // =========================================================
+  // GENDER
+  // =========================================================
+
   genders = [
-    { id: 1, name: 'Male' },
-    { id: 2, name: 'Female' },
-    { id: 3, name: 'Other' }
+
+    {
+      id: 1,
+      name: 'Male'
+    },
+
+    {
+      id: 2,
+      name: 'Female'
+    },
+
+    {
+      id: 3,
+      name: 'Other'
+    }
+
   ];
+
+  // =========================================================
+  // BLOOD GROUP
+  // =========================================================
 
   bloodGroups = [
-    { id: 1, name: 'A+' },
-    { id: 2, name: 'A-' },
-    { id: 3, name: 'B+' },
-    { id: 4, name: 'B-' },
-    { id: 5, name: 'AB+' },
-    { id: 6, name: 'AB-' },
-    { id: 7, name: 'O+' },
-    { id: 8, name: 'O-' }
+
+    {
+      id: 1,
+      name: 'A+'
+    },
+
+    {
+      id: 2,
+      name: 'A-'
+    },
+
+    {
+      id: 3,
+      name: 'B+'
+    },
+
+    {
+      id: 4,
+      name: 'B-'
+    },
+
+    {
+      id: 5,
+      name: 'AB+'
+    },
+
+    {
+      id: 6,
+      name: 'AB-'
+    },
+
+    {
+      id: 7,
+      name: 'O+'
+    },
+
+    {
+      id: 8,
+      name: 'O-'
+    }
+
   ];
 
-  get selectedCountry(): CountryOption {
-    return this.countries.find(
-      country => country.code === this.form.controls.countryCode.value
-    ) ?? this.countries[0];
-  }
-
-  get selectedEmergencyCountry(): CountryOption {
-    return this.countries.find(
-      country => country.code === this.form.controls.emergencyCountryCode.value
-    ) ?? this.countries[0];
-  }
+  // =========================================================
+  // INITIALIZATION
+  // =========================================================
 
   ngOnInit(): void {
 
@@ -230,22 +334,15 @@ export class PatientDialog implements OnInit {
       return;
     }
 
-<<<<<<< HEAD
-    const phoneData =
-      this.getStoredPhoneParts(
+    const phoneInfo =
+      this.parseInternationalPhone(
         this.data.phoneNumber
       );
 
-    const emergencyPhoneData =
-      this.getStoredPhoneParts(
+    const emergencyPhoneInfo =
+      this.parseInternationalPhone(
         this.data.emergencyContactPhone
       );
-
-    this.selectedPhoneCountry =
-      phoneData.country;
-
-    this.selectedEmergencyCountry =
-      emergencyPhoneData.country;
 
     this.form.patchValue({
 
@@ -257,19 +354,28 @@ export class PatientDialog implements OnInit {
 
       dateOfBirth:
         this.data.dateOfBirth
-          ? new Date(this.data.dateOfBirth)
+          ? new Date(
+              this.data.dateOfBirth
+            )
               .toISOString()
               .split('T')[0]
           : '',
 
       gender:
-        this.mapGender(this.data.gender),
+        this.mapGender(
+          this.data.gender
+        ),
 
       bloodGroup:
-        this.mapBloodGroup(this.data.bloodGroup),
+        this.mapBloodGroup(
+          this.data.bloodGroup
+        ),
+
+      countryCode:
+        phoneInfo.countryCode,
 
       phoneNumber:
-        phoneData.nationalNumber,
+        phoneInfo.phoneNumber,
 
       email:
         this.data.email,
@@ -280,234 +386,32 @@ export class PatientDialog implements OnInit {
       emergencyContactName:
         this.data.emergencyContactName,
 
+      emergencyCountryCode:
+        emergencyPhoneInfo.countryCode,
+
       emergencyContactPhone:
-        emergencyPhoneData.nationalNumber,
+        emergencyPhoneInfo.phoneNumber,
 
       insuranceNumber:
         this.data.insuranceNumber
-=======
-    const patientPhone = this.splitInternationalPhone(this.data.phoneNumber);
-    const emergencyPhone = this.splitInternationalPhone(
-      this.data.emergencyContactPhone
-    );
 
-    this.form.patchValue({
-      firstName: this.data.firstName,
-      lastName: this.data.lastName,
-      dateOfBirth: this.data.dateOfBirth
-        ? new Date(this.data.dateOfBirth).toISOString().split('T')[0]
-        : '',
-      gender: this.mapGender(this.data.gender),
-      bloodGroup: this.mapBloodGroup(this.data.bloodGroup),
-      countryCode: patientPhone.countryCode,
-      phoneNumber: patientPhone.localNumber,
-      email: this.data.email,
-      address: this.data.address,
-      emergencyContactName: this.data.emergencyContactName,
-      emergencyCountryCode: emergencyPhone.countryCode,
-      emergencyContactPhone: emergencyPhone.localNumber,
-      insuranceNumber: this.data.insuranceNumber
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
     });
+
   }
 
-  /*
-   * =========================================================
-   * COUNTRY LIST
-   * =========================================================
-   */
-
-  private createCountryOptions(): CountryOption[] {
-
-    const displayNames =
-      new Intl.DisplayNames(
-        ['en'],
-        {
-          type: 'region'
-        }
-      );
-
-    const priorityCountries: CountryCode[] = [
-      'IN',
-      'US',
-      'GB',
-      'CA',
-      'AU',
-      'AE',
-      'SG',
-      'NZ'
-    ];
-
-    return getCountries()
-      .map(code => {
-
-        let name: string = code;
-
-        try {
-          name =
-            displayNames.of(code) ?? code;
-        } catch {
-          name = code;
-        }
-
-        return {
-          code,
-          name,
-          callingCode:
-            getCountryCallingCode(code),
-          flag:
-            this.countryCodeToFlag(code)
-        };
-      })
-      .sort((a, b) => {
-
-        const aPriority =
-          priorityCountries.indexOf(a.code);
-
-        const bPriority =
-          priorityCountries.indexOf(b.code);
-
-        if (aPriority !== -1 &&
-            bPriority === -1) {
-          return -1;
-        }
-
-        if (aPriority === -1 &&
-            bPriority !== -1) {
-          return 1;
-        }
-
-        if (aPriority !== -1 &&
-            bPriority !== -1) {
-          return aPriority - bPriority;
-        }
-
-        return a.name.localeCompare(
-          b.name
-        );
-      });
-  }
-
-  private countryCodeToFlag(
-    countryCode: CountryCode
-  ): string {
-
-    return countryCode
-      .toUpperCase()
-      .split('')
-      .map(
-        character =>
-          String.fromCodePoint(
-            127397 +
-            character.charCodeAt(0)
-          )
-      )
-      .join('');
-  }
-
-  getCountryOption(
-    countryCode: CountryCode
-  ): CountryOption {
-
-    return this.countryOptions.find(
-      country =>
-        country.code === countryCode
-    ) ?? this.countryOptions[0];
-  }
-
-  /*
-   * =========================================================
-   * COUNTRY CHANGE
-   * =========================================================
-   */
-
-  onPhoneCountryChange(
-    country: CountryCode
-  ): void {
-
-    this.selectedPhoneCountry =
-      country;
-
-    this.clearPhoneValidationError(
-      'phoneNumber'
-    );
-  }
-
-  onEmergencyCountryChange(
-    country: CountryCode
-  ): void {
-
-    this.selectedEmergencyCountry =
-      country;
-
-    this.clearPhoneValidationError(
-      'emergencyContactPhone'
-    );
-  }
-
-  /*
-   * =========================================================
-   * PHONE INPUT
-   * =========================================================
-   */
-
-  sanitizePhoneNumber(
-    controlName:
-      | 'phoneNumber'
-      | 'emergencyContactPhone',
-    event: Event
-  ): void {
-
-    const input =
-      event.target as HTMLInputElement;
-
-    /*
-     * Keep digits only.
-     *
-     * Maximum 15 digits because E.164
-     * national numbers cannot exceed 15
-     * digits after removing the +.
-     */
-    const digits =
-      input.value
-        .replace(/\D/g, '')
-        .slice(0, 15);
-
-    this.form.controls[
-      controlName
-    ].setValue(
-      digits,
-      {
-        emitEvent: false
-      }
-    );
-
-    this.clearPhoneValidationError(
-      controlName
-    );
-  }
-
-  /*
-   * =========================================================
-   * SAVE
-   * =========================================================
-   */
+  // =========================================================
+  // SAVE
+  // =========================================================
 
   save(): void {
-<<<<<<< HEAD
-=======
-    if (!this.isPhoneLengthValid('phoneNumber')) {
-      this.form.controls.phoneNumber.setErrors({ phoneLength: true });
-    }
-
-    if (!this.isPhoneLengthValid('emergencyContactPhone')) {
-      this.form.controls.emergencyContactPhone.setErrors({ phoneLength: true });
-    }
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
 
     if (this.form.invalid) {
 
       this.form.markAllAsTouched();
+
+      this.notification.error(
+        'Please enter all required information correctly.'
+      );
 
       return;
     }
@@ -516,210 +420,62 @@ export class PatientDialog implements OnInit {
       return;
     }
 
-    /*
-     * Convert patient's local phone number
-     * to E.164.
-     */
-    const phoneNumber =
-      this.normalizePhoneNumber(
-        this.form.value.phoneNumber!,
-        this.selectedPhoneCountry
-      );
+    // Validate patient phone
+    if (!this.isValidPhoneNumber()) {
 
-    if (!phoneNumber) {
-
-      this.setPhoneValidationError(
-        'phoneNumber'
+      this.notification.error(
+        this.getPhoneValidationMessage()
       );
 
       return;
     }
 
-    /*
-     * Emergency contact phone is optional.
-     *
-     * If supplied, it must still be a
-     * valid international phone number.
-     */
-    let emergencyContactPhone = '';
+    // Validate emergency phone if entered
+    if (
+      this.form.value.emergencyContactPhone &&
+      !this.isValidEmergencyPhoneNumber()
+    ) {
 
-    const emergencyValue =
-      this.form.value
-        .emergencyContactPhone
-        ?.trim() ?? '';
+      this.notification.error(
+        this.getEmergencyPhoneValidationMessage()
+      );
 
-    if (emergencyValue) {
-
-      const normalizedEmergencyPhone =
-        this.normalizePhoneNumber(
-          emergencyValue,
-          this.selectedEmergencyCountry
-        );
-
-      if (!normalizedEmergencyPhone) {
-
-        this.setPhoneValidationError(
-          'emergencyContactPhone'
-        );
-
-        return;
-      }
-
-      emergencyContactPhone =
-        normalizedEmergencyPhone;
+      return;
     }
 
     this.saving = true;
 
     if (this.data) {
 
-      this.updatePatient(
-        phoneNumber,
-        emergencyContactPhone
-      );
+      this.updatePatient();
 
     } else {
 
-      this.createPatient(
-        phoneNumber,
-        emergencyContactPhone
-      );
+      this.createPatient();
+
     }
+
   }
 
-  /*
-   * =========================================================
-   * PHONE NORMALIZATION
-   * =========================================================
-   */
+  // =========================================================
+  // CREATE PATIENT
+  // =========================================================
 
-  private normalizePhoneNumber(
-    value: string,
-    country: CountryCode
-  ): string | null {
+  private createPatient(): void {
 
-    const cleaned =
-      value
-        .trim()
-        .replace(/\D/g, '');
-
-    if (!cleaned) {
-      return null;
-    }
-
-    const parsed =
-      parsePhoneNumberFromString(
-        cleaned,
-        country
+    const phoneNumber =
+      this.buildInternationalPhoneNumber(
+        this.form.value.countryCode!,
+        this.form.value.phoneNumber!
       );
 
-    if (!parsed ||
-        !parsed.isValid()) {
-
-      return null;
-    }
-
-    /*
-     * This is the value that gets sent
-     * to the backend/database.
-     *
-     * Example:
-     * +919000012345
-     * +14155551234
-     */
-    return parsed.number;
-  }
-
-  /*
-   * =========================================================
-   * EXISTING PHONE PARSING
-   * =========================================================
-   */
-
-  private getStoredPhoneParts(
-    value: string | null | undefined
-  ): {
-    country: CountryCode;
-    nationalNumber: string;
-  } {
-
-    const raw =
-      value?.trim() ?? '';
-
-    if (!raw) {
-
-      return {
-        country: 'IN',
-        nationalNumber: ''
-      };
-    }
-
-    /*
-     * New records are stored in E.164:
-     *
-     * +919000012345
-     */
-    if (raw.startsWith('+')) {
-
-      const parsed =
-        parsePhoneNumberFromString(raw);
-
-      if (parsed) {
-
-        return {
-          country:
-            parsed.country ?? 'IN',
-
-          nationalNumber:
-            parsed.nationalNumber
-        };
-      }
-    }
-
-    /*
-     * Existing MediCore test data was created
-     * before international phone support and
-     * contains Indian 10-digit numbers.
-     *
-     * Treat those as India during migration.
-     */
-    const parsed =
-      parsePhoneNumberFromString(
-        raw.replace(/\D/g, ''),
-        'IN'
+    const emergencyContactPhone =
+      this.buildInternationalPhoneNumber(
+        this.form.value.emergencyCountryCode!,
+        this.form.value.emergencyContactPhone ?? ''
       );
-
-    if (parsed) {
-
-      return {
-        country:
-          parsed.country ?? 'IN',
-
-        nationalNumber:
-          parsed.nationalNumber
-      };
-    }
-
-    return {
-      country: 'IN',
-      nationalNumber:
-        raw.replace(/\D/g, '')
-    };
-  }
-
-  /*
-   * =========================================================
-   * CREATE
-   * =========================================================
-   */
-
-  private createPatient(
-    phoneNumber: string,
-    emergencyContactPhone: string
-  ): void {
 
     const model: CreatePatient = {
-<<<<<<< HEAD
 
       firstName:
         this.form.value.firstName!,
@@ -740,30 +496,26 @@ export class PatientDialog implements OnInit {
 
       email:
         this.form.value.email!
-          .trim(),
+          .trim()
+          .toLowerCase(),
 
       address:
-        this.form.value.address
-        ?? '',
+        this.form.value.address ?? '',
 
       emergencyContactName:
-        this.form.value
-          .emergencyContactName
-        ?? '',
+        this.form.value.emergencyContactName ?? '',
 
       emergencyContactPhone,
 
       insuranceNumber:
-        this.form.value
-          .insuranceNumber
-        ?? ''
+        this.form.value.insuranceNumber ?? ''
+
     };
 
-    /*
-     * Friendly frontend duplicate check.
-     *
-     * The backend remains the final authority.
-     */
+    // =======================================================
+    // FRONTEND DUPLICATE CHECK
+    // =======================================================
+
     this.service.getAll().subscribe({
 
       next: response => {
@@ -772,6 +524,10 @@ export class PatientDialog implements OnInit {
           model.email
             .trim()
             .toLowerCase();
+
+        const phone =
+          model.phoneNumber
+            .trim();
 
         const duplicateEmail =
           response.data.some(patient =>
@@ -782,13 +538,18 @@ export class PatientDialog implements OnInit {
 
         const duplicatePhone =
           response.data.some(patient =>
-            this.normalizeStoredPhone(
-              patient.phoneNumber
-            ) === model.phoneNumber
+            patient.phoneNumber
+              ?.trim() === phone
           );
 
-        if (duplicateEmail &&
-            duplicatePhone) {
+        // ---------------------------------------------------
+        // Both duplicate
+        // ---------------------------------------------------
+
+        if (
+          duplicateEmail &&
+          duplicatePhone
+        ) {
 
           this.saving = false;
 
@@ -798,6 +559,10 @@ export class PatientDialog implements OnInit {
 
           return;
         }
+
+        // ---------------------------------------------------
+        // Email duplicate
+        // ---------------------------------------------------
 
         if (duplicateEmail) {
 
@@ -810,6 +575,10 @@ export class PatientDialog implements OnInit {
           return;
         }
 
+        // ---------------------------------------------------
+        // Phone duplicate
+        // ---------------------------------------------------
+
         if (duplicatePhone) {
 
           this.saving = false;
@@ -821,9 +590,12 @@ export class PatientDialog implements OnInit {
           return;
         }
 
-        this.submitCreatePatient(
-          model
-        );
+        // ---------------------------------------------------
+        // No duplicate
+        // ---------------------------------------------------
+
+        this.submitCreatePatient(model);
+
       },
 
       error: error => {
@@ -834,69 +606,21 @@ export class PatientDialog implements OnInit {
         );
 
         /*
-         * Don't block creation if the
-         * pre-check itself fails.
-         *
-         * The backend still performs
-         * the duplicate check.
+         * The backend remains the final authority.
+         * If the pre-check fails, allow the request to continue.
          */
-        this.submitCreatePatient(
-          model
-        );
+
+        this.submitCreatePatient(model);
+
       }
+
     });
-=======
-      firstName: this.form.value.firstName!.trim(),
-      lastName: this.form.value.lastName!.trim(),
-      dateOfBirth: this.form.value.dateOfBirth!,
-      gender: this.form.value.gender!,
-      bloodGroup: this.form.value.bloodGroup!,
-      phoneNumber: this.buildInternationalPhone(
-        this.form.value.countryCode!,
-        this.form.value.phoneNumber!
-      ),
-      email: this.form.value.email!.trim().toLowerCase(),
-      address: this.form.value.address?.trim() ?? '',
-      emergencyContactName: this.form.value.emergencyContactName?.trim() ?? '',
-      emergencyContactPhone: this.buildInternationalPhone(
-        this.form.value.emergencyCountryCode!,
-        this.form.value.emergencyContactPhone!
-      ),
-      insuranceNumber: this.form.value.insuranceNumber?.trim() ?? ''
-    };
 
-    this.submitCreatePatient(model);
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
   }
 
-  private normalizeStoredPhone(
-    value: string | null | undefined
-  ): string {
-
-    const raw =
-      value?.trim() ?? '';
-
-    if (!raw) {
-      return '';
-    }
-
-    if (raw.startsWith('+')) {
-      return raw;
-    }
-
-    /*
-     * Temporary backward compatibility
-     * for old Indian records.
-     */
-    const parsed =
-      parsePhoneNumberFromString(
-        raw.replace(/\D/g, ''),
-        'IN'
-      );
-
-    return parsed?.number
-      ?? raw.replace(/\D/g, '');
-  }
+  // =========================================================
+  // SUBMIT CREATE
+  // =========================================================
 
   private submitCreatePatient(
     model: CreatePatient
@@ -911,6 +635,7 @@ export class PatientDialog implements OnInit {
         );
 
         this.dialogRef.close(true);
+
       },
 
       error: error => {
@@ -925,25 +650,35 @@ export class PatientDialog implements OnInit {
         this.notification.error(
           this.getConflictMessage(error)
         );
+
       }
+
     });
+
   }
 
-  /*
-   * =========================================================
-   * UPDATE
-   * =========================================================
-   */
+  // =========================================================
+  // UPDATE PATIENT
+  // =========================================================
 
-  private updatePatient(
-    phoneNumber: string,
-    emergencyContactPhone: string
-  ): void {
+  private updatePatient(): void {
+
+    const phoneNumber =
+      this.buildInternationalPhoneNumber(
+        this.form.value.countryCode!,
+        this.form.value.phoneNumber!
+      );
+
+    const emergencyContactPhone =
+      this.buildInternationalPhoneNumber(
+        this.form.value.emergencyCountryCode!,
+        this.form.value.emergencyContactPhone ?? ''
+      );
 
     const model: UpdatePatient = {
 
-      id: this.data!.id,
-<<<<<<< HEAD
+      id:
+        this.data!.id,
 
       firstName:
         this.form.value.firstName!,
@@ -964,42 +699,20 @@ export class PatientDialog implements OnInit {
 
       email:
         this.form.value.email!
-          .trim(),
+          .trim()
+          .toLowerCase(),
 
       address:
-        this.form.value.address
-        ?? '',
+        this.form.value.address ?? '',
 
       emergencyContactName:
-        this.form.value
-          .emergencyContactName
-        ?? '',
+        this.form.value.emergencyContactName ?? '',
 
       emergencyContactPhone,
 
       insuranceNumber:
-        this.form.value
-          .insuranceNumber
-        ?? ''
-=======
-      firstName: this.form.value.firstName!.trim(),
-      lastName: this.form.value.lastName!.trim(),
-      dateOfBirth: this.form.value.dateOfBirth!,
-      gender: this.form.value.gender!,
-      bloodGroup: this.form.value.bloodGroup!,
-      phoneNumber: this.buildInternationalPhone(
-        this.form.value.countryCode!,
-        this.form.value.phoneNumber!
-      ),
-      email: this.form.value.email!.trim().toLowerCase(),
-      address: this.form.value.address?.trim() ?? '',
-      emergencyContactName: this.form.value.emergencyContactName?.trim() ?? '',
-      emergencyContactPhone: this.buildInternationalPhone(
-        this.form.value.emergencyCountryCode!,
-        this.form.value.emergencyContactPhone!
-      ),
-      insuranceNumber: this.form.value.insuranceNumber?.trim() ?? ''
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
+        this.form.value.insuranceNumber ?? ''
+
     };
 
     this.service.update(model).subscribe({
@@ -1011,6 +724,7 @@ export class PatientDialog implements OnInit {
         );
 
         this.dialogRef.close(true);
+
       },
 
       error: error => {
@@ -1025,21 +739,299 @@ export class PatientDialog implements OnInit {
         this.notification.error(
           this.getConflictMessage(error)
         );
+
       }
+
     });
+
   }
 
-  /*
-   * =========================================================
-   * ERROR HANDLING
-   * =========================================================
-   */
+  // =========================================================
+  // PHONE VALIDATION
+  // =========================================================
+
+  private isValidPhoneNumber(): boolean {
+
+    const country =
+      this.getCountry(
+        this.form.value.countryCode!
+      );
+
+    const phone =
+      this.form.value.phoneNumber
+        ?.trim() ?? '';
+
+    if (!country) {
+      return false;
+    }
+
+    return (
+      /^\d+$/.test(phone) &&
+      phone.length >= country.minLength &&
+      phone.length <= country.maxLength
+    );
+
+  }
+
+  private isValidEmergencyPhoneNumber(): boolean {
+
+    const country =
+      this.getCountry(
+        this.form.value.emergencyCountryCode!
+      );
+
+    const phone =
+      this.form.value.emergencyContactPhone
+        ?.trim() ?? '';
+
+    // Emergency phone is optional
+    if (!phone) {
+      return true;
+    }
+
+    if (!country) {
+      return false;
+    }
+
+    return (
+      /^\d+$/.test(phone) &&
+      phone.length >= country.minLength &&
+      phone.length <= country.maxLength
+    );
+
+  }
+
+  // =========================================================
+  // PHONE VALIDATION MESSAGES
+  // =========================================================
+
+  private getPhoneValidationMessage(): string {
+
+    const country =
+      this.getCountry(
+        this.form.value.countryCode!
+      );
+
+    if (!country) {
+      return 'Please select a country.';
+    }
+
+    if (
+      country.minLength ===
+      country.maxLength
+    ) {
+
+      return `Phone number must contain ${country.minLength} digits for ${country.name}.`;
+
+    }
+
+    return `Phone number must contain ${country.minLength} to ${country.maxLength} digits for ${country.name}.`;
+
+  }
+
+  private getEmergencyPhoneValidationMessage(): string {
+
+    const country =
+      this.getCountry(
+        this.form.value.emergencyCountryCode!
+      );
+
+    if (!country) {
+      return 'Please select an emergency contact country.';
+    }
+
+    if (
+      country.minLength ===
+      country.maxLength
+    ) {
+
+      return `Emergency contact phone must contain ${country.minLength} digits for ${country.name}.`;
+
+    }
+
+    return `Emergency contact phone must contain ${country.minLength} to ${country.maxLength} digits for ${country.name}.`;
+
+  }
+
+  // =========================================================
+  // BUILD INTERNATIONAL PHONE
+  // =========================================================
+
+  private buildInternationalPhoneNumber(
+    countryCode: string,
+    phoneNumber: string
+  ): string {
+
+    const country =
+      this.getCountry(countryCode);
+
+    if (!country) {
+      return phoneNumber.trim();
+    }
+
+    const cleanPhone =
+      phoneNumber
+        .replace(/\D/g, '');
+
+    return `${country.dialCode}${cleanPhone}`;
+
+  }
+
+  // =========================================================
+  // GET COUNTRY
+  // =========================================================
+
+  private getCountry(
+    countryCode: string
+  ): Country | undefined {
+
+    return this.countries.find(
+      country =>
+        country.code === countryCode
+    );
+
+  }
+
+  // =========================================================
+  // PARSE EXISTING PHONE
+  // =========================================================
+
+  private parseInternationalPhone(
+    phone: string | null | undefined
+  ): {
+    countryCode: string;
+    phoneNumber: string;
+  } {
+
+    if (!phone) {
+
+      return {
+        countryCode: 'IN',
+        phoneNumber: ''
+      };
+
+    }
+
+    const cleanPhone =
+      phone.trim();
+
+    /*
+     * Try to identify the country from
+     * the stored international number.
+     */
+
+    const matchedCountry =
+      this.countries
+        .slice()
+        .sort(
+          (a, b) =>
+            b.dialCode.length -
+            a.dialCode.length
+        )
+        .find(country =>
+          cleanPhone.startsWith(
+            country.dialCode
+          )
+        );
+
+    if (!matchedCountry) {
+
+      return {
+        countryCode: 'IN',
+        phoneNumber: cleanPhone
+      };
+
+    }
+
+    const localNumber =
+      cleanPhone.substring(
+        matchedCountry.dialCode.length
+      );
+
+    return {
+
+      countryCode:
+        matchedCountry.code,
+
+      phoneNumber:
+        localNumber
+
+    };
+
+  }
+
+  // =========================================================
+  // MAP GENDER
+  // =========================================================
+
+  private mapGender(
+    value: string | number
+  ): number | null {
+
+    if (typeof value === 'number') {
+      return value;
+    }
+
+    const map: Record<string, number> = {
+
+      Male: 1,
+
+      Female: 2,
+
+      Other: 3
+
+    };
+
+    return map[value] ?? null;
+
+  }
+
+  // =========================================================
+  // MAP BLOOD GROUP
+  // =========================================================
+
+  private mapBloodGroup(
+    value: string | number
+  ): number | null {
+
+    if (typeof value === 'number') {
+      return value;
+    }
+
+    const map: Record<string, number> = {
+
+      APositive: 1,
+
+      ANegative: 2,
+
+      BPositive: 3,
+
+      BNegative: 4,
+
+      ABPositive: 5,
+
+      ABNegative: 6,
+
+      OPositive: 7,
+
+      ONegative: 8
+
+    };
+
+    return map[value] ?? null;
+
+  }
+
+  // =========================================================
+  // API ERROR MESSAGE
+  // =========================================================
 
   private getConflictMessage(
     error: any
   ): string {
 
-    const body = error?.error;
+    const body =
+      error?.error;
 
     const message =
       body?.message ??
@@ -1053,6 +1045,7 @@ export class PatientDialog implements OnInit {
     ) {
 
       return message;
+
     }
 
     const errors =
@@ -1065,6 +1058,7 @@ export class PatientDialog implements OnInit {
     ) {
 
       return errors.join(' ');
+
     }
 
     if (
@@ -1073,201 +1067,28 @@ export class PatientDialog implements OnInit {
     ) {
 
       return body;
+
     }
 
     if (error?.status === 409) {
 
       return 'A patient with the same email or phone number already exists.';
+
     }
 
     if (error?.status === 400) {
 
       return 'Please check the patient details and try again.';
+
     }
 
     return 'Unable to save patient';
+
   }
 
-<<<<<<< HEAD
-  /*
-   * =========================================================
-   * PHONE VALIDATION ERROR
-   * =========================================================
-   */
-
-  private setPhoneValidationError(
-    controlName:
-      | 'phoneNumber'
-      | 'emergencyContactPhone'
-  ): void {
-
-    const control =
-      this.form.controls[
-        controlName
-      ];
-
-    control.setErrors({
-      ...(control.errors ?? {}),
-      phoneInvalid: true
-    });
-
-    control.markAsTouched();
-
-    this.notification.error(
-      controlName === 'phoneNumber'
-        ? 'Enter a valid phone number for the selected country.'
-        : 'Enter a valid emergency contact phone number for the selected country.'
-    );
-  }
-
-  private clearPhoneValidationError(
-    controlName:
-      | 'phoneNumber'
-      | 'emergencyContactPhone'
-  ): void {
-
-    const control =
-      this.form.controls[
-        controlName
-      ];
-
-    if (!control.errors?.['phoneInvalid']) {
-      return;
-    }
-
-    const errors = {
-      ...(control.errors ?? {})
-    };
-
-    delete errors['phoneInvalid'];
-
-    control.setErrors(
-      Object.keys(errors).length
-        ? errors
-        : null
-    );
-  }
-
-  /*
-   * =========================================================
-   * ENUM MAPPING
-   * =========================================================
-   */
-
-  private mapGender(
-    value: string
-  ): number | null {
-
-    const map: Record<
-      string,
-      number
-    > = {
-
-=======
-  private buildInternationalPhone(
-    countryCode: string,
-    localNumber: string
-  ): string {
-    const country = this.countries.find(x => x.code === countryCode)
-      ?? this.countries[0];
-
-    const digits = localNumber.replace(/\D/g, '');
-
-    return `${country.dialCode}${digits}`;
-  }
-
-  private splitInternationalPhone(phoneNumber: string | null | undefined): {
-    countryCode: string;
-    localNumber: string;
-  } {
-    const value = (phoneNumber ?? '').trim();
-
-    if (!value.startsWith('+')) {
-      return {
-        countryCode: 'IN',
-        localNumber: value.replace(/\D/g, '')
-      };
-    }
-
-    const matchingCountries = this.countries
-      .filter(country => value.startsWith(country.dialCode))
-      .sort((a, b) => b.dialCode.length - a.dialCode.length);
-
-    const country = matchingCountries[0];
-
-    if (!country) {
-      return {
-        countryCode: 'IN',
-        localNumber: value.replace(/\D/g, '').replace(/^91/, '')
-      };
-    }
-
-    return {
-      countryCode: country.code,
-      localNumber: value.substring(country.dialCode.length).replace(/\D/g, '')
-    };
-  }
-
-  private isPhoneLengthValid(
-    controlName: 'phoneNumber' | 'emergencyContactPhone'
-  ): boolean {
-    const control = this.form.controls[controlName];
-    const value = control.value?.replace(/\D/g, '') ?? '';
-
-    return value.length >= 7 && value.length <= 12;
-  }
-
-  private mapGender(value: string | number): number | null {
-    if (typeof value === 'number') {
-      return value;
-    }
-
-    const map: Record<string, number> = {
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
-      Male: 1,
-      Female: 2,
-      Other: 3
-    };
-
-    return map[value] ?? null;
-  }
-
-<<<<<<< HEAD
-  private mapBloodGroup(
-    value: string
-  ): number | null {
-
-    const map: Record<
-      string,
-      number
-    > = {
-
-=======
-  private mapBloodGroup(value: string | number): number | null {
-    if (typeof value === 'number') {
-      return value;
-    }
-
-    const map: Record<string, number> = {
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
-      APositive: 1,
-      ANegative: 2,
-      BPositive: 3,
-      BNegative: 4,
-      ABPositive: 5,
-      ABNegative: 6,
-      OPositive: 7,
-      ONegative: 8
-    };
-
-    return map[value] ?? null;
-  }
-
-  /*
-   * =========================================================
-   * CLOSE
-   * =========================================================
-   */
+  // =========================================================
+  // CLOSE
+  // =========================================================
 
   close(): void {
 
@@ -1276,5 +1097,7 @@ export class PatientDialog implements OnInit {
     }
 
     this.dialogRef.close();
+
   }
+
 }
