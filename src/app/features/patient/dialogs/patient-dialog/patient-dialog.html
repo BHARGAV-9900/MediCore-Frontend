@@ -127,9 +127,9 @@
       <div class="phone-group">
         <mat-form-field appearance="outline" class="country-field">
           <mat-label>Country</mat-label>
-          <mat-select [value]="selectedEmergencyCountry" (selectionChange)="onEmergencyCountryChange($event.value)">
+          <mat-select [value]="selectedEmergencyCountryCode" (selectionChange)="onEmergencyCountryChange($event.value)">
             <mat-select-trigger>
-              {{ selectedEmergencyCountryOption.code }} {{ selectedEmergencyCountryOption.dialCode }}
+              {{ selectedEmergencyCountry.code }} {{ selectedEmergencyCountry.dialCode }}
             </mat-select-trigger>
             @for (country of countries; track country.code) {
               <mat-option [value]="country.code">
@@ -146,7 +146,7 @@
             <mat-error>Emergency phone is required</mat-error>
           }
           @if ((form.controls.emergencyContactPhone.hasError('pattern') || form.controls.emergencyContactPhone.hasError('phoneLength')) && form.controls.emergencyContactPhone.touched) {
-            <mat-error>Enter {{ selectedEmergencyCountryOption.localMin }} digits</mat-error>
+            <mat-error>Enter {{ selectedEmergencyCountry.localMin }} digits</mat-error>
           }
         </mat-form-field>
       </div>
