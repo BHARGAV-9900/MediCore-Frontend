@@ -36,11 +36,15 @@ export class BillItems implements OnInit {
     this.billService.getAll().subscribe({
       next: response => {
         this.bills = response.data ?? [];
-        this.loading = false;
-        if (this.bills.length && !this.selectedBillId) {
-          this.selectedBillId = this.bills[0].id;
-          this.loadItems();
+
+        const selectedStillExists = this.bills.some(x => x.id === this.selectedBillId);
+
+        if (!selectedStillExists) {
+          this.selectedBillId = this.bills.length ? this.bills[0].id : 0;
         }
+
+        this.loading = false;
+        this.loadItems();
       },
       error: error => {
         this.loading = false;
@@ -80,6 +84,10 @@ export class BillItems implements OnInit {
     return this.items.reduce((sum, item) => sum + item.totalAmount, 0);
   }
 
+  refresh(): void {
+    this.loadBills();
+  }
+
   addItem(): void {
     if (!this.selectedBillId) return;
 
@@ -91,7 +99,7 @@ export class BillItems implements OnInit {
     });
 
     ref.afterClosed().subscribe(result => {
-      if (result) this.loadItems();
+      if (result) this.refresh();
     });
   }
 
@@ -104,7 +112,7 @@ export class BillItems implements OnInit {
     });
 
     ref.afterClosed().subscribe(result => {
-      if (result) this.loadItems();
+      if (result) this.refresh();
     });
   }
 
@@ -115,7 +123,7 @@ export class BillItems implements OnInit {
     this.itemService.delete(item.id).subscribe({
       next: () => {
         this.notification.success('Bill item deleted successfully');
-        this.loadItems();
+        this.refresh();
       },
       error: error => {
         this.loading = false;
