@@ -322,10 +322,15 @@ export class LaboratoryOrderDialog {
 
           this.loading = false;
 
-          this.notification.error(
-            error?.error?.message ??
-            'Unable to create laboratory order'
-          );
+
+          const message =
+            error?.status === 409
+              ? 'This laboratory test has already been ordered for this appointment.'
+              : error?.error?.message ??
+                'Unable to create laboratory order';
+
+
+          this.notification.error(message);
 
         }
 
@@ -370,10 +375,13 @@ export class LaboratoryOrderDialog {
 
           this.loading = false;
 
-          this.notification.error(
-            error?.error?.message ??
-            'Unable to update laboratory order'
-          );
+          const message =
+            error?.status === 409
+              ? 'This laboratory test has already been ordered for this appointment.'
+              : error?.error?.message ??
+                'Unable to update laboratory order';
+
+          this.notification.error(message);
 
         }
 
