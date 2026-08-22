@@ -43,34 +43,19 @@ interface CountryOption {
 export class DoctorDialog implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-
-  private readonly dialogRef =
-    inject(MatDialogRef<DoctorDialog>);
-
-  private readonly service =
-    inject(DoctorService);
-
-  private readonly notification =
-    inject(NotificationService);
-
-  private readonly departmentService =
-    inject(DepartmentService);
+  private readonly dialogRef = inject(MatDialogRef<DoctorDialog>);
+  private readonly service = inject(DoctorService);
+  private readonly notification = inject(NotificationService);
+  private readonly departmentService = inject(DepartmentService);
 
   readonly data = inject(MAT_DIALOG_DATA, {
     optional: true
   }) as Doctor | null;
 
   departments: Department[] = [];
-
   loadingDepartments = false;
-
   saving = false;
 
-  /**
-   * Country calling codes used by the doctor phone-number field.
-   * The stored phone number is sent to the API in international format,
-   * for example +919876543210 or +14155552671.
-   */
   readonly countries: CountryOption[] = [
     { code: 'IN', name: 'India', dialCode: '+91' },
     { code: 'US', name: 'United States', dialCode: '+1' },
@@ -115,143 +100,102 @@ export class DoctorDialog implements OnInit {
   ];
 
   form = this.fb.group({
-
     firstName: [
       '',
-      [
-        Validators.required,
-        Validators.maxLength(50)
-      ]
+      [Validators.required, Validators.maxLength(50)]
     ],
-
     lastName: [
       '',
-      [
-        Validators.required,
-        Validators.maxLength(50)
-      ]
+      [Validators.required, Validators.maxLength(50)]
     ],
-
     email: [
       '',
-      [
-        Validators.required,
-        Validators.email,
-        Validators.maxLength(150)
-      ]
+      [Validators.required, Validators.email, Validators.maxLength(150)]
     ],
-
     countryCode: [
       'IN',
       Validators.required
     ],
-
     phoneNumber: [
       '',
-      [
-        Validators.required,
-        Validators.pattern(/^\d{6,14}$/)
-      ]
+      [Validators.required, Validators.pattern(/^\d{6,14}$/)]
     ],
-
     specialization: [
       '',
-      [
-        Validators.required,
-        Validators.maxLength(100)
-      ]
+      [Validators.required, Validators.maxLength(100)]
     ],
-
     experienceYears: [
       0,
-      [
-        Validators.required,
-        Validators.min(0)
-      ]
+      [Validators.required, Validators.min(0)]
     ],
-
     consultationFee: [
       0,
-      [
-        Validators.required,
-        Validators.min(0.01)
-      ]
+      [Validators.required, Validators.min(0.01)]
     ],
-
     departmentId: [
       null as number | null,
       Validators.required
     ]
-
   });
 
   ngOnInit(): void {
-
     this.loadDepartments();
 
-    if (this.data) {
-      const phone = this.splitInternationalPhone(this.data.phoneNumber);
-
-      this.form.patchValue({
-        firstName: this.data.firstName,
-        lastName: this.data.lastName,
-        email: this.data.email,
-        countryCode: phone.countryCode,
-        phoneNumber: phone.phoneNumber,
-        specialization: this.data.specialization,
-        experienceYears: this.data.experienceYears,
-        consultationFee: this.data.consultationFee,
-        departmentId: this.data.departmentId
-      });
+    if (!this.data) {
+      return;
     }
+
+    const phone = this.splitInternationalPhone(this.data.phoneNumber);
+
+    this.form.patchValue({
+      firstName: this.data.firstName,
+      lastName: this.data.lastName,
+      email: this.data.email,
+      countryCode: phone.countryCode,
+      phoneNumber: phone.phoneNumber,
+      specialization: this.data.specialization,
+      experienceYears: this.data.experienceYears,
+      consultationFee: this.data.consultationFee,
+      departmentId: this.data.departmentId
+    });
   }
 
   loadDepartments(): void {
-
     this.loadingDepartments = true;
 
     this.departmentService.getAll().subscribe({
-
       next: response => {
-
         this.departments = response.data ?? [];
-
         this.loadingDepartments = false;
-
       },
-
       error: error => {
-
-        console.error(
-          'Unable to load departments:',
-          error
-        );
-
+        console.error('Unable to load departments:', error);
         this.loadingDepartments = false;
-
-        this.notification.error(
-          'Unable to load departments'
-        );
-
+        this.notification.error('Unable to load departments');
       }
-
     });
-
   }
 
-  private getErrorMessage(
-    error: any,
-    fallback: string
-  ): string {
+  private getErrorMessage(error: any, fallback: string): string {
+    const message =
+      error?.error?.message ??
+      error?.error?.Message ??
+      error?.error?.title ??
+      error?.error?.Title;
 
-    if (error?.status === 409) {
-      return error?.error?.message
-        ?? 'A doctor with this email or phone number already exists.';
+    if (typeof message === 'string' && message.trim()) {
+      return message;
     }
 
-    return error?.error?.message
-      ?? error?.error?.title
-      ?? fallback;
+    if (error?.status === 409) {
+      return 'A doctor with the same email or phone number already exists.';
+    }
+
+    if (error?.status === 400) {
+      return 'Please check the doctor details and try again.';
+    }
+
+    return fallback;
   }
 
   private getSelectedDialCode(): string {
@@ -262,7 +206,7 @@ export class DoctorDialog implements OnInit {
     return country?.dialCode ?? '+91';
   }
 
-  private getInternationalPhone(): string {
+  getInternationalPhone(): string {
     const dialCode = this.getSelectedDialCode();
     const localNumber = (this.form.value.phoneNumber ?? '')
       .replace(/\D/g, '');
@@ -302,170 +246,90 @@ export class DoctorDialog implements OnInit {
     };
   }
 
-  createDoctor(): void {
-
-    const model: CreateDoctor = {
-
+  private buildModel(): CreateDoctor | UpdateDoctor {
+    const base = {
       firstName: this.form.value.firstName!.trim(),
-
       lastName: this.form.value.lastName!.trim(),
-
       email: this.form.value.email!.trim(),
-
       phoneNumber: this.getInternationalPhone(),
-
-      specialization:
-        this.form.value.specialization!.trim(),
-
-      experienceYears:
-        this.form.value.experienceYears!,
-
-      consultationFee:
-        this.form.value.consultationFee!,
-
-      departmentId:
-        this.form.value.departmentId!
-
+      specialization: this.form.value.specialization!.trim(),
+      experienceYears: this.form.value.experienceYears!,
+      consultationFee: this.form.value.consultationFee!,
+      departmentId: this.form.value.departmentId!
     };
 
+    if (this.data) {
+      return {
+        ...base,
+        id: this.data.id
+      };
+    }
+
+    return base;
+  }
+
+  createDoctor(): void {
+    const model = this.buildModel() as CreateDoctor;
     this.saving = true;
 
     this.service.create(model).subscribe({
-
       next: () => {
-
-        this.notification.success(
-          'Doctor created successfully'
-        );
-
+        this.notification.success('Doctor created successfully');
         this.saving = false;
-
         this.dialogRef.close(true);
-
       },
-
       error: error => {
-
-        console.error(
-          'Unable to create doctor:',
-          error
-        );
-
+        console.error('Unable to create doctor:', error);
         this.saving = false;
-
         this.notification.error(
-          this.getErrorMessage(
-            error,
-            'Unable to create doctor'
-          )
+          this.getErrorMessage(error, 'Unable to create doctor')
         );
-
       }
-
     });
-
   }
 
   updateDoctor(): void {
-
-    const model: UpdateDoctor = {
-
-      id: this.data!.id,
-
-      firstName: this.form.value.firstName!.trim(),
-
-      lastName: this.form.value.lastName!.trim(),
-
-      email: this.form.value.email!.trim(),
-
-      phoneNumber: this.getInternationalPhone(),
-
-      specialization:
-        this.form.value.specialization!.trim(),
-
-      experienceYears:
-        this.form.value.experienceYears!,
-
-      consultationFee:
-        this.form.value.consultationFee!,
-
-      departmentId:
-        this.form.value.departmentId!
-
-    };
-
+    const model = this.buildModel() as UpdateDoctor;
     this.saving = true;
 
     this.service.update(model).subscribe({
-
       next: () => {
-
-        this.notification.success(
-          'Doctor updated successfully'
-        );
-
+        this.notification.success('Doctor updated successfully');
         this.saving = false;
-
         this.dialogRef.close(true);
-
       },
-
       error: error => {
-
-        console.error(
-          'Unable to update doctor:',
-          error
-        );
-
+        console.error('Unable to update doctor:', error);
         this.saving = false;
-
         this.notification.error(
-          this.getErrorMessage(
-            error,
-            'Unable to update doctor'
-          )
+          this.getErrorMessage(error, 'Unable to update doctor')
         );
-
       }
-
     });
-
   }
 
   save(): void {
-
     if (this.saving) {
       return;
     }
 
     if (this.form.invalid) {
-
       this.form.markAllAsTouched();
-
       return;
-
     }
 
     if (this.data) {
-
       this.updateDoctor();
-
     } else {
-
       this.createDoctor();
-
     }
-
   }
 
   close(): void {
-
     if (this.saving) {
       return;
     }
 
     this.dialogRef.close();
-
   }
-
 }
