@@ -3,328 +3,201 @@
 </h2>
 
 <mat-dialog-content>
-
   <form [formGroup]="form">
-
-    <!-- =====================================================
-         PERSONAL INFORMATION
-         ===================================================== -->
 
     <h3>Personal Information</h3>
 
     <div class="row">
-
-      <!-- First Name -->
       <mat-form-field appearance="outline">
-
         <mat-label>First Name</mat-label>
-
         <input
           matInput
           formControlName="firstName"
           autocomplete="given-name">
 
-        @if (
-          form.controls.firstName.hasError('required') &&
-          form.controls.firstName.touched
-        ) {
-          <mat-error>
-            First name is required
-          </mat-error>
+        @if (form.controls.firstName.hasError('required') && form.controls.firstName.touched) {
+          <mat-error>First name is required</mat-error>
         }
 
-        @if (
-          form.controls.firstName.hasError('maxlength') &&
-          form.controls.firstName.touched
-        ) {
-          <mat-error>
-            First name is too long
-          </mat-error>
+        @if (form.controls.firstName.hasError('maxlength') && form.controls.firstName.touched) {
+          <mat-error>First name cannot exceed 50 characters</mat-error>
         }
-
       </mat-form-field>
 
-
-      <!-- Last Name -->
       <mat-form-field appearance="outline">
-
         <mat-label>Last Name</mat-label>
-
         <input
           matInput
           formControlName="lastName"
           autocomplete="family-name">
 
-        @if (
-          form.controls.lastName.hasError('required') &&
-          form.controls.lastName.touched
-        ) {
-          <mat-error>
-            Last name is required
-          </mat-error>
+        @if (form.controls.lastName.hasError('required') && form.controls.lastName.touched) {
+          <mat-error>Last name is required</mat-error>
         }
 
-        @if (
-          form.controls.lastName.hasError('maxlength') &&
-          form.controls.lastName.touched
-        ) {
-          <mat-error>
-            Last name is too long
-          </mat-error>
+        @if (form.controls.lastName.hasError('maxlength') && form.controls.lastName.touched) {
+          <mat-error>Last name cannot exceed 50 characters</mat-error>
         }
-
       </mat-form-field>
-
     </div>
-
-
-    <!-- =====================================================
-         CONTACT INFORMATION
-         ===================================================== -->
 
     <h3>Contact Information</h3>
 
     <div class="row">
-
-      <!-- Email -->
       <mat-form-field appearance="outline">
-
         <mat-label>Email</mat-label>
-
         <input
           matInput
           type="email"
           formControlName="email"
           autocomplete="email">
 
-        @if (
-          form.controls.email.hasError('required') &&
-          form.controls.email.touched
-        ) {
-          <mat-error>
-            Email is required
-          </mat-error>
+        @if (form.controls.email.hasError('required') && form.controls.email.touched) {
+          <mat-error>Email is required</mat-error>
         }
 
-        @if (
-          form.controls.email.hasError('email') &&
-          form.controls.email.touched
-        ) {
-          <mat-error>
-            Enter a valid email address
-          </mat-error>
+        @if (form.controls.email.hasError('email') && form.controls.email.touched) {
+          <mat-error>Enter a valid email address</mat-error>
         }
-
       </mat-form-field>
 
+      <div class="phone-field">
+        <mat-form-field appearance="outline" class="country-field">
+          <mat-label>Country</mat-label>
+          <mat-select formControlName="countryCode">
+            @for (country of countries; track country.code) {
+              <mat-option [value]="country.code">
+                {{ country.code }} {{ country.dialCode }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
 
-      <!-- Phone -->
-      <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="number-field">
+          <mat-label>Phone Number</mat-label>
+          <input
+            matInput
+            type="tel"
+            formControlName="phoneNumber"
+            inputmode="numeric"
+            autocomplete="tel-national"
+            maxlength="14">
 
-        <mat-label>Phone Number</mat-label>
+          @if (form.controls.phoneNumber.hasError('required') && form.controls.phoneNumber.touched) {
+            <mat-error>Phone number is required</mat-error>
+          }
 
-        <input
-          matInput
-          type="tel"
-          formControlName="phoneNumber"
-          inputmode="numeric"
-          autocomplete="tel"
-          maxlength="15">
-
-        @if (
-          form.controls.phoneNumber.hasError('required') &&
-          form.controls.phoneNumber.touched
-        ) {
-          <mat-error>
-            Phone number is required
-          </mat-error>
-        }
-
-        @if (
-          form.controls.phoneNumber.hasError('pattern') &&
-          form.controls.phoneNumber.touched
-        ) {
-          <mat-error>
-            Enter a valid phone number
-          </mat-error>
-        }
-
-      </mat-form-field>
-
+          @if (form.controls.phoneNumber.hasError('pattern') && form.controls.phoneNumber.touched) {
+            <mat-error>Enter 6 to 14 digits</mat-error>
+          }
+        </mat-form-field>
+      </div>
     </div>
 
-
-    <!-- =====================================================
-         PROFESSIONAL INFORMATION
-         ===================================================== -->
+    <div class="phone-preview">
+      <span>International format:</span>
+      <strong>{{ getInternationalPhone() }}</strong>
+    </div>
 
     <h3>Professional Information</h3>
 
     <div class="row">
-
-      <!-- Specialization -->
       <mat-form-field appearance="outline">
-
         <mat-label>Specialization</mat-label>
-
         <input
           matInput
           formControlName="specialization"
           autocomplete="organization-title">
 
-        @if (
-          form.controls.specialization.hasError('required') &&
-          form.controls.specialization.touched
-        ) {
-          <mat-error>
-            Specialization is required
-          </mat-error>
+        @if (form.controls.specialization.hasError('required') && form.controls.specialization.touched) {
+          <mat-error>Specialization is required</mat-error>
         }
 
+        @if (form.controls.specialization.hasError('maxlength') && form.controls.specialization.touched) {
+          <mat-error>Specialization cannot exceed 100 characters</mat-error>
+        }
       </mat-form-field>
 
-
-      <!-- Experience -->
       <mat-form-field appearance="outline">
-
         <mat-label>Experience (Years)</mat-label>
-
         <input
           matInput
           type="number"
           formControlName="experienceYears"
-          min="0">
+          min="0"
+          max="70">
 
-        @if (
-          form.controls.experienceYears.hasError('required') &&
-          form.controls.experienceYears.touched
-        ) {
-          <mat-error>
-            Experience is required
-          </mat-error>
+        @if (form.controls.experienceYears.hasError('required') && form.controls.experienceYears.touched) {
+          <mat-error>Experience is required</mat-error>
         }
 
-        @if (
-          form.controls.experienceYears.hasError('min') &&
-          form.controls.experienceYears.touched
-        ) {
-          <mat-error>
-            Experience cannot be negative
-          </mat-error>
+        @if (form.controls.experienceYears.hasError('min') && form.controls.experienceYears.touched) {
+          <mat-error>Experience cannot be negative</mat-error>
         }
-
       </mat-form-field>
-
     </div>
 
-
     <div class="row">
-
-      <!-- Department -->
       <mat-form-field appearance="outline">
-
         <mat-label>Department</mat-label>
+        <mat-select formControlName="departmentId" [disabled]="loadingDepartments">
+          @if (loadingDepartments) {
+            <mat-option disabled>Loading departments...</mat-option>
+          }
 
-        <mat-select formControlName="departmentId">
-
-          @for (
-            department of departments;
-            track department.id
-          ) {
-
+          @for (department of departments; track department.id) {
             <mat-option [value]="department.id">
               {{ department.name }}
             </mat-option>
-
           }
-
         </mat-select>
 
-        @if (
-          form.controls.departmentId.hasError('required') &&
-          form.controls.departmentId.touched
-        ) {
-          <mat-error>
-            Department is required
-          </mat-error>
+        @if (form.controls.departmentId.hasError('required') && form.controls.departmentId.touched) {
+          <mat-error>Department is required</mat-error>
         }
-
       </mat-form-field>
 
-
-      <!-- Consultation Fee -->
       <mat-form-field appearance="outline">
-
         <mat-label>Consultation Fee</mat-label>
-
         <input
           matInput
           type="number"
           formControlName="consultationFee"
-          min="0"
+          min="0.01"
           step="0.01">
 
-        @if (
-          form.controls.consultationFee.hasError('required') &&
-          form.controls.consultationFee.touched
-        ) {
-          <mat-error>
-            Consultation fee is required
-          </mat-error>
+        @if (form.controls.consultationFee.hasError('required') && form.controls.consultationFee.touched) {
+          <mat-error>Consultation fee is required</mat-error>
         }
 
-        @if (
-          form.controls.consultationFee.hasError('min') &&
-          form.controls.consultationFee.touched
-        ) {
-          <mat-error>
-            Fee cannot be negative
-          </mat-error>
+        @if (form.controls.consultationFee.hasError('min') && form.controls.consultationFee.touched) {
+          <mat-error>Fee must be greater than 0</mat-error>
         }
-
       </mat-form-field>
-
     </div>
 
   </form>
-
 </mat-dialog-content>
 
-
-<!-- =====================================================
-     ACTIONS
-     ===================================================== -->
-
 <mat-dialog-actions align="end">
-
   <button
     mat-button
     type="button"
     [disabled]="saving"
     (click)="close()">
-
     Cancel
-
   </button>
-
 
   <button
     mat-raised-button
     color="primary"
     type="button"
-    [disabled]="saving"
+    [disabled]="saving || loadingDepartments"
     (click)="save()">
-
     @if (saving) {
-
       Saving...
-
     } @else {
-
       {{ data ? 'Update' : 'Save' }}
-
     }
-
   </button>
-
 </mat-dialog-actions>
