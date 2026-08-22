@@ -14,7 +14,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: 'bi bi-people',
     route: '/dashboard/patients',
     roles: ['Admin', 'Doctor', 'Receptionist']
-
   },
 
   {
@@ -46,7 +45,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   },
 
   {
-    title: 'Laboratory',
+    title: 'Laboratory Tests',
     icon: 'bi bi-eyedropper',
     route: '/dashboard/laboratory',
     roles: ['Admin', 'Lab Technician', 'Doctor']
