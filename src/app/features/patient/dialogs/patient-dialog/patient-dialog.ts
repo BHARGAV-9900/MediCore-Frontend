@@ -49,7 +49,7 @@ export class PatientDialog implements OnInit {
   ];
 
   selectedPhoneCountry = 'IN';
-  selectedEmergencyCountry = 'IN';
+  selectedEmergencyCountryCode = 'IN';
 
   readonly maxDate = (() => {
     const date = new Date();
@@ -69,14 +69,8 @@ export class PatientDialog implements OnInit {
     phoneNumber: this.fb.control('', [Validators.required, Validators.pattern(/^\d+$/)]),
     email: this.fb.control('', [Validators.required, Validators.email]),
     address: this.fb.control('', [Validators.required, Validators.maxLength(500)]),
-    emergencyContactName: this.fb.control('', [
-      Validators.required,
-      Validators.maxLength(100)
-    ]),
-    emergencyContactPhone: this.fb.control('', [
-      Validators.required,
-      Validators.pattern(/^\d+$/)
-    ]),
+    emergencyContactName: this.fb.control('', [Validators.required, Validators.maxLength(100)]),
+    emergencyContactPhone: this.fb.control('', [Validators.required, Validators.pattern(/^\d+$/)]),
     insuranceNumber: this.fb.control('', Validators.maxLength(100))
   });
 
@@ -102,7 +96,7 @@ export class PatientDialog implements OnInit {
   }
 
   get selectedEmergencyCountry(): CountryOption {
-    return this.getCountry(this.selectedEmergencyCountry);
+    return this.getCountry(this.selectedEmergencyCountryCode);
   }
 
   ngOnInit(): void {
@@ -114,7 +108,7 @@ export class PatientDialog implements OnInit {
     const emergencyPhone = this.parseStoredPhone(this.data.emergencyContactPhone);
 
     this.selectedPhoneCountry = phone.countryCode;
-    this.selectedEmergencyCountry = emergencyPhone.countryCode;
+    this.selectedEmergencyCountryCode = emergencyPhone.countryCode;
 
     this.form.patchValue({
       firstName: this.data.firstName,
@@ -140,7 +134,7 @@ export class PatientDialog implements OnInit {
   }
 
   onEmergencyCountryChange(countryCode: string): void {
-    this.selectedEmergencyCountry = countryCode;
+    this.selectedEmergencyCountryCode = countryCode;
     this.form.controls.emergencyContactPhone.setValue('');
     this.form.controls.emergencyContactPhone.markAsUntouched();
   }
@@ -151,7 +145,6 @@ export class PatientDialog implements OnInit {
   ): void {
     const input = event.target as HTMLInputElement;
     const digits = input.value.replace(/\D/g, '').slice(0, 12);
-
     this.form.controls[controlName].setValue(digits, { emitEvent: false });
   }
 
@@ -174,7 +167,7 @@ export class PatientDialog implements OnInit {
 
     const emergencyContactPhone = this.buildInternationalPhone(
       this.form.value.emergencyContactPhone ?? '',
-      this.selectedEmergencyCountry
+      this.selectedEmergencyCountryCode
     );
 
     if (!phoneNumber || !emergencyContactPhone) {
@@ -195,7 +188,7 @@ export class PatientDialog implements OnInit {
     const phone = this.form.value.phoneNumber ?? '';
     const emergencyPhone = this.form.value.emergencyContactPhone ?? '';
     const phoneCountry = this.selectedCountry;
-    const emergencyCountry = this.getCountry(this.selectedEmergencyCountry);
+    const emergencyCountry = this.selectedEmergencyCountry;
 
     if (phone.length < phoneCountry.localMin || phone.length > phoneCountry.localMax) {
       this.form.controls.phoneNumber.setErrors({ phoneLength: true });
@@ -233,7 +226,6 @@ export class PatientDialog implements OnInit {
 
     const fullNumber = `${country.dialCode}${digits}`;
     const digitsOnly = fullNumber.replace('+', '');
-
     return digitsOnly.length <= 15 ? fullNumber : null;
   }
 
@@ -399,7 +391,6 @@ export class PatientDialog implements OnInit {
     if (typeof value === 'number') {
       return value;
     }
-
     const map: Record<string, number> = { Male: 1, Female: 2, Other: 3 };
     return map[value] ?? null;
   }
@@ -408,7 +399,6 @@ export class PatientDialog implements OnInit {
     if (typeof value === 'number') {
       return value;
     }
-
     const map: Record<string, number> = {
       APositive: 1,
       ANegative: 2,
@@ -419,7 +409,6 @@ export class PatientDialog implements OnInit {
       OPositive: 7,
       ONegative: 8
     };
-
     return map[value] ?? null;
   }
 
@@ -427,7 +416,6 @@ export class PatientDialog implements OnInit {
     if (this.saving) {
       return;
     }
-
     this.dialogRef.close();
   }
 }
