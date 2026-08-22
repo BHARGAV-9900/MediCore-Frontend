@@ -124,14 +124,19 @@ export class DoctorDialog implements OnInit {
       '',
       [Validators.required, Validators.maxLength(100)]
     ],
+
+    // Start empty instead of 0 so the user can type directly.
     experienceYears: [
-      0,
+      '',
       [Validators.required, Validators.min(0)]
     ],
+
+    // Start empty instead of 0 so the user can type directly.
     consultationFee: [
-      0,
+      '',
       [Validators.required, Validators.min(0.01)]
     ],
+
     departmentId: [
       null as number | null,
       Validators.required
@@ -154,8 +159,8 @@ export class DoctorDialog implements OnInit {
       countryCode: phone.countryCode,
       phoneNumber: phone.phoneNumber,
       specialization: this.data.specialization,
-      experienceYears: this.data.experienceYears,
-      consultationFee: this.data.consultationFee,
+      experienceYears: String(this.data.experienceYears),
+      consultationFee: String(this.data.consultationFee),
       departmentId: this.data.departmentId
     });
   }
@@ -253,8 +258,8 @@ export class DoctorDialog implements OnInit {
       email: this.form.value.email!.trim(),
       phoneNumber: this.getInternationalPhone(),
       specialization: this.form.value.specialization!.trim(),
-      experienceYears: this.form.value.experienceYears!,
-      consultationFee: this.form.value.consultationFee!,
+      experienceYears: Number(this.form.value.experienceYears),
+      consultationFee: Number(this.form.value.consultationFee),
       departmentId: this.form.value.departmentId!
     };
 
