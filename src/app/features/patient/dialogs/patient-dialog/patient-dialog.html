@@ -3,10 +3,8 @@
 </h2>
 
 <mat-dialog-content>
-
   <form [formGroup]="form">
 
-    <!-- Personal Information -->
     <h3>Personal Information</h3>
 
     <div class="row">
@@ -17,10 +15,7 @@
           formControlName="firstName"
           autocomplete="given-name">
 
-        @if (
-          form.controls.firstName.hasError('required') &&
-          form.controls.firstName.touched
-        ) {
+        @if (form.controls.firstName.hasError('required') && form.controls.firstName.touched) {
           <mat-error>First name is required</mat-error>
         }
       </mat-form-field>
@@ -32,10 +27,7 @@
           formControlName="lastName"
           autocomplete="family-name">
 
-        @if (
-          form.controls.lastName.hasError('required') &&
-          form.controls.lastName.touched
-        ) {
+        @if (form.controls.lastName.hasError('required') && form.controls.lastName.touched) {
           <mat-error>Last name is required</mat-error>
         }
       </mat-form-field>
@@ -51,17 +43,11 @@
           min="1900-01-01"
           [max]="maxDate">
 
-        @if (
-          form.controls.dateOfBirth.hasError('required') &&
-          form.controls.dateOfBirth.touched
-        ) {
+        @if (form.controls.dateOfBirth.hasError('required') && form.controls.dateOfBirth.touched) {
           <mat-error>Date of birth is required</mat-error>
         }
 
-        @if (
-          form.controls.dateOfBirth.hasError('pattern') &&
-          form.controls.dateOfBirth.touched
-        ) {
+        @if (form.controls.dateOfBirth.hasError('pattern') && form.controls.dateOfBirth.touched) {
           <mat-error>Enter a valid date</mat-error>
         }
       </mat-form-field>
@@ -70,16 +56,11 @@
         <mat-label>Gender</mat-label>
         <mat-select formControlName="gender">
           @for (gender of genders; track gender.id) {
-            <mat-option [value]="gender.id">
-              {{ gender.name }}
-            </mat-option>
+            <mat-option [value]="gender.id">{{ gender.name }}</mat-option>
           }
         </mat-select>
 
-        @if (
-          form.controls.gender.invalid &&
-          form.controls.gender.touched
-        ) {
+        @if (form.controls.gender.invalid && form.controls.gender.touched) {
           <mat-error>Gender is required</mat-error>
         }
       </mat-form-field>
@@ -90,47 +71,57 @@
         <mat-label>Blood Group</mat-label>
         <mat-select formControlName="bloodGroup">
           @for (bloodGroup of bloodGroups; track bloodGroup.id) {
-            <mat-option [value]="bloodGroup.id">
-              {{ bloodGroup.name }}
-            </mat-option>
+            <mat-option [value]="bloodGroup.id">{{ bloodGroup.name }}</mat-option>
           }
         </mat-select>
 
-        @if (
-          form.controls.bloodGroup.invalid &&
-          form.controls.bloodGroup.touched
-        ) {
+        @if (form.controls.bloodGroup.invalid && form.controls.bloodGroup.touched) {
           <mat-error>Blood group is required</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field appearance="outline">
+        <mat-label>Country</mat-label>
+        <mat-select formControlName="countryCode">
+          @for (country of countries; track country.code) {
+            <mat-option [value]="country.code">
+              {{ country.code }} {{ country.dialCode }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="full-width">
         <mat-label>Phone Number</mat-label>
         <input
           matInput
           type="tel"
           formControlName="phoneNumber"
           inputmode="numeric"
-          maxlength="15"
-          autocomplete="tel">
+          maxlength="12"
+          autocomplete="tel-national">
 
-        @if (
-          form.controls.phoneNumber.hasError('required') &&
-          form.controls.phoneNumber.touched
-        ) {
+        <span matTextPrefix class="phone-prefix">
+          {{ countries.find(c => c.code === form.controls.countryCode.value)?.dialCode }}&nbsp;
+        </span>
+
+        @if (form.controls.phoneNumber.hasError('required') && form.controls.phoneNumber.touched) {
           <mat-error>Phone number is required</mat-error>
         }
 
-        @if (
-          form.controls.phoneNumber.hasError('pattern') &&
-          form.controls.phoneNumber.touched
-        ) {
-          <mat-error>Enter a valid phone number</mat-error>
+        @if ((form.controls.phoneNumber.hasError('pattern') || form.controls.phoneNumber.hasError('phoneLength')) && form.controls.phoneNumber.touched) {
+          <mat-error>Enter 7 to 12 digits</mat-error>
         }
       </mat-form-field>
+
+      <div class="phone-help">
+        <span>Example</span>
+        <strong>{{ countries.find(c => c.code === form.controls.countryCode.value)?.dialCode }} 9999999999</strong>
+      </div>
     </div>
 
-    <!-- Contact Information -->
     <h3>Contact Information</h3>
 
     <div class="row">
@@ -142,17 +133,11 @@
           formControlName="email"
           autocomplete="email">
 
-        @if (
-          form.controls.email.hasError('required') &&
-          form.controls.email.touched
-        ) {
+        @if (form.controls.email.hasError('required') && form.controls.email.touched) {
           <mat-error>Email is required</mat-error>
         }
 
-        @if (
-          form.controls.email.hasError('email') &&
-          form.controls.email.touched
-        ) {
+        @if (form.controls.email.hasError('email') && form.controls.email.touched) {
           <mat-error>Enter a valid email address</mat-error>
         }
       </mat-form-field>
@@ -166,7 +151,6 @@
       </mat-form-field>
     </div>
 
-    <!-- Emergency Contact -->
     <h3>Emergency Contact</h3>
 
     <div class="row">
@@ -176,28 +160,55 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
+        <mat-label>Country</mat-label>
+        <mat-select formControlName="emergencyCountryCode">
+          @for (country of countries; track country.code) {
+            <mat-option [value]="country.code">
+              {{ country.code }} {{ country.dialCode }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="full-width">
         <mat-label>Emergency Contact Phone</mat-label>
         <input
           matInput
           type="tel"
           formControlName="emergencyContactPhone"
           inputmode="numeric"
-          maxlength="15">
+          maxlength="12"
+          autocomplete="tel-national">
+
+        <span matTextPrefix class="phone-prefix">
+          {{ countries.find(c => c.code === form.controls.emergencyCountryCode.value)?.dialCode }}&nbsp;
+        </span>
+
+        @if (form.controls.emergencyContactPhone.hasError('required') && form.controls.emergencyContactPhone.touched) {
+          <mat-error>Emergency contact phone is required</mat-error>
+        }
+
+        @if ((form.controls.emergencyContactPhone.hasError('pattern') || form.controls.emergencyContactPhone.hasError('phoneLength')) && form.controls.emergencyContactPhone.touched) {
+          <mat-error>Enter 7 to 12 digits</mat-error>
+        }
       </mat-form-field>
+
+      <div class="phone-help">
+        <span>Example</span>
+        <strong>{{ countries.find(c => c.code === form.controls.emergencyCountryCode.value)?.dialCode }} 9999999999</strong>
+      </div>
     </div>
 
-    <!-- Insurance -->
     <h3>Insurance</h3>
 
-    <mat-form-field
-      appearance="outline"
-      class="full-width">
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Insurance Number</mat-label>
       <input matInput formControlName="insuranceNumber">
     </mat-form-field>
 
   </form>
-
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
@@ -217,8 +228,7 @@
     (click)="save()">
     @if (saving) {
       Saving...
-    }
-    @else {
+    } @else {
       {{ data ? 'Update' : 'Save' }}
     }
   </button>
