@@ -72,33 +72,33 @@ export class MedicineDialog {
   loading = false;
 
 
-  form = this.fb.nonNullable.group({
+  form = this.fb.group({
 
-    name: [
+    name: this.fb.nonNullable.control(
       '',
       [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(150)
       ]
-    ],
+    ),
 
-    manufacturer: [
+    manufacturer: this.fb.nonNullable.control(
       '',
       [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(150)
       ]
-    ],
+    ),
 
-    unitPrice: [
-      0,
+    unitPrice: this.fb.control<number | null>(
+      null,
       [
         Validators.required,
         Validators.min(0.01)
       ]
-    ]
+    )
 
   });
 
@@ -228,6 +228,22 @@ export class MedicineDialog {
     }
 
 
+    if (
+      !Number.isFinite(model.unitPrice) ||
+      model.unitPrice <= 0
+    ) {
+
+      this.form.controls.unitPrice.setErrors({
+        min: true
+      });
+
+      this.form.controls.unitPrice.markAsTouched();
+
+      return;
+
+    }
+
+
     this.loading = true;
 
 
@@ -246,41 +262,87 @@ export class MedicineDialog {
 
 
   private create(
-    model: CreateMedicine
-  ): void {
+  model: CreateMedicine
+): void {
 
-    this.service
-      .create(model)
-      .subscribe({
+  this.service
+    .create(model)
+    .subscribe({
 
-        next: () => {
+      next: () => {
 
-          this.loading = false;
+        this.loading = false;
 
-          this.notification.success(
-            'Medicine created successfully'
-          );
+        this.notification.success(
+          'Medicine created successfully'
+        );
 
-          this.dialogRef.close(true);
+        this.dialogRef.close(true);
 
-        },
+      },
 
-        error: error => {
+      error: error => {
 
-          console.error(error);
+        console.error(
+          'Medicine create error:',
+          error
+        );
 
-          this.loading = false;
+        this.loading = false;
+
+
+        // 409 = duplicate medicine
+        if (error?.status === 409) {
+
+          const duplicateMessage =
+            error?.error?.message ??
+            error?.error?.Message ??
+            'Medicine already exists.';
 
           this.notification.error(
-            error?.error?.message ??
-            'Unable to create medicine'
+            duplicateMessage
           );
+
+          return;
 
         }
 
-      });
 
-  }
+        // 400 = validation error
+        if (error?.status === 400) {
+
+          const validationMessage =
+            error?.error?.message ??
+            error?.error?.Message ??
+            'Please check the entered medicine details.';
+
+          this.notification.error(
+            validationMessage
+          );
+
+          return;
+
+        }
+
+
+        // Other API errors
+        const message =
+          error?.error?.message ??
+          error?.error?.Message ??
+          error?.error?.title ??
+          error?.message ??
+          'Unable to create medicine';
+
+
+        this.notification.error(
+          message
+        );
+
+      }
+
+    });
+
+}
 
 
   private update(
@@ -288,6 +350,8 @@ export class MedicineDialog {
   ): void {
 
     if (!this.medicine) {
+
+      this.loading = false;
 
       return;
 
@@ -313,15 +377,62 @@ export class MedicineDialog {
 
         },
 
+
         error: error => {
 
-          console.error(error);
+          console.error(
+            'Medicine create error:',
+            error
+          );
 
           this.loading = false;
 
-          this.notification.error(
+
+          // Handle duplicate medicine
+          if (error?.status === 409) {
+
+            const duplicateMessage =
+              error?.error?.message ??
+              error?.error?.Message ??
+              'Medicine already exists.';
+
+            this.notification.error(
+              duplicateMessage
+            );
+
+            return;
+
+          }
+
+
+          // Handle validation errors
+          if (error?.status === 400) {
+
+            const validationMessage =
+              error?.error?.message ??
+              error?.error?.Message ??
+              'Please check the entered medicine details.';
+
+            this.notification.error(
+              validationMessage
+            );
+
+            return;
+
+          }
+
+
+          // Handle other errors
+          const message =
             error?.error?.message ??
-            'Unable to update medicine'
+            error?.error?.Message ??
+            error?.error?.title ??
+            error?.message ??
+            'Unable to create medicine';
+
+
+          this.notification.error(
+            message
           );
 
         }
