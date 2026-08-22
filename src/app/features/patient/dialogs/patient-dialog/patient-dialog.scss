@@ -5,26 +5,36 @@
 }
 
 /* =========================================================
-   PATIENT DIALOG
+   DIALOG TITLE
    ========================================================= */
 
-mat-dialog-content {
-  margin: 0;
-  padding: 0 24px 4px !important;
-
-  overflow: visible !important;
-  max-height: none !important;
-}
-
 mat-dialog-title {
-  margin: 0 !important;
-  padding: 24px 24px 8px !important;
+  display: block;
 
-  color: #111827;
+  margin: 0 !important;
+  padding: 22px 28px 10px !important;
+
+  color: #1f2937;
 
   font-size: 24px;
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.3;
+}
+
+/* =========================================================
+   DIALOG CONTENT
+   ========================================================= */
+
+mat-dialog-content {
+  margin: 0 !important;
+
+  padding: 0 28px 8px !important;
+
+  overflow: hidden !important;
+
+  max-height: none !important;
+
+  box-sizing: border-box;
 }
 
 /* =========================================================
@@ -32,37 +42,48 @@ mat-dialog-title {
    ========================================================= */
 
 form {
+  display: block;
+
   width: 100%;
+  max-width: 100%;
+
   box-sizing: border-box;
 }
 
 /* =========================================================
-   SECTION TITLES
+   SECTION HEADINGS
    ========================================================= */
 
 h3 {
-  margin: 12px 0 10px;
+  margin: 14px 0 9px;
 
   color: #374151;
 
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
+  line-height: 1.3;
+}
+
+h3:first-of-type {
+  margin-top: 4px;
 }
 
 /* =========================================================
    TWO COLUMN ROW
-   IMPORTANT:
-   HTML uses .row
    ========================================================= */
 
 .row {
-  display: grid;
+  display: grid !important;
 
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 
-  gap: 12px;
+  width: 100%;
 
-  margin-bottom: 8px;
+  gap: 14px;
+
+  margin: 0 0 8px;
+
+  box-sizing: border-box;
 }
 
 /* =========================================================
@@ -70,58 +91,142 @@ h3 {
    ========================================================= */
 
 mat-form-field {
-  width: 100%;
+  display: block;
+
+  width: 100% !important;
+  min-width: 0;
+
   box-sizing: border-box;
 }
 
 .full-width {
-  width: 100%;
+  display: block;
+
+  width: 100% !important;
 }
 
 /* =========================================================
-   COMPACT MATERIAL FIELDS
+   MATERIAL FORM FIELD SIZE
    ========================================================= */
 
 ::ng-deep .mat-mdc-form-field {
+  width: 100% !important;
+
   --mat-form-field-container-height: 50px;
-  --mat-form-field-container-vertical-padding: 10px;
+  --mat-form-field-container-vertical-padding: 8px;
 }
 
 ::ng-deep .mat-mdc-text-field-wrapper {
+  width: 100% !important;
+
   min-height: 50px !important;
+
+  box-sizing: border-box;
 }
 
 ::ng-deep .mat-mdc-form-field-infix {
+  width: auto !important;
+
   min-height: 50px !important;
 
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
-}
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
 
-input,
-mat-select {
-  font-size: 15px;
+  box-sizing: border-box;
 }
 
 /* =========================================================
-   ACTIONS
-   HTML uses mat-dialog-actions
+   INPUT / SELECT
    ========================================================= */
 
-mat-dialog-actions {
-  display: flex;
+input,
+mat-select {
+  font-size: 14px;
+}
 
-  justify-content: flex-end;
-  align-items: center;
+::ng-deep .mat-mdc-form-field-label {
+  font-size: 14px;
+}
+
+/* =========================================================
+   ERROR MESSAGE
+   ========================================================= */
+
+::ng-deep .mat-mdc-form-field-error {
+  font-size: 11px !important;
+}
+
+/* =========================================================
+   PHONE NUMBER AREA
+   ========================================================= */
+
+/*
+   If your phone row contains a country selector
+   and phone number field, keep them together.
+*/
+
+.phone-row {
+  display: grid !important;
+
+  grid-template-columns: 155px minmax(0, 1fr);
 
   gap: 10px;
 
-  margin: 4px 0 0 !important;
-  padding: 14px 24px 18px !important;
+  width: 100%;
+
+  margin-bottom: 8px;
+
+  box-sizing: border-box;
+}
+
+.phone-country {
+  width: 100% !important;
+}
+
+.phone-number {
+  width: 100% !important;
+}
+
+/* =========================================================
+   COUNTRY SELECT
+   ========================================================= */
+
+::ng-deep .country-select {
+  width: 100% !important;
+}
+
+::ng-deep .country-select .mat-mdc-select-value {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   DIALOG ACTIONS
+   ========================================================= */
+
+mat-dialog-actions {
+  display: flex !important;
+
+  justify-content: flex-end !important;
+
+  align-items: center !important;
+
+  gap: 10px;
+
+  margin: 0 !important;
+
+  padding: 14px 28px 18px !important;
+
+  min-height: 68px;
 
   border-top: 1px solid #e5e7eb;
 
-  background: #faf9ff;
+  background: #ffffff;
+
+  box-sizing: border-box;
 }
 
 /* =========================================================
@@ -129,78 +234,122 @@ mat-dialog-actions {
    ========================================================= */
 
 mat-dialog-actions button:first-child {
-  height: 42px;
+  min-width: 72px;
+
+  height: 40px;
+
+  padding: 0 16px;
 
   color: #0069b4 !important;
 
-  font-weight: 600 !important;
+  font-size: 14px;
 
-  border-radius: 24px !important;
+  font-weight: 600;
+
+  border-radius: 20px;
 }
 
 /* =========================================================
-   PATIENT DIALOG - SAVE BUTTON
+   SAVE BUTTON
    ========================================================= */
 
 mat-dialog-actions button[color='primary'] {
-  height: 44px !important;
-  min-width: 100px !important;
+  min-width: 92px !important;
 
-  padding: 0 24px !important;
+  height: 42px !important;
+
+  padding: 0 22px !important;
 
   display: inline-flex !important;
+
   align-items: center !important;
+
   justify-content: center !important;
 
-  background: #005cbb !important;
+  background: #0069d9 !important;
+
   color: #ffffff !important;
 
   border: none !important;
-  border-radius: 24px !important;
 
-  font-family: inherit !important;
+  border-radius: 22px !important;
+
   font-size: 14px !important;
-  font-weight: 500 !important;
-  line-height: 1 !important;
 
-  letter-spacing: normal !important;
+  font-weight: 600 !important;
+
+  line-height: 1 !important;
 
   box-shadow: none !important;
 }
 
 mat-dialog-actions button[color='primary']:hover {
-  background: #0052a8 !important;
+  background: #005bbd !important;
 }
 
 mat-dialog-actions button[color='primary']:disabled {
-  background: #7aa7d6 !important;
+  background: #9bbde0 !important;
+
   color: #ffffff !important;
-  opacity: 0.7;
+
+  opacity: 0.75;
 }
 
 /* =========================================================
-   REMOVE INNER SCROLLBARS
+   REMOVE SCROLLBAR
    ========================================================= */
 
-mat-dialog-content,
-mat-dialog-content * {
-  scrollbar-width: none;
+mat-dialog-content {
+  scrollbar-width: none !important;
+
+  -ms-overflow-style: none !important;
 }
 
-mat-dialog-content::-webkit-scrollbar,
-mat-dialog-content *::-webkit-scrollbar {
-  display: none;
+mat-dialog-content::-webkit-scrollbar {
+  display: none !important;
+
+  width: 0 !important;
+
+  height: 0 !important;
 }
 
 /* =========================================================
-   RESPONSIVE
+   RESPONSIVE - TABLET
    ========================================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 800px) {
 
   mat-dialog-title {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+
     font-size: 21px;
   }
+
+  mat-dialog-content {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  mat-dialog-actions {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  .row {
+    gap: 10px;
+  }
+
+  .phone-row {
+    grid-template-columns: 135px minmax(0, 1fr);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
 
   .row {
     grid-template-columns: 1fr;
@@ -208,13 +357,27 @@ mat-dialog-content *::-webkit-scrollbar {
     gap: 0;
   }
 
+  .phone-row {
+    grid-template-columns: 1fr;
+
+    gap: 0;
+  }
+
+  mat-dialog-title {
+    padding: 18px 16px 8px !important;
+
+    font-size: 20px;
+  }
+
   mat-dialog-content {
-    padding-left: 18px !important;
-    padding-right: 18px !important;
+    padding: 0 16px 6px !important;
   }
 
   mat-dialog-actions {
-    padding-left: 18px !important;
-    padding-right: 18px !important;
+    padding: 12px 16px 16px !important;
+  }
+
+  h3 {
+    margin-top: 12px;
   }
 }
