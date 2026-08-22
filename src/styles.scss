@@ -87,26 +87,25 @@ body {
 }
 
 
-.prescription-item-dialog-panel {
+/* =========================================
+   Prescription Dialog Panels
+   ========================================= */
+
+.prescription-dialog-panel {
 
   .mat-mdc-dialog-container {
     padding: 0 !important;
   }
 
-  .mdc-dialog__surface {
-    width: 100% !important;
-    max-width: 620px !important;
 
-    max-height: 90vh !important;
+  .mat-mdc-dialog-surface {
+    padding: 0 !important;
 
-    padding: 32px !important;
-
-    box-sizing: border-box;
-
-    overflow-y: auto;
-    overflow-x: hidden;
+    margin: 0 !important;
 
     border-radius: 24px !important;
+
+    overflow: hidden !important;
   }
 
 }

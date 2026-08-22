@@ -1,337 +1,376 @@
-<form
-  class="prescription-item-dialog-form"
-  [formGroup]="form"
-  (ngSubmit)="save()">
+<h2
+  mat-dialog-title
+  class="dialog-title">
 
-  <div class="dialog-header">
+  {{ dialogTitle }}
 
-    <h2>
-      {{ dialogTitle }}
-    </h2>
-
-    <p>
-      {{ dialogSubtitle }}
-    </p>
-
-  </div>
+</h2>
 
 
-  <!-- Prescription -->
+<div
+  mat-dialog-content
+  class="dialog-content">
 
-  <mat-form-field
-    appearance="outline"
-    class="full-width">
+  <p class="dialog-subtitle">
+    {{ dialogSubtitle }}
+  </p>
 
-    <mat-label>
-      Prescription
-    </mat-label>
 
-    <mat-select
-      formControlName="prescriptionId">
+  <form [formGroup]="form">
 
-      @for (
-        prescription of prescriptions;
-        track prescription.id
+    <!-- =========================================
+         Prescription
+         ========================================= -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Prescription
+      </mat-label>
+
+      <mat-select
+        formControlName="prescriptionId">
+
+        @for (
+          prescription of prescriptions;
+          track prescription.id
+        ) {
+
+          <mat-option
+            [value]="prescription.id">
+
+            Prescription #{{ prescription.id }}
+            —
+            Appointment #{{ prescription.appointmentId }}
+
+          </mat-option>
+
+        }
+
+      </mat-select>
+
+
+      @if (
+        prescriptionIdControl.hasError('required') &&
+        prescriptionIdControl.touched
       ) {
 
-        <mat-option
-          [value]="prescription.id">
-
-          Prescription #{{ prescription.id }}
-          —
-          Appointment #{{ prescription.appointmentId }}
-
-        </mat-option>
+        <mat-error>
+          Please select a prescription.
+        </mat-error>
 
       }
 
-    </mat-select>
 
-
-    @if (
-      prescriptionIdControl.hasError('min') &&
-      prescriptionIdControl.touched
-    ) {
-
-      <mat-error>
-        Please select a prescription.
-      </mat-error>
-
-    }
-
-  </mat-form-field>
-
-
-  <!-- Medicine -->
-
-  <mat-form-field
-    appearance="outline"
-    class="full-width">
-
-    <mat-label>
-      Medicine
-    </mat-label>
-
-    <mat-select
-      formControlName="medicineId">
-
-      @for (
-        medicine of medicines;
-        track medicine.id
+      @if (
+        prescriptionIdControl.hasError('min') &&
+        prescriptionIdControl.touched
       ) {
 
-        <mat-option
-          [value]="medicine.id">
-
-          {{ medicine.name }}
-
-          —
-          {{ medicine.manufacturer }}
-
-        </mat-option>
+        <mat-error>
+          Please select a valid prescription.
+        </mat-error>
 
       }
 
-    </mat-select>
+    </mat-form-field>
 
 
-    @if (
-      medicineIdControl.hasError('min') &&
-      medicineIdControl.touched
-    ) {
+    <!-- =========================================
+         Medicine
+         ========================================= -->
 
-      <mat-error>
-        Please select a medicine.
-      </mat-error>
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
 
-    }
+      <mat-label>
+        Medicine
+      </mat-label>
 
-  </mat-form-field>
+      <mat-select
+        formControlName="medicineId">
 
+        @for (
+          medicine of medicines;
+          track medicine.id
+        ) {
 
-  <!-- Dosage -->
+          <mat-option
+            [value]="medicine.id">
 
-  <mat-form-field
-    appearance="outline"
-    class="full-width">
+            {{ medicine.name }}
+            —
+            {{ medicine.manufacturer }}
 
-    <mat-label>
-      Dosage
-    </mat-label>
+          </mat-option>
 
-    <input
-      matInput
-      type="text"
-      formControlName="dosage"
-      placeholder="e.g. 500 mg"
-      maxlength="100"
-      autocomplete="off">
+        }
 
+      </mat-select>
 
-    @if (
-      dosageControl.hasError('required') &&
-      dosageControl.touched
-    ) {
 
-      <mat-error>
-        Dosage is required.
-      </mat-error>
+      @if (
+        medicineIdControl.hasError('required') &&
+        medicineIdControl.touched
+      ) {
 
-    }
-
-
-    @if (
-      dosageControl.hasError('maxlength') &&
-      dosageControl.touched
-    ) {
-
-      <mat-error>
-        Dosage cannot exceed 100 characters.
-      </mat-error>
-
-    }
-
-  </mat-form-field>
-
-
-  <!-- Frequency -->
-
-  <mat-form-field
-    appearance="outline"
-    class="full-width">
-
-    <mat-label>
-      Frequency
-    </mat-label>
-
-    <input
-      matInput
-      type="text"
-      formControlName="frequency"
-      placeholder="e.g. Twice a day"
-      maxlength="100"
-      autocomplete="off">
-
-
-    @if (
-      frequencyControl.hasError('required') &&
-      frequencyControl.touched
-    ) {
-
-      <mat-error>
-        Frequency is required.
-      </mat-error>
-
-    }
-
-
-    @if (
-      frequencyControl.hasError('maxlength') &&
-      frequencyControl.touched
-    ) {
-
-      <mat-error>
-        Frequency cannot exceed 100 characters.
-      </mat-error>
-
-    }
-
-  </mat-form-field>
-
-
-  <!-- Duration -->
-
-  <mat-form-field
-    appearance="outline"
-    class="half-width">
-
-    <mat-label>
-      Duration
-    </mat-label>
-
-    <input
-      matInput
-      type="number"
-      formControlName="durationInDays"
-      min="1"
-      step="1">
-
-    <span matTextSuffix>
-      days
-    </span>
-
-
-    @if (
-      durationControl.hasError('required') &&
-      durationControl.touched
-    ) {
-
-      <mat-error>
-        Duration is required.
-      </mat-error>
-
-    }
-
-
-    @if (
-      durationControl.hasError('min') &&
-      durationControl.touched
-    ) {
-
-      <mat-error>
-        Duration must be greater than zero.
-      </mat-error>
-
-    }
-
-  </mat-form-field>
-
-
-  <!-- Quantity -->
-
-  <mat-form-field
-    appearance="outline"
-    class="half-width">
-
-    <mat-label>
-      Quantity
-    </mat-label>
-
-    <input
-      matInput
-      type="number"
-      formControlName="quantity"
-      min="1"
-      step="1">
-
-
-    @if (
-      quantityControl.hasError('required') &&
-      quantityControl.touched
-    ) {
-
-      <mat-error>
-        Quantity is required.
-      </mat-error>
-
-    }
-
-
-    @if (
-      quantityControl.hasError('min') &&
-      quantityControl.touched
-    ) {
-
-      <mat-error>
-        Quantity must be greater than zero.
-      </mat-error>
-
-    }
-
-  </mat-form-field>
-
-
-  <!-- Actions -->
-
-  <div class="dialog-actions">
-
-    <button
-      mat-button
-      type="button"
-      (click)="cancel()"
-      [disabled]="loading">
-
-      Cancel
-
-    </button>
-
-
-    <button
-      mat-flat-button
-      type="submit"
-      [disabled]="loading">
-
-      @if (loading) {
-
-        <mat-spinner
-          diameter="20">
-        </mat-spinner>
-
-      }
-      @else {
-
-        <mat-icon>
-          {{ isEditMode ? 'save' : 'add' }}
-        </mat-icon>
+        <mat-error>
+          Please select a medicine.
+        </mat-error>
 
       }
 
-      <span>
-        {{ submitButtonText }}
-      </span>
 
-    </button>
+      @if (
+        medicineIdControl.hasError('min') &&
+        medicineIdControl.touched
+      ) {
 
-  </div>
+        <mat-error>
+          Please select a valid medicine.
+        </mat-error>
 
-</form>
+      }
+
+    </mat-form-field>
+
+
+    <!-- =========================================
+         Instructions
+         ========================================= -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Dosage
+      </mat-label>
+
+      <input
+        matInput
+        type="text"
+        formControlName="dosage"
+        placeholder="e.g. 500mg"
+        maxlength="100"
+      />
+
+
+      @if (
+        dosageControl.hasError('required') &&
+        dosageControl.touched
+      ) {
+
+        <mat-error>
+          Dosage is required.
+        </mat-error>
+
+      }
+
+
+      @if (
+        dosageControl.hasError('maxlength')
+      ) {
+
+        <mat-error>
+          Dosage cannot exceed 100 characters.
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+    <!-- =========================================
+         Frequency
+         ========================================= -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+        Frequency
+      </mat-label>
+
+      <input
+        matInput
+        type="text"
+        formControlName="frequency"
+        placeholder="e.g. Twice a day"
+        maxlength="100"
+      />
+
+
+      @if (
+        frequencyControl.hasError('required') &&
+        frequencyControl.touched
+      ) {
+
+        <mat-error>
+          Frequency is required.
+        </mat-error>
+
+      }
+
+
+      @if (
+        frequencyControl.hasError('maxlength')
+      ) {
+
+        <mat-error>
+          Frequency cannot exceed 100 characters.
+        </mat-error>
+
+      }
+
+    </mat-form-field>
+
+
+    <!-- =========================================
+         Duration + Quantity
+         ========================================= -->
+
+    <div class="two-column-fields">
+
+      <!-- Duration -->
+
+      <mat-form-field
+        appearance="outline"
+        class="half-width">
+
+        <mat-label>
+          Duration
+        </mat-label>
+
+        <input
+          matInput
+          type="number"
+          formControlName="durationInDays"
+          min="1"
+          step="1"
+        />
+
+        <span matTextSuffix>
+          days
+        </span>
+
+
+        @if (
+          durationInDaysControl.hasError('required') &&
+          durationInDaysControl.touched
+        ) {
+
+          <mat-error>
+            Duration is required.
+          </mat-error>
+
+        }
+
+
+        @if (
+          durationInDaysControl.hasError('min') &&
+          durationInDaysControl.touched
+        ) {
+
+          <mat-error>
+            Duration must be at least 1 day.
+          </mat-error>
+
+        }
+
+      </mat-form-field>
+
+
+      <!-- Quantity -->
+
+      <mat-form-field
+        appearance="outline"
+        class="half-width">
+
+        <mat-label>
+          Quantity
+        </mat-label>
+
+        <input
+          matInput
+          type="number"
+          formControlName="quantity"
+          min="1"
+          step="1"
+        />
+
+
+        @if (
+          quantityControl.hasError('required') &&
+          quantityControl.touched
+        ) {
+
+          <mat-error>
+            Quantity is required.
+          </mat-error>
+
+        }
+
+
+        @if (
+          quantityControl.hasError('min') &&
+          quantityControl.touched
+        ) {
+
+          <mat-error>
+            Quantity must be at least 1.
+          </mat-error>
+
+        }
+
+      </mat-form-field>
+
+    </div>
+
+  </form>
+
+</div>
+
+
+<!-- =========================================
+     Dialog Actions
+     ========================================= -->
+
+<div
+  mat-dialog-actions
+  align="end"
+  class="dialog-actions">
+
+  <button
+    mat-button
+    type="button"
+    class="cancel-button"
+    [disabled]="loading"
+    (click)="cancel()">
+
+    Cancel
+
+  </button>
+
+
+  <button
+    mat-flat-button
+    color="primary"
+    type="button"
+    class="save-button"
+    [disabled]="loading"
+    (click)="save()">
+
+    <mat-icon>
+      {{ isEditMode ? 'save' : 'add' }}
+    </mat-icon>
+
+    {{ submitButtonText }}
+
+  </button>
+
+</div>

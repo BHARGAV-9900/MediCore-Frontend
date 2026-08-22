@@ -1,137 +1,346 @@
 :host {
   display: block;
-  width: 100%;
-  box-sizing: border-box;
 }
 
-.prescription-item-dialog-form {
-  width: 100%;
-  box-sizing: border-box;
-}
 
-/* ==============================
-   DIALOG HEADER
-   ============================== */
+/* =========================================
+   Dialog Title
+   ========================================= */
 
-.dialog-header {
-  margin-bottom: 24px;
-}
-
-.dialog-header h2 {
+.dialog-title {
   margin: 0;
 
-  font-size: 24px;
-  font-weight: 600;
+  padding: 28px 30px 0;
 
-  line-height: 1.25;
+  font-size: 24px;
+
+  line-height: 32px;
+
+  font-weight: 700;
+
+  color: #111827;
 }
 
-.dialog-header p {
-  margin: 6px 0 0;
+
+/* =========================================
+   Dialog Content
+   ========================================= */
+
+.dialog-content {
+  padding: 0 30px 4px;
+
+  max-height: none;
+
+  overflow: visible;
+}
+
+
+/* =========================================
+   Subtitle
+   ========================================= */
+
+.dialog-subtitle {
+  margin: 2px 0 22px;
 
   color: #64748b;
 
   font-size: 14px;
+
+  line-height: 20px;
 }
 
-/* ==============================
-   FORM FIELDS
-   ============================== */
+
+/* =========================================
+   Form
+   ========================================= */
+
+form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+
+/* =========================================
+   Full Width Fields
+   ========================================= */
 
 .full-width {
-  display: block;
   width: 100%;
-  box-sizing: border-box;
-
-  margin-bottom: 20px;
 }
 
-/*
- * Same comfortable Material field
- * sizing used by the working
- * Medicine dialog.
- */
-.full-width.mat-mdc-form-field {
-  --mat-form-field-container-height: 64px;
-  --mat-form-field-container-vertical-padding: 18px;
+
+mat-form-field {
+  width: 100%;
 }
 
-/* Input and select text */
-.full-width input,
-.full-width mat-select {
+
+/* =========================================
+   Material Form Field
+   ========================================= */
+
+::ng-deep .mat-mdc-form-field {
+  margin: 0;
+}
+
+
+::ng-deep .mat-mdc-text-field-wrapper {
+  min-height: 56px;
+}
+
+
+::ng-deep .mat-mdc-form-field-infix {
+  min-height: 56px;
+
+  padding-top: 16px !important;
+
+  padding-bottom: 8px !important;
+}
+
+
+/* =========================================
+   Select
+   ========================================= */
+
+::ng-deep .mat-mdc-select-value {
   font-size: 16px;
 }
 
-/* ==============================
-   HALF-WIDTH FIELDS
-   ============================== */
+
+::ng-deep .mat-mdc-select-placeholder {
+  font-size: 16px;
+}
+
+
+/* =========================================
+   Input
+   ========================================= */
+
+input.mat-mdc-input-element {
+  font-size: 16px;
+}
+
+
+/* =========================================
+   Duration + Quantity
+   ========================================= */
+
+.two-column-fields {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  gap: 12px;
+
+  width: 100%;
+}
+
 
 .half-width {
-  display: inline-block;
-
-  width: calc(50% - 8px);
-
-  box-sizing: border-box;
-
-  margin-bottom: 20px;
-
-  vertical-align: top;
+  width: 100%;
 }
 
-/*
- * Keep the two fields separated
- * without overflowing the dialog.
- */
-.half-width + .half-width {
-  margin-left: 12px;
+
+/* =========================================
+   Days Suffix
+   ========================================= */
+
+[matTextSuffix] {
+  color: #334155;
+
+  font-size: 14px;
+
+  white-space: nowrap;
 }
 
-/* ==============================
-   DIALOG ACTIONS
-   ============================== */
+
+/* =========================================
+   Error Messages
+   ========================================= */
+
+::ng-deep .mat-mdc-form-field-error {
+  font-size: 12px;
+}
+
+
+/* =========================================
+   Dialog Actions
+   ========================================= */
 
 .dialog-actions {
+  margin-top: 20px;
+
+  padding: 18px 30px 20px;
+
+  border-top: 1px solid #e2e8f0;
+
   display: flex;
+
+  align-items: center;
 
   justify-content: flex-end;
-  align-items: center;
 
   gap: 10px;
-
-  margin-top: 4px;
-
-  padding-top: 18px;
-
-  border-top: 1px solid #e5e7eb;
 }
 
-.dialog-actions button[type='submit'] {
-  display: flex;
+
+/* =========================================
+   Cancel Button
+   ========================================= */
+
+.dialog-actions .cancel-button {
+  min-width: 72px;
+
+  height: 42px;
+
+  padding: 0 14px;
+
+  color: #0066cc;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  line-height: 42px;
+
+  border-radius: 21px;
+}
+
+
+/* =========================================
+   Save Button
+   ========================================= */
+
+.dialog-actions .save-button {
+  min-width: 186px;
+
+  height: 42px;
+
+  padding: 0 20px;
+
+  display: inline-flex;
 
   align-items: center;
+
   justify-content: center;
 
-  gap: 8px;
+  gap: 6px;
 
-  min-width: 145px;
+  border-radius: 22px;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  line-height: 42px;
+
+  letter-spacing: normal;
+
+  text-transform: none;
+
+  box-shadow: none;
 }
 
-.dialog-actions mat-spinner {
-  display: inline-block;
+
+/* =========================================
+   IMPORTANT:
+   Do NOT make the button label bold
+   ========================================= */
+
+.dialog-actions
+.save-button
+.mdc-button__label {
+  font-family: inherit !important;
+
+  font-size: 14px !important;
+
+  font-weight: 500 !important;
+
+  line-height: 1 !important;
+
+  letter-spacing: normal !important;
 }
 
-/* ==============================
-   RESPONSIVE
-   ============================== */
+
+/* =========================================
+   Save Button Icon
+   ========================================= */
+
+.dialog-actions
+.save-button
+mat-icon {
+
+  width: 18px;
+
+  height: 18px;
+
+  margin: 0;
+
+  padding: 0;
+
+  font-size: 18px;
+
+  line-height: 18px;
+
+  font-weight: 400;
+}
+
+
+/* =========================================
+   Disabled Button
+   ========================================= */
+
+.dialog-actions
+.save-button:disabled {
+
+  opacity: 0.65;
+}
+
+
+/* =========================================
+   Responsive
+   ========================================= */
 
 @media (max-width: 600px) {
 
-  .half-width {
-    display: block;
+  .dialog-content {
+    padding-left: 20px;
 
-    width: 100%;
+    padding-right: 20px;
+  }
 
-    margin-left: 0 !important;
+
+  .dialog-title {
+    padding-left: 20px;
+
+    padding-right: 20px;
+  }
+
+
+  .dialog-actions {
+    padding-left: 20px;
+
+    padding-right: 20px;
+  }
+
+
+  .two-column-fields {
+    grid-template-columns: 1fr;
+
+    gap: 18px;
+  }
+
+
+  .dialog-actions .save-button {
+    min-width: 160px;
   }
 
 }

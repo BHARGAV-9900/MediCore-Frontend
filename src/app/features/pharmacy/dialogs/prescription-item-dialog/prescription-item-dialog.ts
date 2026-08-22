@@ -91,74 +91,98 @@ export class PrescriptionItemDialog {
     inject(NotificationService);
 
   private readonly dialogRef =
-    inject(MatDialogRef);
+    inject(
+      MatDialogRef<PrescriptionItemDialog>
+    );
+
 
   readonly item:
     PrescriptionItem | undefined;
 
+
   loading = false;
 
-  prescriptions: Prescription[] = [];
 
-  medicines: Medicine[] = [];
+  prescriptions:
+    Prescription[] = [];
+
+  medicines:
+    Medicine[] = [];
 
 
-  form = this.fb.nonNullable.group({
+  /*
+   * Form
+   *
+   * Numeric fields intentionally start
+   * with null.
+   *
+   * This prevents unwanted 0 values
+   * from appearing in Add mode.
+   */
 
-    prescriptionId: [
-      0,
-      [
-        Validators.required,
-        Validators.min(1)
-      ]
-    ],
+  form = this.fb.group({
 
-    medicineId: [
-      0,
-      [
-        Validators.required,
-        Validators.min(1)
-      ]
-    ],
+    prescriptionId:
+      this.fb.control<number | null>(
+        null,
+        [
+          Validators.required,
+          Validators.min(1)
+        ]
+      ),
 
-    dosage: [
-      '',
-      [
-        Validators.required,
-        Validators.maxLength(100)
-      ]
-    ],
+    medicineId:
+      this.fb.control<number | null>(
+        null,
+        [
+          Validators.required,
+          Validators.min(1)
+        ]
+      ),
 
-    frequency: [
-      '',
-      [
-        Validators.required,
-        Validators.maxLength(100)
-      ]
-    ],
+    dosage:
+      this.fb.nonNullable.control<string>(
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(100)
+        ]
+      ),
 
-    durationInDays: [
-      1,
-      [
-        Validators.required,
-        Validators.min(1)
-      ]
-    ],
+    frequency:
+      this.fb.nonNullable.control<string>(
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(100)
+        ]
+      ),
 
-    quantity: [
-      1,
-      [
-        Validators.required,
-        Validators.min(1)
-      ]
-    ]
+    durationInDays:
+      this.fb.control<number | null>(
+        null,
+        [
+          Validators.required,
+          Validators.min(1)
+        ]
+      ),
+
+    quantity:
+      this.fb.control<number | null>(
+        null,
+        [
+          Validators.required,
+          Validators.min(1)
+        ]
+      )
 
   });
 
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    data: PrescriptionItem | undefined
+    data:
+      PrescriptionItem | undefined
   ) {
 
     this.item = data;
@@ -168,15 +192,22 @@ export class PrescriptionItemDialog {
     this.loadMedicines();
 
 
+    /*
+     * Edit mode.
+     *
+     * Existing values are loaded
+     * into the form.
+     */
+
     if (data) {
 
       this.form.patchValue({
 
         prescriptionId:
-          data.prescriptionId,
+          Number(data.prescriptionId),
 
         medicineId:
-          data.medicineId,
+          Number(data.medicineId),
 
         dosage:
           data.dosage,
@@ -185,10 +216,10 @@ export class PrescriptionItemDialog {
           data.frequency,
 
         durationInDays:
-          data.durationInDays,
+          Number(data.durationInDays),
 
         quantity:
-          data.quantity
+          Number(data.quantity)
 
       });
 
@@ -197,12 +228,20 @@ export class PrescriptionItemDialog {
   }
 
 
+  /*
+   * Edit mode
+   */
+
   get isEditMode(): boolean {
 
     return !!this.item;
 
   }
 
+
+  /*
+   * Dialog title
+   */
 
   get dialogTitle(): string {
 
@@ -213,6 +252,10 @@ export class PrescriptionItemDialog {
   }
 
 
+  /*
+   * Dialog subtitle
+   */
+
   get dialogSubtitle(): string {
 
     return this.isEditMode
@@ -221,6 +264,10 @@ export class PrescriptionItemDialog {
 
   }
 
+
+  /*
+   * Submit button text
+   */
 
   get submitButtonText(): string {
 
@@ -239,6 +286,10 @@ export class PrescriptionItemDialog {
   }
 
 
+  /*
+   * Load prescriptions
+   */
+
   private loadPrescriptions(): void {
 
     this.prescriptionService
@@ -254,7 +305,10 @@ export class PrescriptionItemDialog {
 
         error: error => {
 
-          console.error(error);
+          console.error(
+            'Load prescriptions error:',
+            error
+          );
 
           this.notification.error(
             'Unable to load prescriptions'
@@ -266,6 +320,10 @@ export class PrescriptionItemDialog {
 
   }
 
+
+  /*
+   * Load medicines
+   */
 
   private loadMedicines(): void {
 
@@ -282,7 +340,10 @@ export class PrescriptionItemDialog {
 
         error: error => {
 
-          console.error(error);
+          console.error(
+            'Load medicines error:',
+            error
+          );
 
           this.notification.error(
             'Unable to load medicines'
@@ -294,6 +355,10 @@ export class PrescriptionItemDialog {
 
   }
 
+
+  /*
+   * Save prescription item
+   */
 
   save(): void {
 
@@ -310,13 +375,33 @@ export class PrescriptionItemDialog {
       this.form.getRawValue();
 
 
-    const model: CreatePrescriptionItem = {
+    /*
+     * Make sure nullable controls
+     * contain actual values.
+     */
+
+    if (
+      value.prescriptionId === null ||
+      value.medicineId === null ||
+      value.durationInDays === null ||
+      value.quantity === null
+    ) {
+
+      this.form.markAllAsTouched();
+
+      return;
+
+    }
+
+
+    const model:
+      CreatePrescriptionItem = {
 
       prescriptionId:
-        Number(value.prescriptionId),
+        value.prescriptionId,
 
       medicineId:
-        Number(value.medicineId),
+        value.medicineId,
 
       dosage:
         value.dosage.trim(),
@@ -325,18 +410,24 @@ export class PrescriptionItemDialog {
         value.frequency.trim(),
 
       durationInDays:
-        Number(value.durationInDays),
+        value.durationInDays,
 
       quantity:
-        Number(value.quantity)
+        value.quantity
 
     };
 
 
+    /*
+     * Validate dosage
+     */
+
     if (!model.dosage) {
 
       this.form.controls.dosage.setErrors({
+
         required: true
+
       });
 
       this.form.controls.dosage.markAsTouched();
@@ -346,10 +437,16 @@ export class PrescriptionItemDialog {
     }
 
 
+    /*
+     * Validate frequency
+     */
+
     if (!model.frequency) {
 
       this.form.controls.frequency.setErrors({
+
         required: true
+
       });
 
       this.form.controls.frequency.markAsTouched();
@@ -359,22 +456,90 @@ export class PrescriptionItemDialog {
     }
 
 
+    /*
+     * Validate duration
+     */
+
+    if (
+      !Number.isInteger(
+        model.durationInDays
+      ) ||
+      model.durationInDays < 1
+    ) {
+
+      this.form.controls
+        .durationInDays
+        .setErrors({
+
+          min: true
+
+        });
+
+      this.form.controls
+        .durationInDays
+        .markAsTouched();
+
+      return;
+
+    }
+
+
+    /*
+     * Validate quantity
+     */
+
+    if (
+      !Number.isInteger(
+        model.quantity
+      ) ||
+      model.quantity < 1
+    ) {
+
+      this.form.controls
+        .quantity
+        .setErrors({
+
+          min: true
+
+        });
+
+      this.form.controls
+        .quantity
+        .markAsTouched();
+
+      return;
+
+    }
+
+
     this.loading = true;
 
+
+    /*
+     * Update existing item.
+     */
 
     if (this.isEditMode) {
 
       this.update(model);
 
-    }
-    else {
-
-      this.create(model);
+      return;
 
     }
+
+
+    /*
+     * Create new item.
+     */
+
+    this.create(model);
 
   }
 
+
+  /*
+   * Create prescription item
+   */
 
   private create(
     model: CreatePrescriptionItem
@@ -398,13 +563,47 @@ export class PrescriptionItemDialog {
 
         error: error => {
 
-          console.error(error);
+          console.error(
+            'Create Prescription Item Error:',
+            error
+          );
 
           this.loading = false;
 
-          this.notification.error(
+
+          /*
+           * HTTP 409 means the same
+           * medicine already exists
+           * for this prescription.
+           */
+
+          if (
+            error?.status === 409
+          ) {
+
+            this.notification.error(
+              'This medicine has already been added to the prescription.'
+            );
+
+            return;
+
+          }
+
+
+          /*
+           * Extract normal backend
+           * error message.
+           */
+
+          const message =
             error?.error?.message ??
-            'Unable to create prescription item'
+            error?.error?.title ??
+            error?.message ??
+            'Unable to create prescription item';
+
+
+          this.notification.error(
+            message
           );
 
         }
@@ -414,16 +613,27 @@ export class PrescriptionItemDialog {
   }
 
 
+  /*
+   * Update prescription item
+   */
+
   private update(
     model: CreatePrescriptionItem
   ): void {
 
     if (!this.item) {
 
+      this.loading = false;
+
       return;
 
     }
 
+
+    /*
+     * Prescription and medicine remain
+     * unchanged while editing.
+     */
 
     const updateModel = {
 
@@ -463,13 +673,40 @@ export class PrescriptionItemDialog {
 
         error: error => {
 
-          console.error(error);
+          console.error(
+            'Update Prescription Item Error:',
+            error
+          );
 
           this.loading = false;
 
-          this.notification.error(
+
+          /*
+           * Handle duplicate/conflict.
+           */
+
+          if (
+            error?.status === 409
+          ) {
+
+            this.notification.error(
+              'This medicine has already been added to the prescription.'
+            );
+
+            return;
+
+          }
+
+
+          const message =
             error?.error?.message ??
-            'Unable to update prescription item'
+            error?.error?.title ??
+            error?.message ??
+            'Unable to update prescription item';
+
+
+          this.notification.error(
+            message
           );
 
         }
@@ -478,6 +715,10 @@ export class PrescriptionItemDialog {
 
   }
 
+
+  /*
+   * Close dialog
+   */
 
   cancel(): void {
 
@@ -492,44 +733,54 @@ export class PrescriptionItemDialog {
   }
 
 
+  /*
+   * Form control getters
+   */
+
   get prescriptionIdControl() {
 
-    return this.form.controls.prescriptionId;
+    return this.form.controls
+      .prescriptionId;
 
   }
 
 
   get medicineIdControl() {
 
-    return this.form.controls.medicineId;
+    return this.form.controls
+      .medicineId;
 
   }
 
 
   get dosageControl() {
 
-    return this.form.controls.dosage;
+    return this.form.controls
+      .dosage;
 
   }
 
 
   get frequencyControl() {
 
-    return this.form.controls.frequency;
+    return this.form.controls
+      .frequency;
 
   }
 
 
-  get durationControl() {
+  get durationInDaysControl() {
 
-    return this.form.controls.durationInDays;
+    return this.form.controls
+      .durationInDays;
 
   }
 
 
   get quantityControl() {
 
-    return this.form.controls.quantity;
+    return this.form.controls
+      .quantity;
 
   }
 
