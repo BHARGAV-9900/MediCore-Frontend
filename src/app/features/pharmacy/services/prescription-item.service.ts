@@ -83,13 +83,11 @@ export class PrescriptionItemService {
 
 
   // Update prescription item
+  // Prescription and medicine can also be changed.
 
   update(
     id: number,
-    model: Omit<
-      CreatePrescriptionItem,
-      'prescriptionId' | 'medicineId'
-    >
+    model: CreatePrescriptionItem
   ) {
 
     return this.api.put<
