@@ -8,6 +8,7 @@ import { BillService } from '../../services/bill.service';
 import { BillItemService } from '../../services/bill-item.service';
 import { BillItemDialog } from '../../dialogs/bill-item-dialog/bill-item-dialog';
 import { NotificationService } from '../../../../core/services/notification.service';
+import { BillItemDeleteConfirmation } from '../../dialogs/bill-item-delete-confirmation/bill-item-delete-confirmation';
 
 @Component({
   selector: 'app-bill-items',
@@ -117,18 +118,70 @@ export class BillItems implements OnInit {
   }
 
   deleteItem(item: BillItem): void {
-    if (!confirm(`Delete "${item.description}" from this bill?`)) return;
 
-    this.loading = true;
-    this.itemService.delete(item.id).subscribe({
-      next: () => {
-        this.notification.success('Bill item deleted successfully');
-        this.refresh();
-      },
-      error: error => {
-        this.loading = false;
-        this.notification.error(error?.error?.message ?? 'Unable to delete bill item');
+    const dialogRef = this.dialog.open(
+      BillItemDeleteConfirmation,
+      {
+        width: '520px',
+
+        maxWidth: '95vw',
+
+        autoFocus: false,
+
+        disableClose: true,
+
+        data: item
       }
-    });
+    );
+
+
+    dialogRef.afterClosed()
+      .subscribe(confirmed => {
+
+        if (!confirmed) {
+
+          return;
+
+        }
+
+
+        this.loading = true;
+
+
+        this.itemService
+          .delete(item.id)
+          .subscribe({
+
+            next: () => {
+
+              this.loading = false;
+
+              this.notification.success(
+                'Bill item deleted successfully'
+              );
+
+              this.refresh();
+
+            },
+
+            error: error => {
+
+              console.error('Delete Bill Item Error:', error);
+
+              this.loading = false;
+
+              this.notification.error(
+                error?.error?.message ??
+                error?.error?.detail ??
+                error?.error?.title ??
+                'Unable to delete bill item'
+              );
+
+            }
+
+          });
+
+      });
+
   }
 }
