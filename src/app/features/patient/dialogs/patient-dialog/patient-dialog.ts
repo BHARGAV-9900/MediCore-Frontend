@@ -133,6 +133,18 @@ export class PatientDialog implements OnInit {
     { id: 8, name: 'O-' }
   ];
 
+  get selectedCountry(): CountryOption {
+    return this.countries.find(
+      country => country.code === this.form.controls.countryCode.value
+    ) ?? this.countries[0];
+  }
+
+  get selectedEmergencyCountry(): CountryOption {
+    return this.countries.find(
+      country => country.code === this.form.controls.emergencyCountryCode.value
+    ) ?? this.countries[0];
+  }
+
   ngOnInit(): void {
     if (!this.data) {
       return;
