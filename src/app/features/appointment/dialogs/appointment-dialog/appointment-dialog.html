@@ -98,7 +98,9 @@
         matInput
         type="date"
         formControlName="appointmentDate"
-        [min]="minDate">
+        [min]="minDate"
+        [max]="maxDate"
+        (input)="normalizeDateInput($event)">
 
       @if (
         form.controls.appointmentDate.touched &&
