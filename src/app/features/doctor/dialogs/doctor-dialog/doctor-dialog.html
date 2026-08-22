@@ -6,9 +6,16 @@
 
   <form [formGroup]="form">
 
+<<<<<<< HEAD
     <!-- =====================================================
          PERSONAL INFORMATION
          ===================================================== -->
+=======
+    <!-- Personal Information -->
+    <h3>Personal Information</h3>
+
+    <div class="form-row">
+>>>>>>> 23c844f26a667c4bb8dac5a0cea3dc7f2573d0df
 
     <h3>Personal Information</h3>
 
@@ -16,9 +23,7 @@
 
       <!-- First Name -->
       <mat-form-field appearance="outline">
-
         <mat-label>First Name</mat-label>
-
         <input
           matInput
           formControlName="firstName"
@@ -41,15 +46,15 @@
             First name is too long
           </mat-error>
         }
-
       </mat-form-field>
 
+<<<<<<< HEAD
 
       <!-- Last Name -->
+=======
+>>>>>>> 23c844f26a667c4bb8dac5a0cea3dc7f2573d0df
       <mat-form-field appearance="outline">
-
         <mat-label>Last Name</mat-label>
-
         <input
           matInput
           formControlName="lastName"
@@ -72,15 +77,20 @@
             Last name is too long
           </mat-error>
         }
-
       </mat-form-field>
 
     </div>
 
+    <!-- Contact Information -->
+    <h3>Contact Information</h3>
 
+<<<<<<< HEAD
     <!-- =====================================================
          CONTACT INFORMATION
          ===================================================== -->
+=======
+    <div class="form-row">
+>>>>>>> 23c844f26a667c4bb8dac5a0cea3dc7f2573d0df
 
     <h3>Contact Information</h3>
 
@@ -88,9 +98,7 @@
 
       <!-- Email -->
       <mat-form-field appearance="outline">
-
         <mat-label>Email</mat-label>
-
         <input
           matInput
           type="email"
@@ -114,15 +122,39 @@
             Enter a valid email address
           </mat-error>
         }
-
       </mat-form-field>
 
+      <div class="phone-field-group">
+        <mat-form-field appearance="outline" class="country-field">
+          <mat-label>Country</mat-label>
+          <mat-select formControlName="countryCode">
+            @for (country of countries; track country.code) {
+              <mat-option [value]="country.code">
+                {{ country.code }} {{ country.dialCode }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
 
+<<<<<<< HEAD
       <!-- Phone -->
       <mat-form-field appearance="outline">
+=======
+        <mat-form-field appearance="outline" class="phone-field">
+          <mat-label>Phone Number</mat-label>
+          <input
+            matInput
+            type="tel"
+            formControlName="phoneNumber"
+            inputmode="numeric"
+            autocomplete="tel-national">
+>>>>>>> 23c844f26a667c4bb8dac5a0cea3dc7f2573d0df
 
-        <mat-label>Phone Number</mat-label>
+          @if (form.controls.phoneNumber.hasError('required') && form.controls.phoneNumber.touched) {
+            <mat-error>Phone number is required</mat-error>
+          }
 
+<<<<<<< HEAD
         <input
           matInput
           type="tel"
@@ -157,6 +189,20 @@
     <!-- =====================================================
          PROFESSIONAL INFORMATION
          ===================================================== -->
+=======
+          @if (form.controls.phoneNumber.hasError('pattern') && form.controls.phoneNumber.touched) {
+            <mat-error>Enter 6 to 14 digits</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <!-- Professional Information -->
+    <h3>Professional Information</h3>
+
+    <div class="form-row">
+>>>>>>> 23c844f26a667c4bb8dac5a0cea3dc7f2573d0df
 
     <h3>Professional Information</h3>
 
@@ -164,9 +210,7 @@
 
       <!-- Specialization -->
       <mat-form-field appearance="outline">
-
         <mat-label>Specialization</mat-label>
-
         <input
           matInput
           formControlName="specialization"
@@ -180,15 +224,15 @@
             Specialization is required
           </mat-error>
         }
-
       </mat-form-field>
 
+<<<<<<< HEAD
 
       <!-- Experience -->
+=======
+>>>>>>> 23c844f26a667c4bb8dac5a0cea3dc7f2573d0df
       <mat-form-field appearance="outline">
-
         <mat-label>Experience (Years)</mat-label>
-
         <input
           matInput
           type="number"
@@ -212,18 +256,22 @@
             Experience cannot be negative
           </mat-error>
         }
-
       </mat-form-field>
 
     </div>
 
+<<<<<<< HEAD
 
     <div class="row">
+=======
+    <!-- Department & Fee -->
+    <div class="form-row">
+>>>>>>> 23c844f26a667c4bb8dac5a0cea3dc7f2573d0df
 
       <!-- Department -->
       <mat-form-field appearance="outline">
-
         <mat-label>Department</mat-label>
+<<<<<<< HEAD
 
         <mat-select formControlName="departmentId">
 
@@ -231,6 +279,11 @@
             department of departments;
             track department.id
           ) {
+=======
+        <mat-select
+          formControlName="departmentId"
+          [disabled]="loadingDepartments">
+>>>>>>> 23c844f26a667c4bb8dac5a0cea3dc7f2573d0df
 
             <mat-option [value]="department.id">
               {{ department.name }}
@@ -248,15 +301,15 @@
             Department is required
           </mat-error>
         }
-
       </mat-form-field>
 
+<<<<<<< HEAD
 
       <!-- Consultation Fee -->
+=======
+>>>>>>> 23c844f26a667c4bb8dac5a0cea3dc7f2573d0df
       <mat-form-field appearance="outline">
-
         <mat-label>Consultation Fee</mat-label>
-
         <input
           matInput
           type="number"
@@ -281,7 +334,6 @@
             Fee cannot be negative
           </mat-error>
         }
-
       </mat-form-field>
 
     </div>
@@ -290,12 +342,18 @@
 
 </mat-dialog-content>
 
+<<<<<<< HEAD
 
 <!-- =====================================================
      ACTIONS
      ===================================================== -->
 
 <mat-dialog-actions align="end">
+=======
+<mat-dialog-actions
+  class="dialog-actions"
+  align="end">
+>>>>>>> 23c844f26a667c4bb8dac5a0cea3dc7f2573d0df
 
   <button
     mat-button
