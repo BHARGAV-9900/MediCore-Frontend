@@ -4,264 +4,74 @@
   box-sizing: border-box;
 }
 
-<<<<<<< HEAD
-/* =========================================================
-   DIALOG TITLE
-   ========================================================= */
-
 mat-dialog-title {
-  display: block;
-
   margin: 0 !important;
-  padding: 22px 28px 10px !important;
-
-  color: #1f2937;
-
+  padding: 24px 24px 12px !important;
+  color: #111827;
   font-size: 24px;
-=======
-mat-dialog-title {
-  margin: 0 !important;
-  padding: 20px 24px 8px !important;
-  color: #1f2937;
-  font-size: 23px;
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
   font-weight: 600;
-  line-height: 1.3;
-}
-
-/* =========================================================
-   DIALOG CONTENT
-   ========================================================= */
-
-mat-dialog-content {
-  margin: 0 !important;
-
-  padding: 0 28px 8px !important;
-
-  overflow: hidden !important;
-
-  max-height: none !important;
-
-  box-sizing: border-box;
+  line-height: 1.2;
 }
 
 mat-dialog-content {
   margin: 0;
-  padding: 0 24px 4px !important;
+  padding: 0 24px 8px !important;
   overflow: hidden !important;
   max-height: none !important;
 }
 
 form {
-  display: block;
-
   width: 100%;
-  max-width: 100%;
-
   box-sizing: border-box;
 }
 
-<<<<<<< HEAD
-/* =========================================================
-   SECTION HEADINGS
-   ========================================================= */
-
 h3 {
-  margin: 14px 0 9px;
-
+  margin: 12px 0 10px;
   color: #374151;
-
   font-size: 15px;
-=======
-h3 {
-  margin: 10px 0 8px;
-  color: #374151;
-  font-size: 14px;
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
   font-weight: 700;
-  line-height: 1.3;
 }
 
-h3:first-of-type {
-  margin-top: 4px;
-}
-
-<<<<<<< HEAD
-/* =========================================================
-   TWO COLUMN ROW
-   ========================================================= */
-
-.row {
-  display: grid !important;
-
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-
-  width: 100%;
-
-  gap: 14px;
-
-  margin: 0 0 8px;
-
-  box-sizing: border-box;
-=======
 .row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   align-items: start;
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
 }
 
 mat-form-field {
-  display: block;
-
-  width: 100% !important;
-  min-width: 0;
-
+  width: 100%;
   box-sizing: border-box;
 }
 
 .full-width {
-  display: block;
-
-  width: 100% !important;
+  width: 100%;
 }
 
-<<<<<<< HEAD
-/* =========================================================
-   MATERIAL FORM FIELD SIZE
-   ========================================================= */
+.phone-group {
+  display: grid;
+  grid-template-columns: 145px minmax(0, 1fr);
+  gap: 8px;
+  min-width: 0;
+}
+
+.country-field,
+.number-field {
+  min-width: 0;
+}
 
 ::ng-deep .mat-mdc-form-field {
-  width: 100% !important;
-
-  --mat-form-field-container-height: 50px;
-=======
-::ng-deep .mat-mdc-form-field {
-  --mat-form-field-container-height: 46px;
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
+  --mat-form-field-container-height: 48px;
   --mat-form-field-container-vertical-padding: 8px;
 }
 
 ::ng-deep .mat-mdc-text-field-wrapper {
-<<<<<<< HEAD
-  width: 100% !important;
-
-  min-height: 50px !important;
-
-  box-sizing: border-box;
+  min-height: 48px !important;
 }
 
 ::ng-deep .mat-mdc-form-field-infix {
-  width: auto !important;
-
-  min-height: 50px !important;
-
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
-
-  box-sizing: border-box;
-}
-
-/* =========================================================
-   INPUT / SELECT
-   ========================================================= */
-
-input,
-mat-select {
-  font-size: 14px;
-}
-
-::ng-deep .mat-mdc-form-field-label {
-  font-size: 14px;
-}
-
-/* =========================================================
-   ERROR MESSAGE
-   ========================================================= */
-
-::ng-deep .mat-mdc-form-field-error {
-  font-size: 11px !important;
-}
-
-/* =========================================================
-   PHONE NUMBER AREA
-   ========================================================= */
-
-/*
-   If your phone row contains a country selector
-   and phone number field, keep them together.
-*/
-
-.phone-row {
-  display: grid !important;
-
-  grid-template-columns: 155px minmax(0, 1fr);
-
-  gap: 10px;
-
-  width: 100%;
-
-  margin-bottom: 8px;
-
-  box-sizing: border-box;
-}
-
-.phone-country {
-  width: 100% !important;
-}
-
-.phone-number {
-  width: 100% !important;
-}
-
-/* =========================================================
-   COUNTRY SELECT
-   ========================================================= */
-
-::ng-deep .country-select {
-  width: 100% !important;
-}
-
-::ng-deep .country-select .mat-mdc-select-value {
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
-  white-space: nowrap;
-}
-
-/* =========================================================
-   DIALOG ACTIONS
-   ========================================================= */
-
-mat-dialog-actions {
-  display: flex !important;
-
-  justify-content: flex-end !important;
-
-  align-items: center !important;
-
-  gap: 10px;
-
-  margin: 0 !important;
-
-  padding: 14px 28px 18px !important;
-
-  min-height: 68px;
-
-  border-top: 1px solid #e5e7eb;
-
-  background: #ffffff;
-
-  box-sizing: border-box;
-=======
-  min-height: 46px !important;
-}
-
-::ng-deep .mat-mdc-form-field-infix {
-  min-height: 46px !important;
+  min-height: 48px !important;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
 }
@@ -275,208 +85,43 @@ mat-select {
   font-size: 14px;
 }
 
-.phone-prefix {
-  color: #374151;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.phone-help {
-  min-height: 46px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 0 12px;
-  border: 1px dashed #d1d5db;
-  border-radius: 6px;
-  background: #f9fafb;
-  color: #6b7280;
-  font-size: 11px;
-  box-sizing: border-box;
-}
-
-.phone-help strong {
-  margin-top: 2px;
-  color: #374151;
-  font-size: 12px;
-  font-weight: 600;
-}
-
 mat-dialog-actions {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
-  margin: 4px 0 0 !important;
-  padding: 12px 24px 16px !important;
+  margin: 0 !important;
+  padding: 12px 24px 18px !important;
   border-top: 1px solid #e5e7eb;
-  background: #fafbfc;
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
+  background: #fafafa;
 }
 
 mat-dialog-actions button:first-child {
-<<<<<<< HEAD
-  min-width: 72px;
-
-  height: 40px;
-
-  padding: 0 16px;
-
-  color: #0069b4 !important;
-
-  font-size: 14px;
-
-  font-weight: 600;
-
-  border-radius: 20px;
-}
-
-/* =========================================================
-   SAVE BUTTON
-   ========================================================= */
-
-mat-dialog-actions button[color='primary'] {
-  min-width: 92px !important;
-
-  height: 42px !important;
-
-  padding: 0 22px !important;
-
-=======
-  height: 40px;
+  height: 42px;
   color: #0069b4 !important;
   font-weight: 600 !important;
-  border-radius: 20px !important;
-}
-
-mat-dialog-actions button[color='primary'] {
-  height: 42px !important;
-  min-width: 92px !important;
-  padding: 0 22px !important;
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
-  display: inline-flex !important;
-
-  align-items: center !important;
-
-  justify-content: center !important;
-<<<<<<< HEAD
-
-  background: #0069d9 !important;
-
-=======
-  background: #005cbb !important;
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
-  color: #ffffff !important;
-  border: none !important;
-<<<<<<< HEAD
-
   border-radius: 22px !important;
+}
 
-  font-size: 14px !important;
-
+mat-dialog-actions button[color='primary'] {
+  height: 44px !important;
+  min-width: 100px !important;
+  padding: 0 24px !important;
+  border-radius: 22px !important;
+  background: #005cbb !important;
+  color: #fff !important;
   font-weight: 600 !important;
-
-  line-height: 1 !important;
-
-=======
-  border-radius: 21px !important;
-  font-family: inherit !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  line-height: 1 !important;
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
   box-shadow: none !important;
 }
 
 mat-dialog-actions button[color='primary']:hover {
-  background: #005bbd !important;
+  background: #004f9f !important;
 }
 
 mat-dialog-actions button[color='primary']:disabled {
-  background: #9bbde0 !important;
-
-  color: #ffffff !important;
-
-  opacity: 0.75;
+  opacity: 0.65;
 }
 
-<<<<<<< HEAD
-/* =========================================================
-   REMOVE SCROLLBAR
-   ========================================================= */
-
-mat-dialog-content {
-  scrollbar-width: none !important;
-
-  -ms-overflow-style: none !important;
-}
-
-mat-dialog-content::-webkit-scrollbar {
-  display: none !important;
-
-  width: 0 !important;
-
-  height: 0 !important;
-}
-
-/* =========================================================
-   RESPONSIVE - TABLET
-   ========================================================= */
-
-@media (max-width: 800px) {
-
-  mat-dialog-title {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-
-    font-size: 21px;
-  }
-
-  mat-dialog-content {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-  }
-
-  mat-dialog-actions {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-  }
-
-  .row {
-    gap: 10px;
-  }
-
-  .phone-row {
-    grid-template-columns: 135px minmax(0, 1fr);
-  }
-}
-
-/* =========================================================
-   RESPONSIVE - MOBILE
-   ========================================================= */
-
-@media (max-width: 600px) {
-
-  .row {
-    grid-template-columns: 1fr;
-
-    gap: 0;
-  }
-
-  .phone-row {
-    grid-template-columns: 1fr;
-
-    gap: 0;
-  }
-
-  mat-dialog-title {
-    padding: 18px 16px 8px !important;
-
-    font-size: 20px;
-  }
-
-=======
-/* Keep the patient form compact and hide internal scrollbars. */
 mat-dialog-content,
 mat-dialog-content * {
   scrollbar-width: none;
@@ -484,37 +129,32 @@ mat-dialog-content * {
 
 mat-dialog-content::-webkit-scrollbar,
 mat-dialog-content *::-webkit-scrollbar {
-  display: none;
   width: 0;
   height: 0;
+  display: none;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 800px) {
+  .row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .phone-group {
+    grid-template-columns: 125px minmax(0, 1fr);
+  }
+
   mat-dialog-title {
-    padding-left: 18px !important;
-    padding-right: 18px !important;
     font-size: 21px;
   }
 
->>>>>>> be02ec20af318510a899def893ead4e6df6839bc
   mat-dialog-content {
-    padding: 0 16px 6px !important;
-  }
-
-  .row {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-
-  .phone-help {
-    display: none;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
   }
 
   mat-dialog-actions {
-    padding: 12px 16px 16px !important;
-  }
-
-  h3 {
-    margin-top: 12px;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
   }
 }
