@@ -125,7 +125,10 @@ export class DepartmentDialog {
           console.error(error);
 
           this.notification.error(
-            'Unable to update department'
+            this.getErrorMessage(
+              error,
+              'Unable to update department'
+            )
           );
 
         }
@@ -163,7 +166,10 @@ export class DepartmentDialog {
           console.error(error);
 
           this.notification.error(
-            'Unable to create department'
+            this.getErrorMessage(
+              error,
+              'Unable to create department'
+            )
           );
 
         }
@@ -171,6 +177,18 @@ export class DepartmentDialog {
       });
 
     }
+
+  }
+
+  private getErrorMessage(
+    error: any,
+    fallback: string
+  ): string {
+
+    return error?.error?.message
+      || error?.error?.Message
+      || error?.message
+      || fallback;
 
   }
 
