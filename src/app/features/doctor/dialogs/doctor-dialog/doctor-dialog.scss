@@ -4,72 +4,58 @@
   box-sizing: border-box;
 }
 
-/* =========================================================
-   DOCTOR DIALOG
-   ========================================================= */
-
 .dialog-content {
   margin: 0;
   padding: 0 24px 4px !important;
-
   overflow: visible !important;
   max-height: none !important;
 }
 
-/* =========================================================
-   TITLE
-   ========================================================= */
-
 .dialog-title {
   margin: 0 !important;
-  padding: 24px 24px 14px !important;
-
+  padding: 24px 24px 10px !important;
   color: #111827;
-
   font-size: 24px;
   font-weight: 600;
   line-height: 1.25;
 }
-
-/* =========================================================
-   FORM
-   ========================================================= */
 
 form {
   width: 100%;
   box-sizing: border-box;
 }
 
-/* =========================================================
-   FORM ROWS
-   ========================================================= */
+h3 {
+  margin: 10px 0 8px;
+  color: #374151;
+  font-size: 16px;
+  font-weight: 700;
+}
 
 .form-row {
   display: grid;
-
   grid-template-columns: repeat(2, minmax(0, 1fr));
-
   gap: 12px;
-
   margin-bottom: 8px;
 }
-
-/* =========================================================
-   FORM FIELDS
-   ========================================================= */
 
 mat-form-field {
   width: 100%;
   box-sizing: border-box;
 }
 
-.full-width {
+.phone-field-group {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 8px;
   width: 100%;
+  min-width: 0;
 }
 
-/* =========================================================
-   MATERIAL FORM FIELDS
-   ========================================================= */
+.country-field,
+.phone-field {
+  min-width: 0;
+}
 
 ::ng-deep .mat-mdc-form-field {
   --mat-form-field-container-height: 50px;
@@ -82,74 +68,49 @@ mat-form-field {
 
 ::ng-deep .mat-mdc-form-field-infix {
   min-height: 50px !important;
-
   padding-top: 10px !important;
   padding-bottom: 10px !important;
 }
 
-/* =========================================================
-   ACTIONS
-   IMPORTANT:
-   HTML uses .dialog-actions
-   ========================================================= */
+::ng-deep .mat-mdc-select-value,
+::ng-deep .mat-mdc-input-element {
+  font-size: 15px !important;
+}
 
 .dialog-actions {
   display: flex;
-
   justify-content: flex-end;
   align-items: center;
-
   gap: 10px;
-
   margin: 4px 0 0 !important;
   padding: 14px 24px 18px !important;
-
   border-top: 1px solid #e5e7eb;
-
   background: #faf9ff;
 }
 
-/* =========================================================
-   CANCEL
-   ========================================================= */
-
 .dialog-actions button:first-child {
   height: 42px;
-
   color: #0069b4 !important;
-
   font-weight: 600 !important;
-
   border-radius: 24px !important;
 }
-
-/* =========================================================
-   SAVE / UPDATE
-   ========================================================= */
 
 .dialog-actions button:last-child {
   height: 44px !important;
   min-width: 100px !important;
-
   padding: 0 24px !important;
-
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-
   background: #005cbb !important;
   color: #ffffff !important;
-
   border: none !important;
   border-radius: 24px !important;
-
   font-family: inherit !important;
   font-size: 14px !important;
   font-weight: 500 !important;
   line-height: 1 !important;
-
   letter-spacing: normal !important;
-
   box-shadow: none !important;
 }
 
@@ -163,10 +124,6 @@ mat-form-field {
   opacity: 0.7;
 }
 
-/* =========================================================
-   REMOVE SCROLLBARS
-   ========================================================= */
-
 .dialog-content,
 .dialog-content * {
   scrollbar-width: none;
@@ -177,20 +134,18 @@ mat-form-field {
   display: none;
 }
 
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media (max-width: 700px) {
-
+@media (max-width: 760px) {
   .dialog-title {
     font-size: 21px;
   }
 
   .form-row {
     grid-template-columns: 1fr;
-
     gap: 0;
+  }
+
+  .phone-field-group {
+    grid-template-columns: 125px minmax(0, 1fr);
   }
 
   .dialog-content {
