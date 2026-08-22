@@ -4,129 +4,83 @@
   box-sizing: border-box;
 }
 
-<<<<<<< HEAD
-/* =========================================================
-   DIALOG CONTENT
-   ========================================================= */
+/* ============================================================
+   DIALOG
+   ============================================================ */
+
+mat-dialog-title {
+  margin: 0 !important;
+  padding: 22px 26px 8px !important;
+
+  color: #111827;
+
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* ============================================================
+   CONTENT
+   ============================================================ */
 
 mat-dialog-content {
   margin: 0 !important;
-  padding: 0 24px 6px !important;
+
+  padding: 0 26px 6px !important;
 
   overflow: hidden !important;
+
   max-height: none !important;
 
   box-sizing: border-box;
 }
 
-/* =========================================================
-   DIALOG TITLE
-   ========================================================= */
-
-mat-dialog-title {
-  margin: 0 !important;
-  padding: 22px 24px 10px !important;
-
-  color: #111827;
-
-  font-size: 23px;
-  font-weight: 600;
-  line-height: 1.3;
-=======
-mat-dialog-title {
-  margin: 0 !important;
-  padding: 24px 24px 12px !important;
-  color: #111827;
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 1.2;
-}
-
-mat-dialog-content {
-  margin: 0;
-  padding: 0 24px 8px !important;
-  overflow: hidden !important;
-  max-height: none !important;
->>>>>>> 322d3f359bd03141abb05f2374a8dc9c9583da8f
-}
-
-/* =========================================================
+/* ============================================================
    FORM
-   ========================================================= */
+   ============================================================ */
 
 form {
   width: 100%;
-<<<<<<< HEAD
-  margin: 0;
-  padding: 0;
-
   box-sizing: border-box;
 }
 
-/* =========================================================
+/* ============================================================
    SECTION HEADINGS
-   ========================================================= */
+   ============================================================ */
 
 h3 {
-  margin: 12px 0 9px;
+  margin: 10px 0 8px;
 
   color: #374151;
 
-  font-size: 14px;
-=======
-  box-sizing: border-box;
-}
-
-h3 {
-  margin: 12px 0 10px;
-  color: #374151;
   font-size: 15px;
->>>>>>> 322d3f359bd03141abb05f2374a8dc9c9583da8f
   font-weight: 700;
 }
 
-<<<<<<< HEAD
-h3:first-of-type {
-  margin-top: 4px;
-}
-
-/* =========================================================
-   TWO COLUMN LAYOUT
-   ========================================================= */
+/* ============================================================
+   TWO COLUMN ROW
+   ============================================================ */
 
 .row {
   display: grid;
 
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
 
   gap: 12px;
 
-  width: 100%;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 
-  box-sizing: border-box;
-}
-
-/* =========================================================
-   MATERIAL FORM FIELDS
-   ========================================================= */
-
-mat-form-field {
-  width: 100%;
-  margin: 0;
-
-=======
-.row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 8px;
   align-items: start;
 }
 
+/* ============================================================
+   MATERIAL FIELDS
+   ============================================================ */
+
 mat-form-field {
   width: 100%;
->>>>>>> 322d3f359bd03141abb05f2374a8dc9c9583da8f
+
   box-sizing: border-box;
 }
 
@@ -134,319 +88,180 @@ mat-form-field {
   width: 100%;
 }
 
-<<<<<<< HEAD
-/* =========================================================
-   COMPACT FORM FIELD HEIGHT
-   ========================================================= */
+/* ============================================================
+   PHONE GROUP
+   ============================================================ */
 
-::ng-deep .mat-mdc-form-field {
-  width: 100%;
-
-=======
 .phone-group {
   display: grid;
-  grid-template-columns: 145px minmax(0, 1fr);
+
+  grid-template-columns: 120px minmax(0, 1fr);
+
   gap: 8px;
+
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+.country-field {
   min-width: 0;
 }
 
-.country-field,
-.number-field {
+.phone-field {
   min-width: 0;
 }
+
+/* ============================================================
+   COMPACT MATERIAL FIELDS
+   ============================================================ */
 
 ::ng-deep .mat-mdc-form-field {
->>>>>>> 322d3f359bd03141abb05f2374a8dc9c9583da8f
   --mat-form-field-container-height: 48px;
+
   --mat-form-field-container-vertical-padding: 8px;
 }
 
 ::ng-deep .mat-mdc-text-field-wrapper {
   min-height: 48px !important;
-<<<<<<< HEAD
-
-  border-radius: 6px !important;
-=======
->>>>>>> 322d3f359bd03141abb05f2374a8dc9c9583da8f
 }
 
 ::ng-deep .mat-mdc-form-field-infix {
   min-height: 48px !important;
-<<<<<<< HEAD
 
   padding-top: 8px !important;
-  padding-bottom: 8px !important;
 
-  box-sizing: border-box;
-}
-
-/* =========================================================
-   INPUT / SELECT TEXT
-   ========================================================= */
-=======
-  padding-top: 8px !important;
   padding-bottom: 8px !important;
 }
 
 ::ng-deep .mat-mdc-form-field-subscript-wrapper {
   min-height: 18px;
 }
->>>>>>> 322d3f359bd03141abb05f2374a8dc9c9583da8f
+
+/* ============================================================
+   INPUTS
+   ============================================================ */
 
 input,
 mat-select {
   font-size: 14px;
 }
 
-<<<<<<< HEAD
-::ng-deep .mat-mdc-form-field input {
-  font-size: 14px !important;
-}
-
-::ng-deep .mat-mdc-select-value {
-  font-size: 14px !important;
-}
-
-/* =========================================================
-   LABELS
-   ========================================================= */
-
-::ng-deep .mat-mdc-form-field .mdc-floating-label {
-  font-size: 13px;
-}
-
-/* =========================================================
-   VALIDATION ERRORS
-   ========================================================= */
-
-::ng-deep .mat-mdc-form-field-error {
-  font-size: 11px !important;
-}
-
-/* =========================================================
-   DIALOG ACTIONS
-   ========================================================= */
+/* ============================================================
+   ACTIONS
+   ============================================================ */
 
 mat-dialog-actions {
   display: flex;
 
-=======
-mat-dialog-actions {
-  display: flex;
->>>>>>> 322d3f359bd03141abb05f2374a8dc9c9583da8f
   justify-content: flex-end;
+
   align-items: center;
 
   gap: 10px;
-<<<<<<< HEAD
 
-  margin: 6px 0 0 !important;
-  padding: 12px 24px 16px !important;
+  margin: 4px 0 0 !important;
+
+  padding: 12px 26px 16px !important;
 
   border-top: 1px solid #e5e7eb;
 
-  background: #fafbfc;
-
-  box-sizing: border-box;
+  background: #fafbff;
 }
 
-/* =========================================================
-   CANCEL BUTTON
-   ========================================================= */
+/* ============================================================
+   CANCEL
+   ============================================================ */
 
 mat-dialog-actions button:first-child {
-  min-width: 72px;
-  height: 40px;
+  height: 42px;
 
-  padding: 0 16px;
+  padding: 0 18px;
 
   color: #0069b4 !important;
 
-  font-size: 14px;
-  font-weight: 600;
+  font-weight: 600 !important;
 
-  border-radius: 20px !important;
+  border-radius: 22px !important;
 }
 
-/* =========================================================
-   SAVE / UPDATE BUTTON
-   ========================================================= */
+/* ============================================================
+   SAVE
+   ============================================================ */
 
 mat-dialog-actions button[color='primary'] {
-  min-width: 96px !important;
   height: 42px !important;
+
+  min-width: 96px !important;
 
   padding: 0 22px !important;
 
   display: inline-flex !important;
+
   align-items: center !important;
+
   justify-content: center !important;
 
-  background: #0069c2 !important;
+  background: #0066c0 !important;
+
   color: #ffffff !important;
 
   border: none !important;
-  border-radius: 21px !important;
+
+  border-radius: 22px !important;
 
   font-size: 14px !important;
+
   font-weight: 600 !important;
 
-=======
-  margin: 0 !important;
-  padding: 12px 24px 18px !important;
-  border-top: 1px solid #e5e7eb;
-  background: #fafafa;
-}
-
-mat-dialog-actions button:first-child {
-  height: 42px;
-  color: #0069b4 !important;
-  font-weight: 600 !important;
-  border-radius: 22px !important;
-}
-
-mat-dialog-actions button[color='primary'] {
-  height: 44px !important;
-  min-width: 100px !important;
-  padding: 0 24px !important;
-  border-radius: 22px !important;
-  background: #005cbb !important;
-  color: #fff !important;
-  font-weight: 600 !important;
->>>>>>> 322d3f359bd03141abb05f2374a8dc9c9583da8f
   box-shadow: none !important;
-
-  transition:
-    background 0.2s ease,
-    transform 0.1s ease;
 }
 
 mat-dialog-actions button[color='primary']:hover {
-<<<<<<< HEAD
-  background: #0056a3 !important;
-}
-
-mat-dialog-actions button[color='primary']:active {
-  transform: translateY(1px);
-}
-
-mat-dialog-actions button[color='primary']:disabled {
-  background: #8db5d8 !important;
-  color: #ffffff !important;
-
-  opacity: 0.8;
-}
-
-/* =========================================================
-   REMOVE ALL INTERNAL SCROLLBARS
-   ========================================================= */
-
-=======
-  background: #004f9f !important;
+  background: #0056a6 !important;
 }
 
 mat-dialog-actions button[color='primary']:disabled {
   opacity: 0.65;
+
+  cursor: not-allowed;
 }
 
->>>>>>> 322d3f359bd03141abb05f2374a8dc9c9583da8f
-mat-dialog-content,
-mat-dialog-content *,
-form,
-form * {
+/* ============================================================
+   REMOVE SCROLLBAR
+   ============================================================ */
+
+mat-dialog-content {
   scrollbar-width: none;
 }
 
-mat-dialog-content::-webkit-scrollbar,
-<<<<<<< HEAD
-mat-dialog-content *::-webkit-scrollbar,
-form::-webkit-scrollbar,
-form *::-webkit-scrollbar {
-  width: 0 !important;
-  height: 0 !important;
-
-  display: none !important;
-}
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media (max-width: 700px) {
-
-  mat-dialog-title {
-    padding: 20px 18px 10px !important;
-
-=======
-mat-dialog-content *::-webkit-scrollbar {
-  width: 0;
-  height: 0;
+mat-dialog-content::-webkit-scrollbar {
   display: none;
 }
 
-@media (max-width: 800px) {
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 750px) {
+
   .row {
     grid-template-columns: 1fr;
-    gap: 4px;
+
+    gap: 0;
   }
 
   .phone-group {
-    grid-template-columns: 125px minmax(0, 1fr);
-  }
-
-  mat-dialog-title {
->>>>>>> 322d3f359bd03141abb05f2374a8dc9c9583da8f
-    font-size: 21px;
+    grid-template-columns: 105px minmax(0, 1fr);
   }
 
   mat-dialog-content {
     padding-left: 18px !important;
     padding-right: 18px !important;
   }
-<<<<<<< HEAD
 
-  .row {
-    grid-template-columns: 1fr;
-
-    gap: 2px;
-
-    margin-bottom: 2px;
-  }
-
-  h3 {
-    margin-top: 10px;
-  }
-
-=======
-
->>>>>>> 322d3f359bd03141abb05f2374a8dc9c9583da8f
   mat-dialog-actions {
     padding-left: 18px !important;
     padding-right: 18px !important;
-  }
-}
-
-/* =========================================================
-   VERY SMALL SCREENS
-   ========================================================= */
-
-@media (max-width: 450px) {
-
-  mat-dialog-title {
-    font-size: 20px;
-  }
-
-  mat-dialog-content {
-    padding-left: 14px !important;
-    padding-right: 14px !important;
-  }
-
-  mat-dialog-actions {
-    padding-left: 14px !important;
-    padding-right: 14px !important;
-  }
-
-  mat-dialog-actions button[color='primary'] {
-    min-width: 88px !important;
   }
 }
