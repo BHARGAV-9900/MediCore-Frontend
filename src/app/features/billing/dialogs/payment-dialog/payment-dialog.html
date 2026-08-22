@@ -4,6 +4,10 @@
   (ngSubmit)="save()">
 
 
+  <!-- =========================================
+       HEADER
+       ========================================= -->
+
   <div class="dialog-header">
 
     <h2>
@@ -17,7 +21,9 @@
   </div>
 
 
-  <!-- BILL -->
+  <!-- =========================================
+       BILL
+       ========================================= -->
 
   <mat-form-field
     appearance="outline"
@@ -38,6 +44,7 @@
         </mat-option>
 
       }
+
       @else {
 
         @for (
@@ -85,7 +92,82 @@
   </mat-form-field>
 
 
-  <!-- AMOUNT -->
+  <!-- =========================================
+       PAYMENT SUMMARY
+       ========================================= -->
+
+  @if (selectedBillAmount > 0) {
+
+    <div class="payment-summary">
+
+      <div class="summary-item">
+
+        <span class="summary-label">
+          Bill Amount
+        </span>
+
+        <span class="summary-value">
+          ₹{{ selectedBillAmount | number:'1.2-2' }}
+        </span>
+
+      </div>
+
+
+      <div class="summary-item">
+
+        <span class="summary-label">
+          Paid Amount
+        </span>
+
+        <span class="summary-value">
+          ₹{{ totalPaid | number:'1.2-2' }}
+        </span>
+
+      </div>
+
+
+      <div class="summary-item">
+
+        <span class="summary-label">
+          Remaining
+        </span>
+
+        <span class="summary-value remaining">
+
+          ₹{{ remainingBalance | number:'1.2-2' }}
+
+        </span>
+
+      </div>
+
+
+      <div class="summary-item status-item">
+
+        <span class="summary-label">
+          Status
+        </span>
+
+
+        <span
+          class="payment-status"
+          [class.status-unpaid]="paymentStatus === 'Unpaid'"
+          [class.status-partial]="paymentStatus === 'Partial'"
+          [class.status-paid]="paymentStatus === 'Paid'">
+
+          {{ paymentStatus }}
+
+        </span>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- =========================================
+       AMOUNT
+       ========================================= -->
 
   <mat-form-field
     appearance="outline"
@@ -134,7 +216,9 @@
   </mat-form-field>
 
 
-  <!-- PAYMENT METHOD -->
+  <!-- =========================================
+       PAYMENT METHOD
+       ========================================= -->
 
   <mat-form-field
     appearance="outline"
@@ -178,7 +262,9 @@
   </mat-form-field>
 
 
-  <!-- ACTIONS -->
+  <!-- =========================================
+       ACTIONS
+       ========================================= -->
 
   <div class="dialog-actions">
 
@@ -196,7 +282,11 @@
     <button
       mat-flat-button
       type="submit"
-      [disabled]="loading || loadingBills">
+      [disabled]="
+        loading ||
+        loadingBills ||
+        loadingPaymentSummary
+      ">
 
       @if (loading) {
 
@@ -205,6 +295,7 @@
         </mat-spinner>
 
       }
+
       @else {
 
         <mat-icon>

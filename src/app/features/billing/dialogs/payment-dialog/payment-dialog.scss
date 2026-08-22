@@ -1,26 +1,34 @@
 :host {
   display: block;
+
   width: 100%;
+
   box-sizing: border-box;
 }
 
+
 .payment-dialog-form {
   width: 100%;
+
   box-sizing: border-box;
 }
+
 
 .dialog-header {
   margin-bottom: 24px;
 }
 
+
 .dialog-header h2 {
   margin: 0;
 
   font-size: 24px;
+
   font-weight: 600;
 
   line-height: 1.25;
 }
+
 
 .dialog-header p {
   margin: 6px 0 0;
@@ -29,6 +37,11 @@
 
   font-size: 14px;
 }
+
+
+/* =========================================
+   Form Fields
+   ========================================= */
 
 .full-width {
   display: block;
@@ -40,20 +53,136 @@
   margin-bottom: 20px;
 }
 
+
 .full-width.mat-mdc-form-field {
   --mat-form-field-container-height: 64px;
+
   --mat-form-field-container-vertical-padding: 18px;
 }
+
 
 .full-width input,
 .full-width mat-select {
   font-size: 16px;
 }
 
+
+/* =========================================
+   Payment Summary
+   ========================================= */
+
+.payment-summary {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+
+  margin: 0 0 20px;
+
+  padding: 16px;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
+
+  box-sizing: border-box;
+}
+
+
+.summary-item {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+.summary-label {
+  color: #64748b;
+
+  font-size: 12px;
+
+  font-weight: 500;
+}
+
+
+.summary-value {
+  color: #111827;
+
+  font-size: 16px;
+
+  font-weight: 700;
+}
+
+
+.summary-value.remaining {
+  color: #111827;
+}
+
+
+.status-item {
+  align-items: flex-start;
+}
+
+
+/* =========================================
+   Payment Status
+   ========================================= */
+
+.payment-status {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-width: 72px;
+
+  padding: 4px 10px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+
+.status-unpaid {
+  background: #fee2e2;
+
+  color: #b91c1c;
+}
+
+
+.status-partial {
+  background: #fef3c7;
+
+  color: #92400e;
+}
+
+
+.status-paid {
+  background: #dcfce7;
+
+  color: #166534;
+}
+
+
+/* =========================================
+   Dialog Actions
+   ========================================= */
+
 .dialog-actions {
   display: flex;
 
   justify-content: flex-end;
+
   align-items: center;
 
   gap: 10px;
@@ -65,10 +194,12 @@
   border-top: 1px solid #e5e7eb;
 }
 
+
 .dialog-actions button[type='submit'] {
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   gap: 8px;
@@ -76,6 +207,20 @@
   min-width: 145px;
 }
 
+
 .dialog-actions mat-spinner {
   display: inline-block;
+}
+
+
+/* =========================================
+   Responsive
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  .payment-summary {
+    grid-template-columns: 1fr;
+  }
+
 }
