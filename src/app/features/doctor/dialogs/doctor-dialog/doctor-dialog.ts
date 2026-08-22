@@ -23,6 +23,12 @@ import { NotificationService } from '../../../../core/services/notification.serv
 import { Department } from '../../../department/models/department';
 import { DepartmentService } from '../../../department/services/department.service';
 
+interface CountryOption {
+  code: string;
+  name: string;
+  dialCode: string;
+}
+
 @Component({
   selector: 'app-doctor-dialog',
   standalone: true,
@@ -60,6 +66,54 @@ export class DoctorDialog implements OnInit {
 
   saving = false;
 
+  /**
+   * Country calling codes used by the doctor phone-number field.
+   * The stored phone number is sent to the API in international format,
+   * for example +919876543210 or +14155552671.
+   */
+  readonly countries: CountryOption[] = [
+    { code: 'IN', name: 'India', dialCode: '+91' },
+    { code: 'US', name: 'United States', dialCode: '+1' },
+    { code: 'CA', name: 'Canada', dialCode: '+1' },
+    { code: 'GB', name: 'United Kingdom', dialCode: '+44' },
+    { code: 'AE', name: 'United Arab Emirates', dialCode: '+971' },
+    { code: 'AU', name: 'Australia', dialCode: '+61' },
+    { code: 'SG', name: 'Singapore', dialCode: '+65' },
+    { code: 'NZ', name: 'New Zealand', dialCode: '+64' },
+    { code: 'DE', name: 'Germany', dialCode: '+49' },
+    { code: 'FR', name: 'France', dialCode: '+33' },
+    { code: 'IT', name: 'Italy', dialCode: '+39' },
+    { code: 'ES', name: 'Spain', dialCode: '+34' },
+    { code: 'NL', name: 'Netherlands', dialCode: '+31' },
+    { code: 'CH', name: 'Switzerland', dialCode: '+41' },
+    { code: 'SE', name: 'Sweden', dialCode: '+46' },
+    { code: 'NO', name: 'Norway', dialCode: '+47' },
+    { code: 'DK', name: 'Denmark', dialCode: '+45' },
+    { code: 'IE', name: 'Ireland', dialCode: '+353' },
+    { code: 'ZA', name: 'South Africa', dialCode: '+27' },
+    { code: 'SA', name: 'Saudi Arabia', dialCode: '+966' },
+    { code: 'QA', name: 'Qatar', dialCode: '+974' },
+    { code: 'KW', name: 'Kuwait', dialCode: '+965' },
+    { code: 'OM', name: 'Oman', dialCode: '+968' },
+    { code: 'BH', name: 'Bahrain', dialCode: '+973' },
+    { code: 'MY', name: 'Malaysia', dialCode: '+60' },
+    { code: 'TH', name: 'Thailand', dialCode: '+66' },
+    { code: 'ID', name: 'Indonesia', dialCode: '+62' },
+    { code: 'PH', name: 'Philippines', dialCode: '+63' },
+    { code: 'JP', name: 'Japan', dialCode: '+81' },
+    { code: 'KR', name: 'South Korea', dialCode: '+82' },
+    { code: 'CN', name: 'China', dialCode: '+86' },
+    { code: 'HK', name: 'Hong Kong', dialCode: '+852' },
+    { code: 'TW', name: 'Taiwan', dialCode: '+886' },
+    { code: 'BR', name: 'Brazil', dialCode: '+55' },
+    { code: 'MX', name: 'Mexico', dialCode: '+52' },
+    { code: 'AR', name: 'Argentina', dialCode: '+54' },
+    { code: 'CL', name: 'Chile', dialCode: '+56' },
+    { code: 'CO', name: 'Colombia', dialCode: '+57' },
+    { code: 'TR', name: 'Turkey', dialCode: '+90' },
+    { code: 'RU', name: 'Russia', dialCode: '+7' }
+  ];
+
   form = this.fb.group({
 
     firstName: [
@@ -87,11 +141,16 @@ export class DoctorDialog implements OnInit {
       ]
     ],
 
+    countryCode: [
+      'IN',
+      Validators.required
+    ],
+
     phoneNumber: [
       '',
       [
         Validators.required,
-        Validators.maxLength(20)
+        Validators.pattern(/^\d{6,14}$/)
       ]
     ],
 
@@ -131,29 +190,20 @@ export class DoctorDialog implements OnInit {
     this.loadDepartments();
 
     if (this.data) {
+      const phone = this.splitInternationalPhone(this.data.phoneNumber);
 
       this.form.patchValue({
-
         firstName: this.data.firstName,
-
         lastName: this.data.lastName,
-
         email: this.data.email,
-
-        phoneNumber: this.data.phoneNumber,
-
+        countryCode: phone.countryCode,
+        phoneNumber: phone.phoneNumber,
         specialization: this.data.specialization,
-
         experienceYears: this.data.experienceYears,
-
         consultationFee: this.data.consultationFee,
-
         departmentId: this.data.departmentId
-
       });
-
     }
-
   }
 
   loadDepartments(): void {
@@ -190,20 +240,67 @@ export class DoctorDialog implements OnInit {
   }
 
   private getErrorMessage(
-  error: any,
-  fallback: string
-): string {
+    error: any,
+    fallback: string
+  ): string {
 
-  // Duplicate doctor email
-  if (error?.status === 409) {
-    return 'A doctor with this email already exists.';
+    if (error?.status === 409) {
+      return error?.error?.message
+        ?? 'A doctor with this email or phone number already exists.';
+    }
+
+    return error?.error?.message
+      ?? error?.error?.title
+      ?? fallback;
   }
 
-  return error?.error?.message
-    ?? error?.error?.title
-    ?? fallback;
+  private getSelectedDialCode(): string {
+    const country = this.countries.find(
+      x => x.code === this.form.value.countryCode
+    );
 
-}
+    return country?.dialCode ?? '+91';
+  }
+
+  private getInternationalPhone(): string {
+    const dialCode = this.getSelectedDialCode();
+    const localNumber = (this.form.value.phoneNumber ?? '')
+      .replace(/\D/g, '');
+
+    return `${dialCode}${localNumber}`;
+  }
+
+  private splitInternationalPhone(phone: string): {
+    countryCode: string;
+    phoneNumber: string;
+  } {
+    const normalized = (phone ?? '').replace(/[\s()-]/g, '');
+
+    if (!normalized.startsWith('+')) {
+      return {
+        countryCode: 'IN',
+        phoneNumber: normalized.replace(/\D/g, '')
+      };
+    }
+
+    const matchingCountry = [...this.countries]
+      .sort((a, b) => b.dialCode.length - a.dialCode.length)
+      .find(country => normalized.startsWith(country.dialCode));
+
+    if (!matchingCountry) {
+      return {
+        countryCode: 'IN',
+        phoneNumber: normalized.replace(/^\+\d{1,3}/, '')
+      };
+    }
+
+    return {
+      countryCode: matchingCountry.code,
+      phoneNumber: normalized
+        .substring(matchingCountry.dialCode.length)
+        .replace(/\D/g, '')
+    };
+  }
 
   createDoctor(): void {
 
@@ -215,7 +312,7 @@ export class DoctorDialog implements OnInit {
 
       email: this.form.value.email!.trim(),
 
-      phoneNumber: this.form.value.phoneNumber!.trim(),
+      phoneNumber: this.getInternationalPhone(),
 
       specialization:
         this.form.value.specialization!.trim(),
@@ -281,7 +378,7 @@ export class DoctorDialog implements OnInit {
 
       email: this.form.value.email!.trim(),
 
-      phoneNumber: this.form.value.phoneNumber!.trim(),
+      phoneNumber: this.getInternationalPhone(),
 
       specialization:
         this.form.value.specialization!.trim(),
