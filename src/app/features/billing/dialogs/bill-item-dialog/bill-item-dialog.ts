@@ -21,6 +21,7 @@ export class BillItemDialog {
   private readonly dialogRef = inject(MatDialogRef<BillItemDialog>);
 
   readonly item: BillItem | undefined;
+  readonly billId: number;
   loading = false;
 
   form = this.fb.nonNullable.group({
@@ -30,7 +31,9 @@ export class BillItemDialog {
   });
 
   constructor(@Inject(MAT_DIALOG_DATA) data: { billId: number; item?: BillItem }) {
+    this.billId = data.billId;
     this.item = data.item;
+
     if (data.item) {
       this.form.patchValue({
         description: data.item.description,
@@ -58,7 +61,7 @@ export class BillItemDialog {
     this.loading = true;
     const value = this.form.getRawValue();
     const model: CreateBillItem = {
-      billId: this.item?.billId ?? 0,
+      billId: this.billId,
       description: value.description.trim(),
       quantity: Number(value.quantity),
       unitPrice: Number(value.unitPrice)
