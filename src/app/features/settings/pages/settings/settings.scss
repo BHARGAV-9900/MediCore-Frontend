@@ -341,6 +341,7 @@
 /* ========================================= */
 
 .notification-option {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -411,10 +412,27 @@
 /* CUSTOM TOGGLE */
 /* ========================================= */
 
+/*
+ * Keep the native checkbox in a tiny clipped box inside the label.
+ * The previous absolute/auto-positioned checkbox could receive focus
+ * at an unexpected document position when the label was clicked, which
+ * caused the browser to jump the page and made the footer appear to
+ * leave a large blank area underneath it.
+ */
 .notification-option input {
   position: absolute;
+  top: 50%;
+  right: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
   opacity: 0;
   pointer-events: none;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .toggle {
@@ -452,7 +470,6 @@
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
-  /* The dashboard content already provides bottom spacing. */
   padding: 4px 0 0;
 }
 
