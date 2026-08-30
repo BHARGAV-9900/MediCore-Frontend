@@ -4,7 +4,8 @@ import {
 } from '@angular/core';
 
 import {
-  HttpClient
+  HttpClient,
+  HttpParams
 } from '@angular/common/http';
 
 import {
@@ -33,11 +34,13 @@ export class ApiService {
   // =========================================================
 
   get<T>(
-    endpoint: string
+    endpoint: string,
+    params?: HttpParams
   ): Observable<T> {
 
     return this.http.get<T>(
-      `${this.apiUrl}/${endpoint}`
+      `${this.apiUrl}/${endpoint}`,
+      { params }
     );
 
   }
@@ -108,4 +111,4 @@ export class ApiService {
 
   }
 
-}
+} 
