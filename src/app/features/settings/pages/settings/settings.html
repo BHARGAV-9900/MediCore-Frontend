@@ -160,11 +160,20 @@
 
             @if (
               settingsForm.get('hospitalName')?.touched &&
-              settingsForm.get('hospitalName')?.invalid
+              settingsForm.get('hospitalName')?.hasError('required')
             ) {
 
               <small class="field-error">
                 Hospital name is required.
+              </small>
+
+            } @else if (
+              settingsForm.get('hospitalName')?.touched &&
+              settingsForm.get('hospitalName')?.hasError('maxlength')
+            ) {
+
+              <small class="field-error">
+                Hospital name cannot exceed 200 characters.
               </small>
 
             }
@@ -188,11 +197,29 @@
 
             @if (
               settingsForm.get('hospitalEmail')?.touched &&
-              settingsForm.get('hospitalEmail')?.invalid
+              settingsForm.get('hospitalEmail')?.hasError('required')
+            ) {
+
+              <small class="field-error">
+                Hospital email is required.
+              </small>
+
+            } @else if (
+              settingsForm.get('hospitalEmail')?.touched &&
+              settingsForm.get('hospitalEmail')?.hasError('email')
             ) {
 
               <small class="field-error">
                 Enter a valid email address.
+              </small>
+
+            } @else if (
+              settingsForm.get('hospitalEmail')?.touched &&
+              settingsForm.get('hospitalEmail')?.hasError('maxlength')
+            ) {
+
+              <small class="field-error">
+                Hospital email cannot exceed 200 characters.
               </small>
 
             }
@@ -216,11 +243,29 @@
 
             @if (
               settingsForm.get('hospitalPhone')?.touched &&
-              settingsForm.get('hospitalPhone')?.invalid
+              settingsForm.get('hospitalPhone')?.hasError('required')
             ) {
 
               <small class="field-error">
                 Hospital phone is required.
+              </small>
+
+            } @else if (
+              settingsForm.get('hospitalPhone')?.touched &&
+              settingsForm.get('hospitalPhone')?.hasError('pattern')
+            ) {
+
+              <small class="field-error">
+                Enter a valid hospital phone number.
+              </small>
+
+            } @else if (
+              settingsForm.get('hospitalPhone')?.touched &&
+              settingsForm.get('hospitalPhone')?.hasError('maxlength')
+            ) {
+
+              <small class="field-error">
+                Hospital phone cannot exceed 30 characters.
               </small>
 
             }
@@ -245,11 +290,20 @@
 
             @if (
               settingsForm.get('hospitalAddress')?.touched &&
-              settingsForm.get('hospitalAddress')?.invalid
+              settingsForm.get('hospitalAddress')?.hasError('required')
             ) {
 
               <small class="field-error">
                 Hospital address is required.
+              </small>
+
+            } @else if (
+              settingsForm.get('hospitalAddress')?.touched &&
+              settingsForm.get('hospitalAddress')?.hasError('maxlength')
+            ) {
+
+              <small class="field-error">
+                Hospital address cannot exceed 500 characters.
               </small>
 
             }
@@ -443,13 +497,28 @@
                 type="number"
                 formControlName="defaultAppointmentDuration"
                 min="5"
-                max="240">
+                max="480">
 
               <span>
                 minutes
               </span>
 
             </div>
+
+            @if (
+              settingsForm.get('defaultAppointmentDuration')?.touched &&
+              settingsForm.get('defaultAppointmentDuration')?.invalid
+            ) {
+
+              <small class="field-error">
+                @if (settingsForm.get('defaultAppointmentDuration')?.hasError('required')) {
+                  Appointment duration is required.
+                } @else {
+                  Appointment duration must be between 5 and 480 minutes.
+                }
+              </small>
+
+            }
 
           </div>
 
@@ -475,6 +544,21 @@
 
             </div>
 
+            @if (
+              settingsForm.get('lowStockThreshold')?.touched &&
+              settingsForm.get('lowStockThreshold')?.invalid
+            ) {
+
+              <small class="field-error">
+                @if (settingsForm.get('lowStockThreshold')?.hasError('required')) {
+                  Low stock threshold is required.
+                } @else {
+                  Low stock threshold must be 0 or greater.
+                }
+              </small>
+
+            }
+
           </div>
 
 
@@ -491,13 +575,29 @@
               <input
                 type="number"
                 formControlName="expiryWarningDays"
-                min="0">
+                min="0"
+                max="365">
 
               <span>
                 days
               </span>
 
             </div>
+
+            @if (
+              settingsForm.get('expiryWarningDays')?.touched &&
+              settingsForm.get('expiryWarningDays')?.invalid
+            ) {
+
+              <small class="field-error">
+                @if (settingsForm.get('expiryWarningDays')?.hasError('required')) {
+                  Expiry warning is required.
+                } @else {
+                  Expiry warning must be between 0 and 365 days.
+                }
+              </small>
+
+            }
 
           </div>
 
