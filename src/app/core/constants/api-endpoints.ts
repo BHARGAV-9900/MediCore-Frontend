@@ -66,6 +66,10 @@ export const ApiEndpoints = {
 
   USER: {
     GET_ALL: 'User', GET_BY_ID: 'User', CREATE: 'User', UPDATE: 'User', ACTIVATE: 'User', DEACTIVATE: 'User', DELETE: 'User'
+  },
+
+  AUDIT_LOG: {
+    GET_PAGED: 'AuditLog'
   }
 
 };

@@ -34,6 +34,7 @@ export const routes: Routes = [
       { path: 'reports', canActivate: [roleGuard], data: { roles: ['Admin','Accountant'] }, loadComponent: () => import('./features/reports/pages/reports/reports').then(m => m.Reports) },
       { path: 'settings', canActivate: [roleGuard], data: { roles: ['Admin'] }, loadComponent: () => import('./features/settings/pages/settings/settings').then(m => m.SettingsComponent) },
       { path: 'users', canActivate: [roleGuard], data: { roles: ['Admin'] }, loadComponent: () => import('./features/user/pages/user-list/user-list').then(m => m.UserList) },
+      { path: 'audit-logs', canActivate: [roleGuard], data: { roles: ['Admin'] }, loadComponent: () => import('./features/audit-log/pages/audit-log-list/audit-log-list').then(m => m.AuditLogList) },
       { path: 'profile', loadComponent: () => import('./features/authentication/pages/profile/profile').then(m => m.Profile) },
       { path: 'change-password', loadComponent: () => import('./features/authentication/pages/change-password/change-password').then(m => m.ChangePassword) }
     ]

@@ -1,0 +1,154 @@
+<section class="page-shell">
+  <div class="page-header">
+    <div>
+      <h1>Audit Logs</h1>
+      <p>Track important hospital system changes and user activity.</p>
+    </div>
+
+    <button class="refresh-button" type="button" (click)="loadLogs()">
+      <i class="bi bi-arrow-clockwise"></i>
+      Refresh
+    </button>
+  </div>
+
+  <div class="filter-card">
+    <div class="filter-grid">
+      <label>
+        Entity
+        <input
+          type="text"
+          [(ngModel)]="entityName"
+          placeholder="Patient, Appointment, Bill..."
+          (keyup.enter)="applyFilters()" />
+      </label>
+
+      <label>
+        Action
+        <select [(ngModel)]="action">
+          <option value="">All actions</option>
+          <option *ngFor="let item of actions" [value]="item">{{ item }}</option>
+        </select>
+      </label>
+
+      <label>
+        User ID
+        <input
+          type="number"
+          [(ngModel)]="userId"
+          min="1"
+          placeholder="Optional" />
+      </label>
+
+      <label>
+        From
+        <input type="date" [(ngModel)]="fromDate" />
+      </label>
+
+      <label>
+        To
+        <input type="date" [(ngModel)]="toDate" />
+      </label>
+
+      <div class="filter-actions">
+        <button class="primary-button" type="button" (click)="applyFilters()">
+          <i class="bi bi-funnel"></i>
+          Apply
+        </button>
+        <button class="secondary-button" type="button" (click)="clearFilters()">
+          Clear
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary-row">
+    <span>{{ totalCount }} audit entries</span>
+    <span *ngIf="totalPages > 0">Page {{ pageNumber }} of {{ totalPages }}</span>
+  </div>
+
+  <div class="table-card">
+    <div class="loading-state" *ngIf="loading">
+      Loading audit logs...
+    </div>
+
+    <div class="empty-state" *ngIf="!loading && logs.length === 0">
+      <i class="bi bi-shield-check"></i>
+      <h3>No audit entries found</h3>
+      <p>Try changing the filters or perform an action in the system.</p>
+    </div>
+
+    <div class="table-wrapper" *ngIf="!loading && logs.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>When</th>
+            <th>User</th>
+            <th>Role</th>
+            <th>Action</th>
+            <th>Entity</th>
+            <th>Request</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <ng-container *ngFor="let log of logs">
+            <tr>
+              <td class="date-cell">
+                {{ log.occurredAtUtc | date:'dd-MMM-yyyy HH:mm:ss':'local' }}
+              </td>
+              <td>{{ log.userEmail || 'System' }}</td>
+              <td>{{ log.role || 'System' }}</td>
+              <td>
+                <span class="action-badge" [class.created]="log.action === 'Created'" [class.updated]="log.action === 'Updated'" [class.deleted]="log.action === 'Deleted'">
+                  {{ log.action }}
+                </span>
+              </td>
+              <td>
+                <strong>{{ log.entityName }}</strong>
+                <small *ngIf="log.entityPublicId">{{ log.entityPublicId }}</small>
+              </td>
+              <td>
+                <small>{{ log.requestPath || '—' }}</small>
+              </td>
+              <td>
+                <button class="details-button" type="button" (click)="toggleDetails(log)">
+                  {{ expandedId === log.id ? 'Hide' : 'View' }}
+                </button>
+              </td>
+            </tr>
+
+            <tr class="details-row" *ngIf="expandedId === log.id">
+              <td colspan="7">
+                <div class="details-grid">
+                  <div>
+                    <h4>Old Values</h4>
+                    <pre>{{ formatJson(log.oldValues) }}</pre>
+                  </div>
+                  <div>
+                    <h4>New Values</h4>
+                    <pre>{{ formatJson(log.newValues) }}</pre>
+                  </div>
+                </div>
+                <div class="request-meta">
+                  <span><strong>IP:</strong> {{ log.ipAddress || '—' }}</span>
+                  <span><strong>Request ID:</strong> {{ log.requestId || '—' }}</span>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination" *ngIf="!loading && totalPages > 1">
+      <button type="button" class="secondary-button" (click)="previousPage()" [disabled]="pageNumber === 1">
+        Previous
+      </button>
+      <span>Page {{ pageNumber }} of {{ totalPages }}</span>
+      <button type="button" class="secondary-button" (click)="nextPage()" [disabled]="pageNumber === totalPages">
+        Next
+      </button>
+    </div>
+  </div>
+</section>
