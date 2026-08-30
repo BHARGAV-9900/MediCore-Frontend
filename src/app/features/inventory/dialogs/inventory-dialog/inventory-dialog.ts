@@ -85,10 +85,18 @@ export class InventoryDialog
   loading = false;
 
 
-  form = this.fb.nonNullable.group({
+  readonly minExpiryDate =
+    new Date().toISOString().substring(0, 10);
+
+
+  readonly maxExpiryDate =
+    '9999-12-31';
+
+
+  form = this.fb.group({
 
     medicineId: [
-      0,
+      null,
       [
         Validators.required,
         Validators.min(1)
@@ -97,7 +105,7 @@ export class InventoryDialog
 
 
     quantityInStock: [
-      0,
+      null,
       [
         Validators.required,
         Validators.min(0)
@@ -106,7 +114,7 @@ export class InventoryDialog
 
 
     minimumStockLevel: [
-      0,
+      null,
       [
         Validators.required,
         Validators.min(0)
@@ -296,9 +304,17 @@ export class InventoryDialog
     }
 
 
-    const model:
-      CreateInventory =
-      this.form.getRawValue();
+    const raw = this.form.getRawValue();
+
+    const model: CreateInventory = {
+      medicineId: raw.medicineId!,
+      quantityInStock: raw.quantityInStock!,
+      minimumStockLevel: raw.minimumStockLevel!,
+      batchNumber: raw.batchNumber!,
+      expiryDate: raw.expiryDate!,
+      supplier: raw.supplier!,
+      storageLocation: raw.storageLocation!
+    };
 
 
     this.loading = true;
