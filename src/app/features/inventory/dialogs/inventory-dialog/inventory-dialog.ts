@@ -95,63 +95,63 @@ export class InventoryDialog
 
   form = this.fb.group({
 
-    medicineId: [
+    medicineId: this.fb.control<number | null>(
       null,
       [
         Validators.required,
         Validators.min(1)
       ]
-    ],
+    ),
 
 
-    quantityInStock: [
+    quantityInStock: this.fb.control<number | null>(
       null,
       [
         Validators.required,
         Validators.min(0)
       ]
-    ],
+    ),
 
 
-    minimumStockLevel: [
+    minimumStockLevel: this.fb.control<number | null>(
       null,
       [
         Validators.required,
         Validators.min(0)
       ]
-    ],
+    ),
 
 
-    batchNumber: [
+    batchNumber: this.fb.control(
       '',
       [
         Validators.required
       ]
-    ],
+    ),
 
 
-    expiryDate: [
+    expiryDate: this.fb.control(
       '',
       [
         Validators.required
       ]
-    ],
+    ),
 
 
-    supplier: [
+    supplier: this.fb.control(
       '',
       [
         Validators.required
       ]
-    ],
+    ),
 
 
-    storageLocation: [
+    storageLocation: this.fb.control(
       '',
       [
         Validators.required
       ]
-    ]
+    )
 
   });
 
