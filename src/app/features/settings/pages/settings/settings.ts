@@ -184,16 +184,22 @@ export class SettingsComponent
           this.loading = false;
           this.errorMessage =
             'Unable to load settings. Please try again.';
+
+          this.showError(
+            'Unable to load settings. Please try again.'
+          );
         }
       });
   }
 
   saveSettings(): void {
+    this.trimTextFields();
+
     if (this.settingsForm.invalid) {
       this.settingsForm.markAllAsTouched();
 
       this.showError(
-        'Please correct the highlighted fields.'
+        this.getValidationSummary()
       );
 
       return;
@@ -237,6 +243,98 @@ export class SettingsComponent
 
   resetSettings(): void {
     this.loadSettings();
+  }
+
+  private trimTextFields(): void {
+    const textFields = [
+      'hospitalName',
+      'hospitalEmail',
+      'hospitalPhone',
+      'hospitalAddress'
+    ];
+
+    const trimmedValues: Record<string, string> = {};
+
+    for (const field of textFields) {
+      const value =
+        this.settingsForm.get(field)?.value;
+
+      if (typeof value === 'string') {
+        trimmedValues[field] = value.trim();
+      }
+    }
+
+    this.settingsForm.patchValue(
+      trimmedValues,
+      { emitEvent: false }
+    );
+  }
+
+  private getValidationSummary(): string {
+    const validationMessages: Record<string, string> = {
+      hospitalName: 'Hospital name is required.',
+      hospitalEmail: 'Enter a valid hospital email address.',
+      hospitalPhone: 'Enter a valid hospital phone number.',
+      hospitalAddress: 'Hospital address is required.',
+      defaultAppointmentDuration:
+        'Appointment duration must be between 5 and 480 minutes.',
+      lowStockThreshold:
+        'Low stock threshold must be 0 or greater.',
+      expiryWarningDays:
+        'Expiry warning must be between 0 and 365 days.'
+    };
+
+    for (const [controlName, message] of Object.entries(validationMessages)) {
+      const control = this.settingsForm.get(controlName);
+
+      if (control?.invalid) {
+        if (controlName === 'hospitalName' && control.hasError('required')) {
+          return message;
+        }
+
+        if (controlName === 'hospitalEmail' &&
+            (control.hasError('required') ||
+             control.hasError('email') ||
+             control.hasError('maxlength'))) {
+          return message;
+        }
+
+        if (controlName === 'hospitalPhone' &&
+            (control.hasError('required') ||
+             control.hasError('pattern') ||
+             control.hasError('maxlength'))) {
+          return message;
+        }
+
+        if (controlName === 'hospitalAddress' &&
+            (control.hasError('required') ||
+             control.hasError('maxlength'))) {
+          return message;
+        }
+
+        if (controlName === 'defaultAppointmentDuration' &&
+            (control.hasError('required') ||
+             control.hasError('min') ||
+             control.hasError('max'))) {
+          return message;
+        }
+
+        if (controlName === 'lowStockThreshold' &&
+            (control.hasError('required') ||
+             control.hasError('min'))) {
+          return message;
+        }
+
+        if (controlName === 'expiryWarningDays' &&
+            (control.hasError('required') ||
+             control.hasError('min') ||
+             control.hasError('max'))) {
+          return message;
+        }
+      }
+    }
+
+    return 'Please correct the highlighted fields.';
   }
 
   private getApiErrorMessage(
