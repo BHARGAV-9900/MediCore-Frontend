@@ -1,841 +1,274 @@
 <div class="settings-page">
-
-  <!-- PAGE HEADER -->
-
   <div class="page-header">
-
     <div>
-
-      <h1>
-        Settings
-      </h1>
-
-      <p>
-        Manage hospital configuration and system preferences
-      </p>
-
+      <h1>Settings</h1>
+      <p>Manage hospital configuration and system preferences</p>
     </div>
-
     <div class="header-actions">
-
-      <button
-        type="button"
-        class="secondary-button"
-        (click)="resetSettings()"
-        [disabled]="loading || saving">
-
-        <mat-icon>
-          refresh
-        </mat-icon>
-
-        <span>
-          Reset
-        </span>
-
+      <button type="button" class="secondary-button" (click)="resetSettings()" [disabled]="loading || saving">
+        <mat-icon>refresh</mat-icon>
+        <span>Reset</span>
       </button>
-
-      <button
-        type="button"
-        class="save-button"
-        (click)="saveSettings()"
-        [disabled]="loading || saving">
-
+      <button type="button" class="save-button" (click)="saveSettings()" [disabled]="loading || saving">
         @if (saving) {
-
           <span class="button-spinner"></span>
-
-          <span>
-            Saving...
-          </span>
-
+          <span>Saving...</span>
         } @else {
-
-          <mat-icon>
-            save
-          </mat-icon>
-
-          <span>
-            Save Settings
-          </span>
-
+          <mat-icon>save</mat-icon>
+          <span>Save Settings</span>
         }
-
       </button>
-
     </div>
-
   </div>
 
-
-  <!-- ERROR -->
-
   @if (errorMessage) {
-
     <div class="error-message">
-
-      <mat-icon>
-        error_outline
-      </mat-icon>
-
-      <span>
-        {{ errorMessage }}
-      </span>
-
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
     </div>
-
   }
-
-
-  <!-- LOADING -->
 
   @if (loading) {
-
     <div class="loading-container">
-
       <div class="loading-spinner"></div>
-
-      <p>
-        Loading settings...
-      </p>
-
+      <p>Loading settings...</p>
     </div>
-
   }
-
 
   @if (!loading) {
-
-    <form
-      [formGroup]="settingsForm"
-      class="settings-form">
-
-
-      <!-- ===================================== -->
-      <!-- HOSPITAL INFORMATION -->
-      <!-- ===================================== -->
+    <form [formGroup]="settingsForm" class="settings-form">
 
       <section class="settings-section">
-
         <div class="section-header">
-
-          <div class="section-icon hospital">
-
-            <mat-icon>
-              local_hospital
-            </mat-icon>
-
-          </div>
-
+          <div class="section-icon hospital"><mat-icon>local_hospital</mat-icon></div>
           <div>
-
-            <h2>
-              Hospital Information
-            </h2>
-
-            <p>
-              Basic information about the hospital
-            </p>
-
+            <h2>Hospital Information</h2>
+            <p>Basic information about the hospital</p>
           </div>
-
         </div>
 
-
         <div class="form-grid">
-
-
-          <!-- Hospital Name -->
-
           <div class="form-group">
-
-            <label>
-              Hospital Name
-              <span>*</span>
-            </label>
-
-            <input
-              type="text"
-              formControlName="hospitalName"
-              placeholder="Enter hospital name">
-
-            @if (
-              settingsForm.get('hospitalName')?.touched &&
-              settingsForm.get('hospitalName')?.hasError('required')
-            ) {
-
-              <small class="field-error">
-                Hospital name is required.
-              </small>
-
-            } @else if (
-              settingsForm.get('hospitalName')?.touched &&
-              settingsForm.get('hospitalName')?.hasError('maxlength')
-            ) {
-
-              <small class="field-error">
-                Hospital name cannot exceed 200 characters.
-              </small>
-
+            <label>Hospital Name <span>*</span></label>
+            <input type="text" formControlName="hospitalName" placeholder="Enter hospital name">
+            @if (settingsForm.get('hospitalName')?.touched && settingsForm.get('hospitalName')?.hasError('required')) {
+              <small class="field-error">Hospital name is required.</small>
+            } @else if (settingsForm.get('hospitalName')?.touched && settingsForm.get('hospitalName')?.hasError('maxlength')) {
+              <small class="field-error">Hospital name cannot exceed 200 characters.</small>
             }
-
           </div>
 
-
-          <!-- Hospital Email -->
-
           <div class="form-group">
-
-            <label>
-              Hospital Email
-              <span>*</span>
-            </label>
-
-            <input
-              type="email"
-              formControlName="hospitalEmail"
-              placeholder="admin@hospital.com">
-
-            @if (
-              settingsForm.get('hospitalEmail')?.touched &&
-              settingsForm.get('hospitalEmail')?.hasError('required')
-            ) {
-
-              <small class="field-error">
-                Hospital email is required.
-              </small>
-
-            } @else if (
-              settingsForm.get('hospitalEmail')?.touched &&
-              settingsForm.get('hospitalEmail')?.hasError('email')
-            ) {
-
-              <small class="field-error">
-                Enter a valid email address.
-              </small>
-
-            } @else if (
-              settingsForm.get('hospitalEmail')?.touched &&
-              settingsForm.get('hospitalEmail')?.hasError('maxlength')
-            ) {
-
-              <small class="field-error">
-                Hospital email cannot exceed 200 characters.
-              </small>
-
+            <label>Hospital Email <span>*</span></label>
+            <input type="email" formControlName="hospitalEmail" placeholder="admin@hospital.com">
+            @if (settingsForm.get('hospitalEmail')?.touched && settingsForm.get('hospitalEmail')?.hasError('required')) {
+              <small class="field-error">Hospital email is required.</small>
+            } @else if (settingsForm.get('hospitalEmail')?.touched && settingsForm.get('hospitalEmail')?.hasError('email')) {
+              <small class="field-error">Enter a valid email address.</small>
+            } @else if (settingsForm.get('hospitalEmail')?.touched && settingsForm.get('hospitalEmail')?.hasError('maxlength')) {
+              <small class="field-error">Hospital email cannot exceed 200 characters.</small>
             }
-
           </div>
 
-
-          <!-- Hospital Phone -->
-
           <div class="form-group">
-
-            <label>
-              Hospital Phone
-              <span>*</span>
-            </label>
-
-            <input
-              type="text"
-              formControlName="hospitalPhone"
-              placeholder="+91 9876543210">
-
-            @if (
-              settingsForm.get('hospitalPhone')?.touched &&
-              settingsForm.get('hospitalPhone')?.hasError('required')
-            ) {
-
-              <small class="field-error">
-                Hospital phone is required.
-              </small>
-
-            } @else if (
-              settingsForm.get('hospitalPhone')?.touched &&
-              settingsForm.get('hospitalPhone')?.hasError('pattern')
-            ) {
-
-              <small class="field-error">
-                Enter a valid hospital phone number.
-              </small>
-
-            } @else if (
-              settingsForm.get('hospitalPhone')?.touched &&
-              settingsForm.get('hospitalPhone')?.hasError('maxlength')
-            ) {
-
-              <small class="field-error">
-                Hospital phone cannot exceed 30 characters.
-              </small>
-
+            <label>Hospital Phone <span>*</span></label>
+            <input type="text" formControlName="hospitalPhone" placeholder="+91 9876543210">
+            @if (settingsForm.get('hospitalPhone')?.touched && settingsForm.get('hospitalPhone')?.hasError('required')) {
+              <small class="field-error">Hospital phone is required.</small>
+            } @else if (settingsForm.get('hospitalPhone')?.touched && settingsForm.get('hospitalPhone')?.hasError('pattern')) {
+              <small class="field-error">Enter a valid hospital phone number.</small>
+            } @else if (settingsForm.get('hospitalPhone')?.touched && settingsForm.get('hospitalPhone')?.hasError('maxlength')) {
+              <small class="field-error">Hospital phone cannot exceed 30 characters.</small>
             }
-
           </div>
-
-
-          <!-- Hospital Address -->
 
           <div class="form-group full-width">
-
-            <label>
-              Hospital Address
-              <span>*</span>
-            </label>
-
-            <textarea
-              rows="3"
-              formControlName="hospitalAddress"
-              placeholder="Enter hospital address">
-            </textarea>
-
-            @if (
-              settingsForm.get('hospitalAddress')?.touched &&
-              settingsForm.get('hospitalAddress')?.hasError('required')
-            ) {
-
-              <small class="field-error">
-                Hospital address is required.
-              </small>
-
-            } @else if (
-              settingsForm.get('hospitalAddress')?.touched &&
-              settingsForm.get('hospitalAddress')?.hasError('maxlength')
-            ) {
-
-              <small class="field-error">
-                Hospital address cannot exceed 500 characters.
-              </small>
-
+            <label>Hospital Address <span>*</span></label>
+            <textarea rows="3" formControlName="hospitalAddress" placeholder="Enter hospital address"></textarea>
+            @if (settingsForm.get('hospitalAddress')?.touched && settingsForm.get('hospitalAddress')?.hasError('required')) {
+              <small class="field-error">Hospital address is required.</small>
+            } @else if (settingsForm.get('hospitalAddress')?.touched && settingsForm.get('hospitalAddress')?.hasError('maxlength')) {
+              <small class="field-error">Hospital address cannot exceed 500 characters.</small>
             }
-
           </div>
-
         </div>
-
       </section>
 
-
-      <!-- ===================================== -->
-      <!-- REGIONAL & DISPLAY SETTINGS -->
-      <!-- ===================================== -->
-
       <section class="settings-section">
-
         <div class="section-header">
-
-          <div class="section-icon regional">
-
-            <mat-icon>
-              language
-            </mat-icon>
-
-          </div>
-
+          <div class="section-icon regional"><mat-icon>language</mat-icon></div>
           <div>
-
-            <h2>
-              Regional & Display Settings
-            </h2>
-
-            <p>
-              Configure currency, date format and timezone
-            </p>
-
+            <h2>Regional &amp; Display Settings</h2>
+            <p>Configure currency, date format and timezone</p>
           </div>
-
         </div>
-
 
         <div class="form-grid">
-
-
-          <!-- Currency -->
-
           <div class="form-group">
-
-            <label>
-              Currency
-            </label>
-
-            <select
-              formControlName="currency">
-
-              <option value="INR">
-                INR - Indian Rupee
-              </option>
-
-              <option value="USD">
-                USD - US Dollar
-              </option>
-
-              <option value="EUR">
-                EUR - Euro
-              </option>
-
-              <option value="GBP">
-                GBP - British Pound
-              </option>
-
+            <label>Currency</label>
+            <select formControlName="currency">
+              <option value="INR">INR - Indian Rupee</option>
+              <option value="USD">USD - US Dollar</option>
+              <option value="EUR">EUR - Euro</option>
+              <option value="GBP">GBP - British Pound</option>
+              <option value="AED">AED - UAE Dirham</option>
+              <option value="SAR">SAR - Saudi Riyal</option>
+              <option value="CAD">CAD - Canadian Dollar</option>
+              <option value="AUD">AUD - Australian Dollar</option>
+              <option value="JPY">JPY - Japanese Yen</option>
+              <option value="CNY">CNY - Chinese Yuan</option>
+              <option value="CHF">CHF - Swiss Franc</option>
+              <option value="SGD">SGD - Singapore Dollar</option>
             </select>
-
           </div>
 
-
-          <!-- Date Format -->
-
           <div class="form-group">
-
-            <label>
-              Date Format
-            </label>
-
-            <select
-              formControlName="dateFormat">
-
-              <option value="dd-MMM-yyyy">
-                dd-MMM-yyyy
-              </option>
-
-              <option value="dd/MM/yyyy">
-                dd/MM/yyyy
-              </option>
-
-              <option value="MM/dd/yyyy">
-                MM/dd/yyyy
-              </option>
-
-              <option value="yyyy-MM-dd">
-                yyyy-MM-dd
-              </option>
-
+            <label>Date Format</label>
+            <select formControlName="dateFormat">
+              <option value="dd/MM/yyyy">DD/MM/YYYY</option>
+              <option value="dd-MM-yyyy">DD-MM-YYYY</option>
+              <option value="yyyy-MM-dd">YYYY-MM-DD</option>
+              <option value="yyyy/MM/dd">YYYY/MM/DD</option>
+              <option value="MM/dd/yyyy">MM/DD/YYYY</option>
             </select>
-
           </div>
 
-
-          <!-- Time Zone -->
-
           <div class="form-group">
-
-            <label>
-              Time Zone
-            </label>
-
-            <select
-              formControlName="timeZone">
-
-              <option value="Asia/Kolkata">
-                Asia/Kolkata
-              </option>
-
-              <option value="UTC">
-                UTC
-              </option>
-
-              <option value="America/New_York">
-                America/New_York
-              </option>
-
-              <option value="Europe/London">
-                Europe/London
-              </option>
-
+            <label>Time Zone</label>
+            <select formControlName="timeZone">
+              <option value="Asia/Kolkata">Asia/Kolkata (India)</option>
+              <option value="Asia/Dubai">Asia/Dubai (UAE)</option>
+              <option value="Asia/Riyadh">Asia/Riyadh (Saudi Arabia)</option>
+              <option value="Asia/Singapore">Asia/Singapore</option>
+              <option value="Asia/Tokyo">Asia/Tokyo (Japan)</option>
+              <option value="Asia/Shanghai">Asia/Shanghai (China)</option>
+              <option value="UTC">UTC</option>
+              <option value="Europe/London">Europe/London (UK)</option>
+              <option value="Europe/Paris">Europe/Paris (France)</option>
+              <option value="America/New_York">America/New_York (US Eastern)</option>
+              <option value="America/Chicago">America/Chicago (US Central)</option>
+              <option value="America/Denver">America/Denver (US Mountain)</option>
+              <option value="America/Los_Angeles">America/Los_Angeles (US Pacific)</option>
+              <option value="Australia/Sydney">Australia/Sydney</option>
             </select>
-
           </div>
-
         </div>
-
       </section>
 
-
-      <!-- ===================================== -->
-      <!-- APPOINTMENT & INVENTORY -->
-      <!-- ===================================== -->
-
       <section class="settings-section">
-
         <div class="section-header">
-
-          <div class="section-icon operations">
-
-            <mat-icon>
-              tune
-            </mat-icon>
-
-          </div>
-
+          <div class="section-icon operations"><mat-icon>tune</mat-icon></div>
           <div>
-
-            <h2>
-              Operational Settings
-            </h2>
-
-            <p>
-              Configure appointment and inventory defaults
-            </p>
-
+            <h2>Operational Settings</h2>
+            <p>Configure appointment and inventory defaults</p>
           </div>
-
         </div>
-
 
         <div class="form-grid">
-
-
-          <!-- Appointment Duration -->
-
           <div class="form-group">
-
-            <label>
-              Default Appointment Duration
-            </label>
-
+            <label>Default Appointment Duration</label>
             <div class="input-with-suffix">
-
-              <input
-                type="number"
-                formControlName="defaultAppointmentDuration"
-                min="5"
-                max="480">
-
-              <span>
-                minutes
-              </span>
-
+              <input type="number" formControlName="defaultAppointmentDuration" min="5" max="480">
+              <span>minutes</span>
             </div>
-
-            @if (
-              settingsForm.get('defaultAppointmentDuration')?.touched &&
-              settingsForm.get('defaultAppointmentDuration')?.invalid
-            ) {
-
+            @if (settingsForm.get('defaultAppointmentDuration')?.touched && settingsForm.get('defaultAppointmentDuration')?.invalid) {
               <small class="field-error">
-                @if (settingsForm.get('defaultAppointmentDuration')?.hasError('required')) {
-                  Appointment duration is required.
-                } @else {
-                  Appointment duration must be between 5 and 480 minutes.
-                }
+                @if (settingsForm.get('defaultAppointmentDuration')?.hasError('required')) { Appointment duration is required. }
+                @else { Appointment duration must be between 5 and 480 minutes. }
               </small>
-
             }
-
           </div>
 
-
-          <!-- Low Stock -->
-
           <div class="form-group">
-
-            <label>
-              Low Stock Threshold
-            </label>
-
+            <label>Low Stock Threshold</label>
             <div class="input-with-suffix">
-
-              <input
-                type="number"
-                formControlName="lowStockThreshold"
-                min="0">
-
-              <span>
-                units
-              </span>
-
+              <input type="number" formControlName="lowStockThreshold" min="0">
+              <span>units</span>
             </div>
-
-            @if (
-              settingsForm.get('lowStockThreshold')?.touched &&
-              settingsForm.get('lowStockThreshold')?.invalid
-            ) {
-
+            @if (settingsForm.get('lowStockThreshold')?.touched && settingsForm.get('lowStockThreshold')?.invalid) {
               <small class="field-error">
-                @if (settingsForm.get('lowStockThreshold')?.hasError('required')) {
-                  Low stock threshold is required.
-                } @else {
-                  Low stock threshold must be 0 or greater.
-                }
+                @if (settingsForm.get('lowStockThreshold')?.hasError('required')) { Low stock threshold is required. }
+                @else { Low stock threshold must be 0 or greater. }
               </small>
-
             }
-
           </div>
 
-
-          <!-- Expiry Warning -->
-
           <div class="form-group">
-
-            <label>
-              Expiry Warning
-            </label>
-
+            <label>Expiry Warning</label>
             <div class="input-with-suffix">
-
-              <input
-                type="number"
-                formControlName="expiryWarningDays"
-                min="0"
-                max="365">
-
-              <span>
-                days
-              </span>
-
+              <input type="number" formControlName="expiryWarningDays" min="0" max="365">
+              <span>days</span>
             </div>
-
-            @if (
-              settingsForm.get('expiryWarningDays')?.touched &&
-              settingsForm.get('expiryWarningDays')?.invalid
-            ) {
-
+            @if (settingsForm.get('expiryWarningDays')?.touched && settingsForm.get('expiryWarningDays')?.invalid) {
               <small class="field-error">
-                @if (settingsForm.get('expiryWarningDays')?.hasError('required')) {
-                  Expiry warning is required.
-                } @else {
-                  Expiry warning must be between 0 and 365 days.
-                }
+                @if (settingsForm.get('expiryWarningDays')?.hasError('required')) { Expiry warning is required. }
+                @else { Expiry warning must be between 0 and 365 days. }
               </small>
-
             }
-
           </div>
-
         </div>
-
       </section>
 
-
-      <!-- ===================================== -->
-      <!-- NOTIFICATIONS -->
-      <!-- ===================================== -->
-
       <section class="settings-section">
-
         <div class="section-header">
-
-          <div class="section-icon notifications">
-
-            <mat-icon>
-              notifications
-            </mat-icon>
-
-          </div>
-
+          <div class="section-icon notifications"><mat-icon>notifications</mat-icon></div>
           <div>
-
-            <h2>
-              Notification Settings
-            </h2>
-
-            <p>
-              Control system notification preferences
-            </p>
-
+            <h2>Notification Settings</h2>
+            <p>Control system notification preferences</p>
           </div>
-
         </div>
-
 
         <div class="notification-list">
-
-
-          <!-- All Notifications -->
-
           <label class="notification-option">
-
             <div class="notification-info">
-
-              <div class="notification-icon">
-
-                <mat-icon>
-                  notifications_active
-                </mat-icon>
-
-              </div>
-
-              <div>
-
-                <strong>
-                  Enable Notifications
-                </strong>
-
-                <span>
-                  Enable or disable system notifications
-                </span>
-
-              </div>
-
+              <div class="notification-icon"><mat-icon>notifications_active</mat-icon></div>
+              <div><strong>Enable Notifications</strong><span>Enable or disable system notifications</span></div>
             </div>
-
-            <input
-              type="checkbox"
-              formControlName="enableNotifications">
-
+            <input type="checkbox" formControlName="enableNotifications">
             <span class="toggle"></span>
-
           </label>
 
-
-          <!-- Appointment -->
-
           <label class="notification-option">
-
             <div class="notification-info">
-
-              <div class="notification-icon appointment">
-
-                <mat-icon>
-                  event
-                </mat-icon>
-
-              </div>
-
-              <div>
-
-                <strong>
-                  Appointment Notifications
-                </strong>
-
-                <span>
-                  Receive notifications about appointments
-                </span>
-
-              </div>
-
+              <div class="notification-icon appointment"><mat-icon>event</mat-icon></div>
+              <div><strong>Appointment Notifications</strong><span>Receive notifications about appointments</span></div>
             </div>
-
-            <input
-              type="checkbox"
-              formControlName="enableAppointmentNotifications">
-
+            <input type="checkbox" formControlName="enableAppointmentNotifications">
             <span class="toggle"></span>
-
           </label>
 
-
-          <!-- Billing -->
-
           <label class="notification-option">
-
             <div class="notification-info">
-
-              <div class="notification-icon billing">
-
-                <mat-icon>
-                  receipt_long
-                </mat-icon>
-
-              </div>
-
-              <div>
-
-                <strong>
-                  Billing Notifications
-                </strong>
-
-                <span>
-                  Receive billing and payment notifications
-                </span>
-
-              </div>
-
+              <div class="notification-icon billing"><mat-icon>receipt_long</mat-icon></div>
+              <div><strong>Billing Notifications</strong><span>Receive billing and payment notifications</span></div>
             </div>
-
-            <input
-              type="checkbox"
-              formControlName="enableBillingNotifications">
-
+            <input type="checkbox" formControlName="enableBillingNotifications">
             <span class="toggle"></span>
-
           </label>
 
-
-          <!-- Laboratory -->
-
           <label class="notification-option">
-
             <div class="notification-info">
-
-              <div class="notification-icon laboratory">
-
-                <mat-icon>
-                  science
-                </mat-icon>
-
-              </div>
-
-              <div>
-
-                <strong>
-                  Laboratory Notifications
-                </strong>
-
-                <span>
-                  Receive laboratory result notifications
-                </span>
-
-              </div>
-
+              <div class="notification-icon laboratory"><mat-icon>science</mat-icon></div>
+              <div><strong>Laboratory Notifications</strong><span>Receive laboratory result notifications</span></div>
             </div>
-
-            <input
-              type="checkbox"
-              formControlName="enableLaboratoryNotifications">
-
+            <input type="checkbox" formControlName="enableLaboratoryNotifications">
             <span class="toggle"></span>
-
           </label>
-
         </div>
-
       </section>
 
-
-      <!-- ===================================== -->
-      <!-- BOTTOM ACTIONS -->
-      <!-- ===================================== -->
-
       <div class="form-actions">
-
-        <button
-          type="button"
-          class="secondary-button"
-          (click)="resetSettings()"
-          [disabled]="saving">
-
-          Cancel
-
-        </button>
-
-        <button
-          type="button"
-          class="save-button"
-          (click)="saveSettings()"
-          [disabled]="saving">
-
+        <button type="button" class="secondary-button" (click)="resetSettings()" [disabled]="saving">Cancel</button>
+        <button type="button" class="save-button" (click)="saveSettings()" [disabled]="saving">
           @if (saving) {
-
             <span class="button-spinner"></span>
-
             Saving...
-
           } @else {
-
-            <mat-icon>
-              save
-            </mat-icon>
-
+            <mat-icon>save</mat-icon>
             Save Settings
-
           }
-
         </button>
-
       </div>
-
     </form>
-
   }
-
 </div>
