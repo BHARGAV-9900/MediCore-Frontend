@@ -20,5 +20,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   { title: 'Inventory', icon: 'bi bi-box-seam', route: '/dashboard/inventory', roles: ['Admin','Pharmacist'] },
   { title: 'Reports', icon: 'bi bi-bar-chart-line', route: '/dashboard/reports', roles: ['Admin','Accountant'] },
   { title: 'Users', route: '/dashboard/users', icon: 'bi bi-person-gear', roles: ['Admin'] },
+  { title: 'Audit Logs', route: '/dashboard/audit-logs', icon: 'bi bi-shield-check', roles: ['Admin'] },
   { title: 'Settings', icon: 'bi bi-gear', route: '/dashboard/settings', roles: ['Admin'] }
 ];
