@@ -1,3 +1,10 @@
+:host {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+}
+
 .dashboard-layout {
     width: 100%;
     height: 100%;
@@ -37,8 +44,8 @@
     overflow-x: hidden;
 }
 
-/* Keep the footer at the bottom of the dashboard without creating
-   extra page height outside the application shell. */
+/* Footer stays inside the dashboard shell and never creates
+   an extra page-height area below the application. */
 app-footer {
     display: block;
     flex: 0 0 auto;
