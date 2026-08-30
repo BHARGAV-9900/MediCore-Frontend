@@ -52,7 +52,16 @@ export class SettingsComponent implements OnInit {
     this.settingsService.get().subscribe({
       next: (response) => {
         if (response.data) {
-          this.settingsForm.patchValue(response.data);
+          const data = {
+            ...response.data,
+            // Existing installations may still contain the old MMM format.
+            // Display the new supported format and let the next save persist it.
+            dateFormat: response.data.dateFormat === 'dd-MMM-yyyy'
+              ? 'dd/MM/yyyy'
+              : response.data.dateFormat
+          };
+
+          this.settingsForm.patchValue(data);
         }
         this.loading = false;
       },
@@ -82,10 +91,6 @@ export class SettingsComponent implements OnInit {
     this.settingsService.update(settings).subscribe({
       next: (response) => {
         this.saving = false;
-
-        // The API has already persisted the complete form. Keep the values
-        // in the form instead of immediately issuing a second GET request.
-        // A refresh/reload will therefore verify the real database value.
         this.showSuccess(
           response?.message || 'Settings saved successfully.'
         );
