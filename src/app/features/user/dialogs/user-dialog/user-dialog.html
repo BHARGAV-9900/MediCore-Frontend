@@ -10,7 +10,7 @@
   <h3>User Information</h3>
 
 
-  <form [formGroup]="form">
+  <form [formGroup]="form" autocomplete="off">
 
 
     <!-- FIRST NAME -->
@@ -26,6 +26,7 @@
         matInput
         type="text"
         formControlName="firstName"
+        autocomplete="off"
         placeholder="Enter first name" />
 
       @if (
@@ -55,6 +56,7 @@
         matInput
         type="text"
         formControlName="lastName"
+        autocomplete="off"
         placeholder="Enter last name" />
 
       @if (
@@ -84,6 +86,7 @@
         matInput
         type="email"
         formControlName="email"
+        autocomplete="off"
         placeholder="Enter email address" />
 
       @if (
@@ -98,6 +101,13 @@
           ) {
 
             Email is required
+
+          }
+          @else if (
+            form.controls.email.errors?.['emailExists']
+          ) {
+
+            Email already exists
 
           }
           @else {
@@ -128,6 +138,7 @@
           matInput
           type="password"
           formControlName="password"
+          autocomplete="new-password"
           placeholder="Enter password" />
 
         @if (
