@@ -209,6 +209,22 @@ export class UserDialog {
 
             console.error(error);
 
+            if (error?.status === 409) {
+
+              this.form.controls.email.setErrors({
+                emailExists: true
+              });
+
+              this.form.controls.email.markAsTouched();
+
+              this.notification.error(
+                'Email already exists'
+              );
+
+              return;
+
+            }
+
             this.notification.error(
               'Unable to update user'
             );
@@ -263,6 +279,22 @@ export class UserDialog {
         error: error => {
 
           console.error(error);
+
+          if (error?.status === 409) {
+
+            this.form.controls.email.setErrors({
+              emailExists: true
+            });
+
+            this.form.controls.email.markAsTouched();
+
+            this.notification.error(
+              'Email already exists'
+            );
+
+            return;
+
+          }
 
           this.notification.error(
             'Unable to create user'
