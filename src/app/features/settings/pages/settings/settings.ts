@@ -25,10 +25,6 @@ import {
   SettingsService
 } from '../../services/settings.service';
 
-import {
-  Settings
-} from '../../models/settings';
-
 @Component({
   selector: 'app-settings',
   standalone: true,
@@ -78,7 +74,8 @@ export class SettingsComponent
           '',
           [
             Validators.required,
-            Validators.email
+            Validators.email,
+            Validators.maxLength(200)
           ]
         ],
 
@@ -86,7 +83,8 @@ export class SettingsComponent
           '',
           [
             Validators.required,
-            Validators.maxLength(30)
+            Validators.maxLength(30),
+            Validators.pattern(/^\+?[0-9][0-9\s().-]{6,29}$/)
           ]
         ],
 
@@ -118,7 +116,7 @@ export class SettingsComponent
           [
             Validators.required,
             Validators.min(5),
-            Validators.max(240)
+            Validators.max(480)
           ]
         ],
 
@@ -134,7 +132,8 @@ export class SettingsComponent
           30,
           [
             Validators.required,
-            Validators.min(0)
+            Validators.min(0),
+            Validators.max(365)
           ]
         ],
 
@@ -158,59 +157,39 @@ export class SettingsComponent
   }
 
   ngOnInit(): void {
-
     this.loadSettings();
-
   }
 
   loadSettings(): void {
-
     this.loading = true;
     this.errorMessage = '';
 
     this.settingsService
       .get()
       .subscribe({
-
-        next: (
-          response
-        ) => {
-
+        next: (response) => {
           if (response.data) {
-
-            this.settingsForm.patchValue(
-              response.data
-            );
-
+            this.settingsForm.patchValue(response.data);
           }
 
           this.loading = false;
-
         },
 
-        error: (
-          error
-        ) => {
-
+        error: (error) => {
           console.error(
             'Failed to load settings:',
             error
           );
 
           this.loading = false;
-
           this.errorMessage =
             'Unable to load settings. Please try again.';
-
         }
-
       });
   }
 
   saveSettings(): void {
-
     if (this.settingsForm.invalid) {
-
       this.settingsForm.markAllAsTouched();
 
       this.showError(
@@ -229,9 +208,7 @@ export class SettingsComponent
     this.settingsService
       .update(settings)
       .subscribe({
-
         next: () => {
-
           this.saving = false;
 
           this.showSuccess(
@@ -239,13 +216,9 @@ export class SettingsComponent
           );
 
           this.loadSettings();
-
         },
 
-        error: (
-          error
-        ) => {
-
+        error: (error) => {
           console.error(
             'Failed to save settings:',
             error
@@ -253,25 +226,55 @@ export class SettingsComponent
 
           this.saving = false;
 
-          this.showError(
-            'Failed to save settings. Please try again.'
-          );
+          const message =
+            this.getApiErrorMessage(error) ??
+            'Failed to save settings. Please try again.';
 
+          this.showError(message);
         }
-
       });
   }
 
   resetSettings(): void {
-
     this.loadSettings();
+  }
 
+  private getApiErrorMessage(
+    error: any
+  ): string | null {
+    const apiMessage =
+      error?.error?.message;
+
+    if (typeof apiMessage === 'string' &&
+        apiMessage.trim()) {
+      return apiMessage;
+    }
+
+    const validationErrors =
+      error?.error?.errors;
+
+    if (validationErrors &&
+        typeof validationErrors === 'object') {
+      const firstError =
+        Object.values(validationErrors)
+          .flat()
+          .find(
+            value =>
+              typeof value === 'string' &&
+              value.trim()
+          );
+
+      if (typeof firstError === 'string') {
+        return firstError;
+      }
+    }
+
+    return null;
   }
 
   private showSuccess(
     message: string
   ): void {
-
     this.snackBar.open(
       message,
       'Close',
@@ -289,7 +292,6 @@ export class SettingsComponent
   private showError(
     message: string
   ): void {
-
     this.snackBar.open(
       message,
       'Close',
