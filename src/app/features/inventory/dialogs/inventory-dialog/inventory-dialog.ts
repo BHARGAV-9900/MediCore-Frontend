@@ -122,36 +122,36 @@ export class InventoryDialog
     ),
 
 
-    batchNumber: this.fb.control(
+    batchNumber: [
       '',
       [
         Validators.required
       ]
-    ),
+    ],
 
 
-    expiryDate: this.fb.control(
+    expiryDate: [
       '',
       [
         Validators.required
       ]
-    ),
+    ],
 
 
-    supplier: this.fb.control(
+    supplier: [
       '',
       [
         Validators.required
       ]
-    ),
+    ],
 
 
-    storageLocation: this.fb.control(
+    storageLocation: [
       '',
       [
         Validators.required
       ]
-    )
+    ]
 
   });
 
@@ -293,6 +293,19 @@ export class InventoryDialog
   }
 
 
+  private getErrorMessage(
+    error: any,
+    fallback: string
+  ): string {
+
+    return error?.error?.message ??
+      error?.error?.Message ??
+      error?.message ??
+      fallback;
+
+  }
+
+
   save(): void {
 
     if (this.form.invalid) {
@@ -305,15 +318,35 @@ export class InventoryDialog
 
 
     const raw = this.form.getRawValue();
+    const medicineId = raw.medicineId;
+    const quantityInStock = raw.quantityInStock;
+    const minimumStockLevel = raw.minimumStockLevel;
+    const batchNumber = raw.batchNumber;
+    const expiryDate = raw.expiryDate;
+    const supplier = raw.supplier;
+    const storageLocation = raw.storageLocation;
+
+    if (
+      medicineId === null ||
+      quantityInStock === null ||
+      minimumStockLevel === null ||
+      batchNumber === null ||
+      expiryDate === null ||
+      supplier === null ||
+      storageLocation === null
+    ) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     const model: CreateInventory = {
-      medicineId: raw.medicineId!,
-      quantityInStock: raw.quantityInStock!,
-      minimumStockLevel: raw.minimumStockLevel!,
-      batchNumber: raw.batchNumber!,
-      expiryDate: raw.expiryDate!,
-      supplier: raw.supplier!,
-      storageLocation: raw.storageLocation!
+      medicineId,
+      quantityInStock,
+      minimumStockLevel,
+      batchNumber,
+      expiryDate,
+      supplier,
+      storageLocation
     };
 
 
@@ -357,13 +390,15 @@ export class InventoryDialog
 
         error: error => {
 
-          console.error(error);
+          console.error('Inventory create failed:', error);
 
           this.loading = false;
 
           this.notification.error(
-            error?.error?.message ??
-            'Unable to create inventory'
+            this.getErrorMessage(
+              error,
+              'Unable to create inventory'
+            )
           );
 
         }
@@ -406,13 +441,15 @@ export class InventoryDialog
 
         error: error => {
 
-          console.error(error);
+          console.error('Inventory update failed:', error);
 
           this.loading = false;
 
           this.notification.error(
-            error?.error?.message ??
-            'Unable to update inventory'
+            this.getErrorMessage(
+              error,
+              'Unable to update inventory'
+            )
           );
 
         }
